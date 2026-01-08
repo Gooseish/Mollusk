@@ -28,7 +28,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Source Code\Graphics\" />
-    <Folder Include="Source Code\Scenes\SceneComponents\" />
+    <Folder Include="Source Code\Menus\" />
     <Folder Include="Source Code\Settings\" />
   </ItemGroup>
 </Project>

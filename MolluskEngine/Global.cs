@@ -2,7 +2,6 @@ using System;
 using Microsoft.Xna.Framework;
 using MolluskEngine.Input;
 using MolluskEngine.Scene;
-using MolluskEngine.Scenes;
 using MolluskEngine.Settings;
 
 namespace MolluskEngine;

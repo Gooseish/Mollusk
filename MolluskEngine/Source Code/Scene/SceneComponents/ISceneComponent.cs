@@ -1,7 +1,7 @@
 using System;
 using Microsoft.Xna.Framework;
 
-namespace MolluskEngine.Scenes;
+namespace MolluskEngine.Scene;
 
 public interface ISceneComponent
 {

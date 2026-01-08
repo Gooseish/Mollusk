@@ -2,7 +2,7 @@ using System;
 using Microsoft.Xna.Framework;
 using MolluskEngine.Scene;
 
-namespace MolluskEngine.Scenes;
+namespace MolluskEngine.Scene;
 
 public class SceneTitle : _Scene
 {
