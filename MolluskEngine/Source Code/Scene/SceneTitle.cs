@@ -9,6 +9,13 @@ public class SceneTitle : _Scene
     private SceneMenu menu = new();
     public override void Update(GameTime gameTime)
     {
-        menu.Update(gameTime);
+        if (menu.MenuActive)
+        {
+            menu.Update(gameTime);
+            return;
+        }
+        
+        if (Global.Input.GetKeyState(Input.CommandName.Start).KeyPressed)
+            menu.MenuActive = true;
     }
 }
