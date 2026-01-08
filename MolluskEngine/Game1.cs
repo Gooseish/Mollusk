@@ -42,7 +42,7 @@ public class Game1
     {
         GraphicsDevice.Clear(Color.CornflowerBlue);
 
-        Renderer.Draw();
+        Global.Draw(GraphicsDevice);
         base.Draw(gameTime);
     }
 }

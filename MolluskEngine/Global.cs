@@ -1,5 +1,6 @@
 using System;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using MolluskEngine.Input;
 using MolluskEngine.Scene;
 using MolluskEngine.Settings;
@@ -26,5 +27,9 @@ public static class Global
     public static void LoadContent()
     {
         
+    }
+    public static void Draw(GraphicsDevice graphicsDevice)
+    {
+        Scene.Draw(graphicsDevice);
     }
 }
