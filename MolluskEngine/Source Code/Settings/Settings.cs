@@ -10,7 +10,7 @@ namespace MolluskEngine.Settings;
 /// </summary>
 public class _Settings
 {
-    public InputSettings InputSettings = new InputSettings();
+    public InputSettings InputSettings {get; private set;} = new InputSettings();
     public _Settings()
     {
         RestoreDefaultSettings();

@@ -3,10 +3,7 @@ using Microsoft.Xna.Framework;
 
 namespace MolluskEngine.Scene;
 
-public class _Scene
+public abstract class _Scene
 {
-    public void Update(GameTime gameTime)
-    {
-        
-    }
+    public abstract void Update(GameTime gameTime);
 }
