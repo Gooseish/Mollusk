@@ -29,6 +29,9 @@
   <ItemGroup>
     <Folder Include="Source Code\Graphics\" />
     <Folder Include="Source Code\Menus\" />
+    <Folder Include="Source Code\Menus\MenuComponents\" />
+    <Folder Include="Source Code\Menus\Nodes\" />
+    <Folder Include="Source Code\Menus\Nodes\NodeComponents\" />
     <Folder Include="Source Code\Settings\" />
   </ItemGroup>
 </Project>
