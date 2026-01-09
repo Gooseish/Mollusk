@@ -1,7 +1,6 @@
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MolluskEngine.Scene;
 using MolluskEngine.UI;
 
 namespace MolluskEngine.Scene;
