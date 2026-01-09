@@ -21,6 +21,14 @@ public class SceneTitle : _Scene
     {
         SpriteBatch spriteBatch = new SpriteBatch(graphicsDevice);
 
+        if (menu.MenuActive)
+        {
+            spriteBatch.Begin();
+            menu.Draw(spriteBatch);
+            spriteBatch.End();
+            return;
+        }
+
         spriteBatch.Begin();
         titleScreenText.Draw(spriteBatch);
         spriteBatch.End();
