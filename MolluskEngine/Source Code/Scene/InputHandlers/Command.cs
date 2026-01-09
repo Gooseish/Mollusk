@@ -4,10 +4,9 @@ using MolluskEngine.Input;
 
 namespace MolluskEngine.Scene;
 
-public class Command
+public class Command // Maybe this class belongs in the Input namespace?
 {
     public Func<CommandResult> Callback;
-    //public Type RequestedSignalType;
     public ISignalMachine SignalMachine;
 
     public Command(Func<CommandResult> callback, Type requestedSignalType)

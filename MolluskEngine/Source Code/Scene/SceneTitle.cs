@@ -49,13 +49,16 @@ public class SceneTitle : _Scene
 
     public override void Update(GameTime gameTime)
     {
-        if (menu.MenuActive)
+        HandleInput();
+    }
+    public void HandleInput()
+    {
+        if (!menu.MenuActive)
         {
-            menu.Update(gameTime);
+            InputHandler.Update();
             return;
         }
-        
-        InputHandler.Update();
+        menu.InputHandler.Update();
     }
 
     public CommandResult OpenMenu()
