@@ -1,6 +1,7 @@
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MolluskEngine.Menus;
 using MolluskEngine.UI;
 
 namespace MolluskEngine.Scene;
@@ -8,13 +9,26 @@ namespace MolluskEngine.Scene;
 public class SceneTitle : _Scene
 {
     private SceneMenu menu = new();
-    private Text titleScreenText = new()
+    private SceneTitleInputHandler InputHandler;
+    private Text titleScreenText;
+
+    public SceneTitle()
     {
-        Font = "Arial",
-        Content = "Press Start",
-        Position = new Vector2(600, 300),
-        Color = Color.Black,
-    };
+        Initialize();
+    }
+
+    public void Initialize()
+    {
+        titleScreenText = new Text() // Could be more data-driven
+        {
+            Font = "Arial",
+            Content = "Press Start",
+            Position = new Vector2(600, 300),
+            Color = Color.Black,
+        };
+
+        InputHandler = new SceneTitleInputHandler(this);
+    }
 
     public override void Draw(GraphicsDevice graphicsDevice)
     {
@@ -40,7 +54,13 @@ public class SceneTitle : _Scene
             menu.Update(gameTime);
             return;
         }
-        if (Global.Input.GetKeyState(Input.CommandName.Start).KeyPressed)
-            menu.MenuActive = true;
+        
+        InputHandler.Update();
+    }
+
+    public CommandResult OpenMenu()
+    {
+        menu.OpenMenu<TitleMenu>();
+        return CommandResult.Accepted;
     }
 }

@@ -5,7 +5,7 @@ namespace MolluskEngine.Scene;
 
 public interface ISceneInputHandler
 {
-
+    // Todo: Maybe make this an abstract class?
 }
 
 public enum CommandResult
