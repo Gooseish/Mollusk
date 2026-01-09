@@ -1,8 +1,8 @@
 using System;
 
-namespace MolluskEngine.Source_Code.Menus.Nodes;
+namespace MolluskEngine.Menus;
 
-public class Node
+public abstract class Node
 {
-
+    
 }

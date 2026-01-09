@@ -1,6 +1,6 @@
 using System;
 
-namespace MolluskEngine.Source_Code.Menus.MenuComponents;
+namespace MolluskEngine.Menus;
 
 public interface IMenuComponent
 {

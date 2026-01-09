@@ -1,6 +1,6 @@
 using System;
 
-namespace MolluskEngine.Source_Code.Menus.Nodes.NodeComponents;
+namespace MolluskEngine.Menus;
 
 public interface INodeComponent
 {

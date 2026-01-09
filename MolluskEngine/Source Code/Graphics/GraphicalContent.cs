@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace MolluskEngine.Graphics;
@@ -18,6 +19,10 @@ public static class GraphicalContent
     public static void Initialize()
     {
         menuTextures["WhiteSquare"] = TextureFromSize(1, 1);
+    }
+    public static void LoadContent(ContentManager content)
+    {
+        fonts["Arial"] = content.Load<SpriteFont>(@"Fonts/Arial");
     }
 
     // Private Controls

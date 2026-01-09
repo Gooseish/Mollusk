@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MolluskEngine.Graphics;
 using MolluskEngine.Source_Code.Graphics;
 
 namespace MolluskEngine;
@@ -17,13 +18,14 @@ public class Game1
         base.Initialize();
 
         Global.Initialize();
-        Renderer.Initialize();
+        GraphicalContent.Initialize();
     }
 
     protected override void LoadContent()
     {
         // TODO: use this.Content to load your game content here
         Global.LoadContent();
+        GraphicalContent.LoadContent(Content);
 
         base.LoadContent();
     }
