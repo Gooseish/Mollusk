@@ -7,5 +7,4 @@ namespace MolluskEngine.Scene;
 public interface ISceneComponent
 {
     public void Update(GameTime gameTime);
-    public void Draw(SpriteBatch spriteBatch);
 }

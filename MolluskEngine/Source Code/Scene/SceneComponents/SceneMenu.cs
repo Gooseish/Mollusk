@@ -11,7 +11,7 @@ namespace MolluskEngine.Scene;
 public class SceneMenu : ISceneComponent
 {
     public List<Menu> Menus = new();
-    public bool MenuActive {get {return Menus.Count > 1;}}
+    public bool MenuActive {get {return Menus.Count > 0;}}
     public bool InspectActive;
     public int? CurrentMenuIndex; 
     public Menu? CurrentMenu {get {return CurrentMenuIndex != null ? Menus[(int)CurrentMenuIndex] : null;}}
@@ -26,11 +26,6 @@ public class SceneMenu : ISceneComponent
         Menus.Add((Menu)Activator.CreateInstance(typeof(MenuType), args:paramArray));
         CurrentMenuIndex = 0;
     }
-    public void Draw(SpriteBatch spriteBatch)
-    {
-        
-    }
-
     public void Update(GameTime gameTime)
     {
         
