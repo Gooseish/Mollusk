@@ -3,7 +3,7 @@ using MolluskEngine.Scene;
 
 namespace MolluskEngine.Menus;
 
-public class Node
+public abstract class Node
 {
     public Func<CommandResult>? Callback;
 }
