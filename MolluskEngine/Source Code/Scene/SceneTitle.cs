@@ -55,15 +55,15 @@ public class SceneTitle : _Scene
     {
         if (!menu.MenuActive)
         {
-            InputHandler.Update();
+            InputHandler.HandleInput();
             return;
         }
-        menu.InputHandler.Update();
+        menu.InputHandler.HandleInput();
     }
 
     public CommandResult OpenMenu()
     {
-        menu.OpenMenu<TitleMenu>();
+        menu.AddMenu<TitleMenu>();
         return CommandResult.Accepted;
     }
 }

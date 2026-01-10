@@ -7,7 +7,7 @@ namespace MolluskEngine.Scene;
 public abstract class SceneInputHandler
 {
     public Dictionary<CommandName, Command> CommandRouter;
-    public void Update()
+    public void HandleInput()
     {   
         foreach (CommandName commandName in CommandRouter.Keys)
         {
