@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MolluskEngine.Input;
 using MolluskEngine.Menus;
-using MolluskEngine.Source_Code.Scene.InputHandlers;
 
 namespace MolluskEngine.Scene;
 
@@ -13,8 +12,7 @@ public class SceneMenu : ISceneComponent
     public List<Menu> Menus = new();
     public bool MenuActive {get {return Menus.Count > 0;}}
     public bool InspectActive;
-    public int? CurrentMenuIndex; 
-    public Menu? CurrentMenu {get {return CurrentMenuIndex != null ? Menus[(int)CurrentMenuIndex] : null;}}
+    public Menu? CurrentMenu {get {return MenuActive ? Menus[^1] : null;}}
     public SceneMenuInputHandler InputHandler;
     public SceneMenu()
     {
@@ -24,7 +22,6 @@ public class SceneMenu : ISceneComponent
     public void AddMenu<MenuType>(params object[] paramArray) 
     {
         Menus.Add((Menu)Activator.CreateInstance(typeof(MenuType), args:paramArray));
-        CurrentMenuIndex = 0;
     }
     public void Update(GameTime gameTime)
     {
@@ -45,8 +42,6 @@ public class SceneMenu : ISceneComponent
     public void CallMenuClose()
     {
         Menus.RemoveAt(Menus.Count - 1);
-        if (Menus.Count == 0)
-            CurrentMenuIndex = null;
     }
     // Confirm
     public CommandResult CallCurrentNode()
