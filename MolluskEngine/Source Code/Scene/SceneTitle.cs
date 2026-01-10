@@ -63,7 +63,7 @@ public class SceneTitle : _Scene
 
     public CommandResult OpenMenu()
     {
-        menu.AddMenu<TitleMenu>();
+        menu.AddMenu<TitleMenu>(menu);
         return CommandResult.Accepted;
     }
 }

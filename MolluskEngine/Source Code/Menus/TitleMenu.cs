@@ -7,7 +7,7 @@ namespace MolluskEngine.Menus;
 
 public class TitleMenu : Menu
 {
-    public TitleMenu()
+    public TitleMenu(SceneMenu sceneMenu)
     {
         Nodes = new List<Node>()
         {

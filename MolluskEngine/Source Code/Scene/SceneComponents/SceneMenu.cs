@@ -21,9 +21,9 @@ public class SceneMenu : ISceneComponent
         InputHandler = new SceneMenuInputHandler(this);
     }
 
-    public void AddMenu<MenuType>() 
+    public void AddMenu<MenuType>(params object[] paramArray) 
     {
-        Menus.Add((Menu)Activator.CreateInstance(typeof(MenuType)));
+        Menus.Add((Menu)Activator.CreateInstance(typeof(MenuType), args:paramArray));
         CurrentMenuIndex = 0;
     }
     public void Draw(SpriteBatch spriteBatch)
