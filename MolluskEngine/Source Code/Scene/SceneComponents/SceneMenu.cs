@@ -82,6 +82,18 @@ public class SceneMenu : ISceneComponent
     public CommandResult TryRight() {return TryDirectionalInput(CommandName.Right);}
     public CommandResult TryDirectionalInput(CommandName command)
     {
+        switch(command)
+        {
+            case CommandName.Up:
+            case CommandName.Left:
+                DecrementActiveNodeIndex();
+                return CommandResult.Accepted;
+            case CommandName.Down:
+            case CommandName.Right:
+                IncrementActiveNodeIndex();
+            return CommandResult.Accepted;
+        }
+          
         /*
         if (State.activeMenu is IMenuNodeMap activeMenu)
             switch (activeMenu.nodeMapType)
@@ -105,17 +117,16 @@ public class SceneMenu : ISceneComponent
         */
         return CommandResult.Null;
     }
-    /*
-    private static void IncrementActiveNodeIndex(IMenuNodeMap activeMenu)
+    private void IncrementActiveNodeIndex()
     {
-        activeMenu.activeNodeIndex = (activeMenu.activeNodeIndex + 1) % activeMenu.nodes.Count;
+        // CurrentMenu.activeNodeIndex = (activeMenu.activeNodeIndex + 1) % activeMenu.nodes.Count;
+        CurrentMenu.CurrentNodeIndex = (CurrentMenu.CurrentNodeIndex + 1) % CurrentMenu.NodeCount;
     }
-    private static void DecrementActiveNodeIndex(IMenuNodeMap activeMenu)
+    private void DecrementActiveNodeIndex()
     {
-        activeMenu.activeNodeIndex -= 1;
+        CurrentMenu.CurrentNodeIndex -= 1;
         // Loop back around
-        if (activeMenu.activeNodeIndex < 0)
-            activeMenu.activeNodeIndex += activeMenu.nodes.Count;
+        if (CurrentMenu.CurrentNodeIndex < 0)
+            CurrentMenu.CurrentNodeIndex += CurrentMenu.NodeCount;
     }
-    */
 }

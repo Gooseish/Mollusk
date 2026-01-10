@@ -13,6 +13,10 @@ public class TitleMenu : Menu
     private List<TitleMenuNode> Nodes;
     public override Node CurrentNode {get
         { return CurrentNodeIndex == null ? null : Nodes[(int)CurrentNodeIndex]; } }
+
+    public override int NodeCount {get
+        {return Nodes.Count;}} 
+
     public TitleMenu(SceneMenu sceneMenu)
     {
         menu = sceneMenu;
