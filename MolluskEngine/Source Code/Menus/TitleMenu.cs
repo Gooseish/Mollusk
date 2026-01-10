@@ -47,15 +47,19 @@ public class TitleMenu : Menu
     }
     public override void Draw(SpriteBatch spriteBatch)
     {
-        foreach(Node node in Nodes)
+        foreach(TitleMenuNode node in Nodes)
         {
             Color drawColor = Color.White;
             if (node == CurrentNode)
                 drawColor = Color.Gray;
-            TitleMenuNode nodeCast = (TitleMenuNode)node;
             spriteBatch.Draw(GraphicalContent.MenuTextures["WhiteSquare"], 
-                new Rectangle((int)nodeCast.Position.X, (int)nodeCast.Position.Y, nodeCast.Width, nodeCast.Height), 
+                new Rectangle((int)node.Position.X, (int)node.Position.Y, node.Width, node.Height), 
                 drawColor);
+            spriteBatch.DrawString(
+                GraphicalContent.Fonts[node.Text.Font], 
+                node.Text.Content, 
+                node.Text.Position, 
+                Color.Black);
         }
     }
 }

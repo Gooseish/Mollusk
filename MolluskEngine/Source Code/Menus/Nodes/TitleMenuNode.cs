@@ -22,7 +22,7 @@ public class TitleMenuNode : Node
             Font = "Arial",
         };
         Callback = callback;
-        Width = 100;
+        Width = 1000;
         Height = 50;
     }
 
