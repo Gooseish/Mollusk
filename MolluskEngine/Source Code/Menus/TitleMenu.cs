@@ -10,10 +10,13 @@ namespace MolluskEngine.Menus;
 public class TitleMenu : Menu
 {
     private SceneMenu menu;
+    private List<TitleMenuNode> Nodes;
+    public override Node CurrentNode {get
+        { return CurrentNodeIndex == null ? null : Nodes[(int)CurrentNodeIndex]; } }
     public TitleMenu(SceneMenu sceneMenu)
     {
         menu = sceneMenu;
-        Nodes = new List<Node>()
+        Nodes = new List<TitleMenuNode>()
         {
             new TitleMenuNode(new Vector2(100, 100), "New Game", OpenNewGameMenu),
             new TitleMenuNode(new Vector2(100, 200), "Load Game", OpenLoadGameMenu),

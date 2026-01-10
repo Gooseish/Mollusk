@@ -51,7 +51,7 @@ public class SceneMenu : ISceneComponent
     // Confirm
     public CommandResult CallCurrentNode()
     {
-        if (CurrentMenu.Nodes.Count == 0) // Menu has nodes
+        if (CurrentMenu.CurrentNode == null) 
             return CommandResult.Null;
         if (CurrentMenu.CurrentNode.Callback == null)
             return CommandResult.Null;
