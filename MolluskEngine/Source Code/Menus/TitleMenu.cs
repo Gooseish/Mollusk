@@ -20,6 +20,7 @@ public class TitleMenu : Menu
             new TitleMenuNode(new Vector2(100, 300), "Settings", OpenSettingsMenu),
             new TitleMenuNode(new Vector2(100, 400), "Quit", QuitGame),
         };
+        CurrentNodeIndex = 0;
     }
     public CommandResult OpenNewGameMenu()
     {
@@ -45,10 +46,13 @@ public class TitleMenu : Menu
     {
         foreach(Node node in Nodes)
         {
+            Color drawColor = Color.White;
+            if (node == CurrentNode)
+                drawColor = Color.Gray;
             TitleMenuNode nodeCast = (TitleMenuNode)node;
             spriteBatch.Draw(GraphicalContent.MenuTextures["WhiteSquare"], 
                 new Rectangle((int)nodeCast.Position.X, (int)nodeCast.Position.Y, nodeCast.Width, nodeCast.Height), 
-                Color.White);
+                drawColor);
         }
     }
 }
