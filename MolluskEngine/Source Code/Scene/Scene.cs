@@ -7,5 +7,5 @@ namespace MolluskEngine.Scene;
 public abstract class _Scene
 {
     public abstract void Update(GameTime gameTime);
-    public abstract void Draw(GraphicsDevice graphicsDevice);
+    public abstract void Draw(SpriteBatch spriteBatch);
 }

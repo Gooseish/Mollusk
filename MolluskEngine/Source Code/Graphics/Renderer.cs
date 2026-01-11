@@ -7,6 +7,7 @@ namespace MolluskEngine.Graphics;
 public static class Renderer
 {
     private static GraphicsDevice graphicsDevice;
+    private static Letterbox letterbox;
     #region Render Targeting
     /// <summary>
     /// Stable render targets are used to store the cumulative image built
@@ -43,7 +44,7 @@ public static class Renderer
         graphicsDevice.SetRenderTarget(currentStable);
         graphicsDevice.Clear(Color.Transparent);
     }
-    public static void InitializeRenderTargets()
+    private static void InitializeRenderTargets()
     {
         for (int n = 0; n < stableRenderTargets.Length; n++)
             stableRenderTargets[n] = new RenderTarget2D(
@@ -56,11 +57,30 @@ public static class Renderer
     #endregion
     public static void Draw()
     {
-       Global.Draw(graphicsDevice); 
+        SpriteBatch spriteBatch = new SpriteBatch(graphicsDevice);
+        Global.Draw(spriteBatch); 
+        DrawToTargetResolution(spriteBatch, currentStable);
+    }
+    private static void DrawToTargetResolution(SpriteBatch spriteBatch, RenderTarget2D renderTarget)
+    {
+        graphicsDevice.SetRenderTarget(null);
+        spriteBatch.Begin();
+        spriteBatch.Draw(renderTarget, letterbox.LetterboxPicture, Color.White);
+        spriteBatch.End();
     }
     public static void Initialize(GraphicsDevice _graphicsDevice)
     {
         graphicsDevice = _graphicsDevice;
-        InitializeRenderTargets(); 
+        letterbox = new Letterbox();
+        InitializeRenderTargets();
     }
+    public static void ResizeGameWindow(int width, int height)
+    {
+        Core.Graphics.PreferredBackBufferHeight = width;
+        Core.Graphics.PreferredBackBufferWidth = height;
+        Core.Graphics.ApplyChanges();
+
+        // Black bar positions for letterboxing
+        letterbox.RecalculateLetterbox();
+    }    
 }

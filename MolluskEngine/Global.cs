@@ -28,8 +28,8 @@ public static class Global
     {
         
     }
-    public static void Draw(GraphicsDevice graphicsDevice)
+    public static void Draw(SpriteBatch spriteBatch)
     {
-        Scene.Draw(graphicsDevice);
+        Scene.Draw(spriteBatch);
     }
 }

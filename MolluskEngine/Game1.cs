@@ -43,7 +43,6 @@ public class Game1
     protected override void Draw(GameTime gameTime)
     {
         GraphicsDevice.Clear(Color.CornflowerBlue);
-
         Renderer.Draw();
         base.Draw(gameTime);
     }

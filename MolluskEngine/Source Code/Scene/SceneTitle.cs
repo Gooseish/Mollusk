@@ -30,10 +30,8 @@ public class SceneTitle : _Scene
         InputHandler = new SceneTitleInputHandler(this);
     }
 
-    public override void Draw(GraphicsDevice graphicsDevice)
+    public override void Draw(SpriteBatch spriteBatch)
     {
-        SpriteBatch spriteBatch = new SpriteBatch(graphicsDevice);
-
         if (!menu.MenuActive)
         {
             spriteBatch.Begin();
