@@ -15,8 +15,3 @@ public abstract class SceneInputHandler
         }
     }
 }
-
-public enum CommandResult
-{
-    Null, Accepted, Rejected
-}

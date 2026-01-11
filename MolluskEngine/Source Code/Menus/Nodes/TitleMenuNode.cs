@@ -1,6 +1,6 @@
 using System;
 using Microsoft.Xna.Framework;
-using MolluskEngine.Scene;
+using MolluskEngine.Input;
 using MolluskEngine.UI;
 
 namespace MolluskEngine.Menus;

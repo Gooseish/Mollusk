@@ -1,5 +1,5 @@
 using System;
-using MolluskEngine.Scene;
+using MolluskEngine.Input;
 
 namespace MolluskEngine.Menus;
 
