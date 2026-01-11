@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MolluskEngine.Graphics;
-using MolluskEngine.Source_Code.Graphics;
 
 namespace MolluskEngine;
 
@@ -17,6 +16,7 @@ public class Game1
     {
         base.Initialize();
 
+        Renderer.Initialize(GraphicsDevice);
         Global.Initialize();
         GraphicalContent.Initialize();
     }
@@ -44,7 +44,7 @@ public class Game1
     {
         GraphicsDevice.Clear(Color.CornflowerBlue);
 
-        Global.Draw(GraphicsDevice);
+        Renderer.Draw();
         base.Draw(gameTime);
     }
 }
