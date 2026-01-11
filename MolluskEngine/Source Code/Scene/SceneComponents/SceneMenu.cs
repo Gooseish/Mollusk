@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using MolluskEngine.Input;
 using MolluskEngine.Menus;
 
@@ -88,33 +87,11 @@ public class SceneMenu : ISceneComponent
                 IncrementActiveNodeIndex();
             return CommandResult.Accepted;
         }
-          
-        /*
-        if (State.activeMenu is IMenuNodeMap activeMenu)
-            switch (activeMenu.nodeMapType)
-            {
-                case NodeMapType.Linear:
-                    switch (command)
-                    {
-                        case CommandName.Up:
-                        case CommandName.Left:
-                            DecrementActiveNodeIndex(activeMenu);
-                            return CommandResult.Accepted;
-                        case CommandName.Down:
-                        case CommandName.Right:
-                            IncrementActiveNodeIndex(activeMenu);
-                            return CommandResult.Accepted;
-                    }
-                    break;
-                default:
-                    break;
-            }
-        */
+      
         return CommandResult.Null;
     }
     private void IncrementActiveNodeIndex()
     {
-        // CurrentMenu.activeNodeIndex = (activeMenu.activeNodeIndex + 1) % activeMenu.nodes.Count;
         CurrentMenu.CurrentNodeIndex = (CurrentMenu.CurrentNodeIndex + 1) % CurrentMenu.NodeCount;
     }
     private void DecrementActiveNodeIndex()
