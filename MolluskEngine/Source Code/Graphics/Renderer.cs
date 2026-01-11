@@ -57,6 +57,9 @@ public static class Renderer
     #endregion
     public static void Draw()
     {
+        graphicsDevice.SetRenderTarget(currentStable);
+        graphicsDevice.Clear(Color.CornflowerBlue);
+
         SpriteBatch spriteBatch = new SpriteBatch(graphicsDevice);
         Global.Draw(spriteBatch); 
         DrawToTargetResolution(spriteBatch, currentStable);

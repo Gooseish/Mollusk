@@ -23,7 +23,6 @@ public class Game1
 
     protected override void LoadContent()
     {
-        // TODO: use this.Content to load your game content here
         Global.LoadContent();
         GraphicalContent.LoadContent(Content);
 
@@ -42,7 +41,6 @@ public class Game1
 
     protected override void Draw(GameTime gameTime)
     {
-        GraphicsDevice.Clear(Color.CornflowerBlue);
         Renderer.Draw();
         base.Draw(gameTime);
     }
