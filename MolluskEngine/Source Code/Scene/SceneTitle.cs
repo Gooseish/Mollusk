@@ -30,20 +30,19 @@ public class SceneTitle : _Scene
         InputHandler = new SceneTitleInputHandler(this);
     }
 
-    public override void Draw(GraphicsDevice graphicsDevice)
+    public override void Draw(SpriteBatch spriteBatch)
     {
-        SpriteBatch spriteBatch = new SpriteBatch(graphicsDevice);
-
-        if (menu.MenuActive)
+        if (!menu.MenuActive)
         {
             spriteBatch.Begin();
-            menu.Draw(spriteBatch);
+            titleScreenText.Draw(spriteBatch);
             spriteBatch.End();
             return;
         }
 
         spriteBatch.Begin();
-        titleScreenText.Draw(spriteBatch);
+        // Draw Menu
+        menu.CurrentMenu.Draw(spriteBatch);
         spriteBatch.End();
     }
 
@@ -55,15 +54,15 @@ public class SceneTitle : _Scene
     {
         if (!menu.MenuActive)
         {
-            InputHandler.Update();
+            InputHandler.HandleInput();
             return;
         }
-        menu.InputHandler.Update();
+        menu.InputHandler.HandleInput();
     }
 
     public CommandResult OpenMenu()
     {
-        menu.OpenMenu<TitleMenu>();
+        menu.AddMenu<TitleMenu>(menu);
         return CommandResult.Accepted;
     }
 }
