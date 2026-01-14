@@ -1,3 +1,7 @@
 MolluskEngine/Content/obj/*
 MolluskEngine/bin/*
 MolluskEngine/obj/*
+JsonPipeline/bin/*
+JsonPipeline/obj/*
+JsonPipelineExtension/bin/*
+JsonPipelineExtension/obj/*
