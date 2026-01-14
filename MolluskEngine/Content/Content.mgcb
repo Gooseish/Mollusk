@@ -10,6 +10,7 @@
 
 #-------------------------------- References --------------------------------#
 
+/reference:..\..\JsonPipelineExtension\bin\Debug\net8.0\JsonPipelineExtension.dll
 
 #---------------------------------- Content ---------------------------------#
 
