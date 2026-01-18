@@ -14,7 +14,11 @@ public static class SaveLoadService
         if (ContentRoot == null)
             return; // Prompt to pick new folder here
     
-        string jsonString = JsonSerializer.Serialize(TerrainDataModel.TerrainData);
+        var options = new JsonSerializerOptions
+        {
+            WriteIndented = true
+        };
+        string jsonString = JsonSerializer.Serialize(TerrainDataModel.TerrainData, options);
         File.WriteAllText(ContentRoot + TerrainPath + "TerrainData.json", jsonString);
     }
     public static void Open()
