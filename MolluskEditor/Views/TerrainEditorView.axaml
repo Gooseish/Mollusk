@@ -1,0 +1,29 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             xmlns:vm="clr-namespace:MolluskEditor.ViewModels"
+             x:DataType="vm:MolluskEditorViewModel"
+             x:Class="MolluskEditor.Views.TerrainEditorView">
+  <StackPanel Orientation="Horizontal">
+    <!-- Select terrain from dictionary -->
+      <StackPanel>
+        <TextBlock Text="All Terrain"/>
+        <ScrollViewer Width="120" Height="300">
+          <ItemsControl ItemsSource="{Binding TerrainData}">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate DataType="vm:TerrainDataViewModel">
+                <StackPanel Orientation="Horizontal">
+                  <TextBlock Text="{Binding Id}" />
+                  <TextBlock Text=": " />
+                  <TextBlock Text="{Binding Name}" />
+                </StackPanel>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </ScrollViewer>
+        <Button Command="{Binding AddTerrainDataCommand}">New Terrain</Button>
+      </StackPanel>
+  </StackPanel>
+</UserControl>

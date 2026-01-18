@@ -7,7 +7,7 @@ namespace MolluskEditor.Services;
 
 public static class SaveLoadService
 {
-    public static string? ContentRoot = @"../../Tecstile/Content/Assets/"; // Shouldn't be hardcoded
+    public static string? ContentRoot = @"../../MolluskEngine/Content/Assets/"; // Shouldn't be hardcoded
     public static string TerrainPath = "Data/Terrain/";
     public static void Save()
     {
