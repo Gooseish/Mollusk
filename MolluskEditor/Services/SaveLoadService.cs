@@ -7,15 +7,15 @@ namespace MolluskEditor.Services;
 
 public static class SaveLoadService
 {
-    public static string? ContentRoot = @"../../MolluskEngine/Content/Assets/"; // Shouldn't be hardcoded
-    public static string TerrainPath = "Data/Terrain/";
+    public static string? ContentRoot = @"C:/Users/Home/Documents/Monogame Projects/Mollusk/MolluskEngine/Content/"; // Shouldn't be hardcoded
+    public static string TerrainPath = @"Data/";
     public static void Save()
     {
         if (ContentRoot == null)
             return; // Prompt to pick new folder here
     
         string jsonString = JsonSerializer.Serialize(TerrainDataModel.TerrainData);
-        File.WriteAllText(ContentRoot + TerrainPath + "terrainData.json", jsonString);
+        File.WriteAllText(ContentRoot + TerrainPath + "TerrainData.json", jsonString);
     }
     public static void Open()
     {
