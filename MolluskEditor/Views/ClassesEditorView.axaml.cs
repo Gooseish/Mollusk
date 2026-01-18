@@ -4,9 +4,9 @@ using Avalonia.Markup.Xaml;
 
 namespace MolluskEditor.Views;
 
-public partial class ClassesWindowView : Window
+public partial class ClassesEditorView : UserControl
 {
-    public ClassesWindowView()
+    public ClassesEditorView()
     {
         InitializeComponent();
     }

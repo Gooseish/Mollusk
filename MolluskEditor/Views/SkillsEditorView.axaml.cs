@@ -4,7 +4,7 @@ using Avalonia.Markup.Xaml;
 
 namespace MolluskEditor.Views;
 
-public partial class SkillsEditorView : Window
+public partial class SkillsEditorView : UserControl
 {
     public SkillsEditorView()
     {
