@@ -1,0 +1,12 @@
+{
+  "0": {
+    "Id": 0,
+    "Name": "New Terrain",
+    "Avoid": 0,
+    "Def": 0,
+    "Res": 0,
+    "Heals": false,
+    "HealPercent": 0,
+    "MovementCost": {}
+  }
+}
