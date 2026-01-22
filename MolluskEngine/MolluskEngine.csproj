@@ -36,4 +36,7 @@
     <Folder Include="Source Code\Menus\Nodes\NodeComponents\" />
     <Folder Include="Source Code\Settings\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\JsonPipeline\JsonPipeline.csproj" />
+  </ItemGroup>
 </Project>

@@ -18,7 +18,7 @@
 /importer:JsonContentImporter
 /processor:JsonContentProcessor
 /processorParam:Minify=True
-/processorParam:RuntimeIdentifier=placeholder
+/processorParam:RuntimeIdentifier=MolluskEngine.Data.TerrainDataReader, MolluskEngine
 /build:Data/TerrainData.json
 
 #begin Fonts/Arial.spritefont
