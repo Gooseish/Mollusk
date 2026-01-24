@@ -34,6 +34,8 @@ public static class SaveLoadService
     }
     private static void OnProjectLoaded()
     {
+        if (ProjectLoaded == null)
+            return;
         ProjectLoaded.Invoke(null, EventArgs.Empty);
     }
     public static event EventHandler ProjectLoaded;

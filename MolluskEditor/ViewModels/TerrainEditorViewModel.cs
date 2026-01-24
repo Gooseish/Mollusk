@@ -14,13 +14,11 @@ public partial class TerrainEditorViewModel : EditorViewModel
     private int? _selectedTerrain;
     partial void OnSelectedTerrainChanged(int? oldValue, int? newValue)
     {
-        RefreshFields((int)newValue);
+        RefreshFields(newValue);
     }
     private void RefreshFields(int? index)
     {
-        if (index == null
-                || index < 0
-                || index >= TerrainData.Count)
+        if (!ValidTerrainIndex(index))
             return;
         Id = TerrainData[(int)index].Id;
         Name = TerrainData[(int)index].Name;
@@ -29,6 +27,17 @@ public partial class TerrainEditorViewModel : EditorViewModel
         Res = TerrainData[(int)index].Res;
         HealPercent = TerrainData[(int)index].HealPercent;
     }
+    private bool ValidTerrainIndex(int? index)
+    {
+        // Maybe should use a try except block here instead
+        if (index == null)
+            return false;
+        if (index < 0)
+            return false;
+        if (index >= TerrainData.Count)
+            return false;
+        return true;
+    }
     
     [ObservableProperty]
     private ObservableCollection<TerrainDataViewModel> _terrainData;
@@ -36,7 +45,7 @@ public partial class TerrainEditorViewModel : EditorViewModel
     public TerrainEditorViewModel()
     {
         Initialize();
-        SaveLoadService.ProjectLoaded += OnProjectLoaded;
+        Subscribe();
     }
     private void Initialize()
     {
@@ -53,18 +62,9 @@ public partial class TerrainEditorViewModel : EditorViewModel
         if (TerrainData.Count > 0)
         {
             SelectedTerrain = 0;
-            RefreshFields(SelectedTerrain);
+            //RefreshFields(SelectedTerrain);
         }
     }
-    private void OnProjectLoaded(object? sender, EventArgs args)
-    {
-        Initialize();
-    }
-    public void Unsubscribe()
-    {
-        SaveLoadService.ProjectLoaded -= OnProjectLoaded;
-    }
-
     [RelayCommand]
     private void AddTerrainData()
     {
@@ -80,7 +80,7 @@ public partial class TerrainEditorViewModel : EditorViewModel
     private string? _name;
     partial void OnNameChanged(string? oldValue, string? newValue)
     {
-        if (newValue == null)
+        if (newValue == null || !ValidTerrainIndex(SelectedTerrain))
             return;
         TerrainData[(int)SelectedTerrain].Name = (string)newValue;
     }
@@ -88,7 +88,7 @@ public partial class TerrainEditorViewModel : EditorViewModel
     private int? _avoid;
     partial void OnAvoidChanged(int? oldValue, int? newValue)
     {
-        if (newValue == null)
+        if (newValue == null || !ValidTerrainIndex(SelectedTerrain))
             return;
         TerrainData[(int)SelectedTerrain].Avoid = (int)newValue;
     }
@@ -97,7 +97,7 @@ public partial class TerrainEditorViewModel : EditorViewModel
     private int? _def;
     partial void OnDefChanged(int? oldValue, int? newValue)
     {
-        if (newValue == null)
+        if (newValue == null || !ValidTerrainIndex(SelectedTerrain))
             return;
         TerrainData[(int)SelectedTerrain].Def = (int)newValue;
     }
@@ -105,7 +105,7 @@ public partial class TerrainEditorViewModel : EditorViewModel
     private int? _res;
     partial void OnResChanged(int? oldValue, int? newValue)
     {
-        if (newValue == null)
+        if (newValue == null || !ValidTerrainIndex(SelectedTerrain))
             return;
         TerrainData[(int)SelectedTerrain].Res = (int)newValue;
     }
@@ -114,9 +114,27 @@ public partial class TerrainEditorViewModel : EditorViewModel
     private int? _healPercent;
     partial void OnHealPercentChanged(int? oldValue, int? newValue)
     {
-        if (newValue == null)
+        if (newValue == null || !ValidTerrainIndex(SelectedTerrain))
             return;
         TerrainData[(int)SelectedTerrain].HealPercent = (int)newValue;
+    }
+    #endregion
+    #region Event Handling
+    private void OnProjectLoaded(object? sender, EventArgs args)
+    {
+        Initialize();
+    }
+    private void Subscribe()
+    {
+        SaveLoadService.ProjectLoaded += OnProjectLoaded;
+    }
+    private void Unsubscribe()
+    {
+        SaveLoadService.ProjectLoaded -= OnProjectLoaded;
+    }
+    public override void Dispose()
+    {
+        Unsubscribe();
     }
     #endregion
 }

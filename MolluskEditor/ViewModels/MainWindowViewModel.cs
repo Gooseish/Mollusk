@@ -34,16 +34,21 @@ public partial class MainWindowViewModel : ViewModelBase
     [RelayCommand]
     private void EjectEditor()
     {
+        //CurrentEditor.Dispose();
         _windowFactory.LaunchNewChildWindow(_currentEditor.EditorName);
     }
     [RelayCommand]
     private void GoToUnits()
     {
+        try {CurrentEditor.Dispose();}
+        catch {}
         CurrentEditor = _editorFactory.GetEditorViewModel(Data.EditorName.Units);
     }
     [RelayCommand]
     private void GoToTerrain()
     {
+        try {CurrentEditor.Dispose();}
+        catch {}
         CurrentEditor = _editorFactory.GetEditorViewModel(Data.EditorName.Terrain);
     }
 }

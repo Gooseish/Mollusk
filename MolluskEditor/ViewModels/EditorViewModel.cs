@@ -8,4 +8,5 @@ public partial class EditorViewModel : ViewModelBase
 {
     [ObservableProperty]
     private EditorName _editorName;
+    public virtual void Dispose(){}
 }
