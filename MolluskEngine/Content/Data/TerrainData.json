@@ -1,22 +1,66 @@
 {
   "0": {
     "Id": 0,
-    "Name": "Plains",
+    "Name": "New Terrain",
     "Avoid": 0,
     "Def": 0,
     "Res": 0,
     "Heals": false,
     "HealPercent": 0,
-    "MovementCost": {}
+    "MovementCost": [
+      [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      [
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    ]
   },
   "1": {
     "Id": 1,
-    "Name": "Forest",
-    "Avoid": 20,
-    "Def": 1,
-    "Res": 1,
+    "Name": "New Terrain",
+    "Avoid": 0,
+    "Def": 0,
+    "Res": 0,
     "Heals": false,
     "HealPercent": 0,
-    "MovementCost": {}
+    "MovementCost": [
+      [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      [
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    ]
   }
 }

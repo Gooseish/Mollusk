@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 using MolluskEditor.Models;
+using MolluskEngine.Data;
 using MolluskEngine.GameBoard;
 
 namespace MolluskEditor.Services;
@@ -18,7 +19,8 @@ public static class SaveLoadService
     
         var options = new JsonSerializerOptions
         {
-            WriteIndented = true
+            WriteIndented = true,
+            Converters = {new Array2DConverter()},
         };
         string jsonString = JsonSerializer.Serialize(TerrainDataModel.TerrainData, options);
         File.WriteAllText(ContentRoot + TerrainPath + "TerrainData.json", jsonString);
