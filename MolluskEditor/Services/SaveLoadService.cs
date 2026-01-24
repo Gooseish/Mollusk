@@ -29,5 +29,12 @@ public static class SaveLoadService
         Dictionary<int, Terrain>? TerrainData = JsonSerializer.Deserialize<Dictionary<int, Terrain>>(jsonString);
         if (TerrainData != null)
             TerrainDataModel.TerrainData = TerrainData;
+
+        OnProjectLoaded();
     }
+    private static void OnProjectLoaded()
+    {
+        ProjectLoaded.Invoke(null, EventArgs.Empty);
+    }
+    public static event EventHandler ProjectLoaded;
 }

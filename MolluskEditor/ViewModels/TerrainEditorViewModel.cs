@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MolluskEditor.Models;
+using MolluskEditor.Services;
 using MolluskEngine.GameBoard;
 
 namespace MolluskEditor.ViewModels;
@@ -10,19 +11,23 @@ namespace MolluskEditor.ViewModels;
 public partial class TerrainEditorViewModel : EditorViewModel
 {
     [ObservableProperty]
-    private int _selectedTerrain;
-    partial void OnSelectedTerrainChanged(int oldValue, int newValue)
+    private int? _selectedTerrain;
+    partial void OnSelectedTerrainChanged(int? oldValue, int? newValue)
     {
-        RefreshFields(newValue);
+        RefreshFields((int)newValue);
     }
-    private void RefreshFields(int index)
+    private void RefreshFields(int? index)
     {
-        Id = TerrainData[index].Id;
-        Name = TerrainData[index].Name;
-        Avoid = TerrainData[index].Avoid;
-        Def = TerrainData[index].Def;
-        Res = TerrainData[index].Res;
-        HealPercent = TerrainData[index].HealPercent;
+        if (index == null
+                || index < 0
+                || index >= TerrainData.Count)
+            return;
+        Id = TerrainData[(int)index].Id;
+        Name = TerrainData[(int)index].Name;
+        Avoid = TerrainData[(int)index].Avoid;
+        Def = TerrainData[(int)index].Def;
+        Res = TerrainData[(int)index].Res;
+        HealPercent = TerrainData[(int)index].HealPercent;
     }
     
     [ObservableProperty]
@@ -30,19 +35,34 @@ public partial class TerrainEditorViewModel : EditorViewModel
 
     public TerrainEditorViewModel()
     {
+        Initialize();
+        SaveLoadService.ProjectLoaded += OnProjectLoaded;
+    }
+    private void Initialize()
+    {
         EditorName = Data.EditorName.Terrain; // Unnecessary?
-        TerrainData = [];
 
+        ObservableCollection<TerrainDataViewModel> terrainData = [];
         getTerrainData();
         void getTerrainData()
         {
             foreach (Terrain terrain in TerrainDataModel.TerrainData.Values)
-                TerrainData.Add(new TerrainDataViewModel(terrain));
+                terrainData.Add(new TerrainDataViewModel(terrain));
         }
-        if (TerrainData.Count == 0)
-            AddTerrainData();
-        SelectedTerrain = 0;
-        RefreshFields(SelectedTerrain);
+        TerrainData = terrainData;
+        if (TerrainData.Count > 0)
+        {
+            SelectedTerrain = 0;
+            RefreshFields(SelectedTerrain);
+        }
+    }
+    private void OnProjectLoaded(object? sender, EventArgs args)
+    {
+        Initialize();
+    }
+    public void Unsubscribe()
+    {
+        SaveLoadService.ProjectLoaded -= OnProjectLoaded;
     }
 
     [RelayCommand]
@@ -50,6 +70,7 @@ public partial class TerrainEditorViewModel : EditorViewModel
     {
         TerrainData.Add(new TerrainDataViewModel());
         SelectedTerrain = TerrainData.Count - 1;
+        //RefreshFields(SelectedTerrain);
     }
     #region Terrain Data Properties
     [ObservableProperty]
@@ -61,7 +82,7 @@ public partial class TerrainEditorViewModel : EditorViewModel
     {
         if (newValue == null)
             return;
-        TerrainData[SelectedTerrain].Name = (string)newValue;
+        TerrainData[(int)SelectedTerrain].Name = (string)newValue;
     }
     [ObservableProperty]
     private int? _avoid;
@@ -69,7 +90,7 @@ public partial class TerrainEditorViewModel : EditorViewModel
     {
         if (newValue == null)
             return;
-        TerrainData[SelectedTerrain].Avoid = (int)newValue;
+        TerrainData[(int)SelectedTerrain].Avoid = (int)newValue;
     }
 
     [ObservableProperty]
@@ -78,7 +99,7 @@ public partial class TerrainEditorViewModel : EditorViewModel
     {
         if (newValue == null)
             return;
-        TerrainData[SelectedTerrain].Def = (int)newValue;
+        TerrainData[(int)SelectedTerrain].Def = (int)newValue;
     }
     [ObservableProperty]
     private int? _res;
@@ -86,7 +107,7 @@ public partial class TerrainEditorViewModel : EditorViewModel
     {
         if (newValue == null)
             return;
-        TerrainData[SelectedTerrain].Res = (int)newValue;
+        TerrainData[(int)SelectedTerrain].Res = (int)newValue;
     }
 
     [ObservableProperty]
@@ -95,7 +116,7 @@ public partial class TerrainEditorViewModel : EditorViewModel
     {
         if (newValue == null)
             return;
-        TerrainData[SelectedTerrain].HealPercent = (int)newValue;
+        TerrainData[(int)SelectedTerrain].HealPercent = (int)newValue;
     }
     #endregion
 }
