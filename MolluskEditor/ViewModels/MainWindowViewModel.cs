@@ -23,6 +23,11 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         SaveLoadService.Save();
     }
+    [RelayCommand]
+    private void LoadProject()
+    {
+        SaveLoadService.Open();
+    }
     /// <summary>
     /// Pops out the current editor as a new window
     /// </summary>

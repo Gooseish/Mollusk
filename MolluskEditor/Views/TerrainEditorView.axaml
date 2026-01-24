@@ -26,9 +26,6 @@
     <!-- Edit the fields of the terrain -->
       <Grid ColumnDefinitions="*, *" RowDefinitions="*, *">
         <StackPanel Grid.Row="0" Grid.Column="0">
-          <Label HorizontalAlignment="Center">Dummy</Label>
-        </StackPanel>
-        <StackPanel Grid.Row="0" Grid.Column="1">
           <Label>Name</Label>
           <TextBox Text="{Binding Name}"></TextBox>
           <Label>Avoid</Label>
@@ -39,6 +36,9 @@
           <TextBox Text="{Binding Res}"></TextBox>
           <Label>HealPercent</Label>
           <TextBox Text="{Binding HealPercent}"></TextBox>
+        </StackPanel>
+        <StackPanel Grid.Row="0" Grid.Column="1">
+          <Label HorizontalAlignment="Center">Dummy</Label>
         </StackPanel>
         <StackPanel Grid.Row="1" Grid.Column="0">
           <Label>Dummy</Label>

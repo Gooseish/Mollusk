@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 using MolluskEditor.Models;
+using MolluskEngine.GameBoard;
 
 namespace MolluskEditor.Services;
 
@@ -23,6 +25,9 @@ public static class SaveLoadService
     }
     public static void Open()
     {
-        
+        string jsonString = File.ReadAllText(ContentRoot + TerrainPath + "TerrainData.json");
+        Dictionary<int, Terrain>? TerrainData = JsonSerializer.Deserialize<Dictionary<int, Terrain>>(jsonString);
+        if (TerrainData != null)
+            TerrainDataModel.TerrainData = TerrainData;
     }
 }

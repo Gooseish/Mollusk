@@ -13,12 +13,16 @@ public partial class TerrainEditorViewModel : EditorViewModel
     private int _selectedTerrain;
     partial void OnSelectedTerrainChanged(int oldValue, int newValue)
     {
-        Id = TerrainData[newValue].Id;
-        Name = TerrainData[newValue].Name;
-        Avoid = TerrainData[newValue].Avoid;
-        Def = TerrainData[newValue].Def;
-        Res = TerrainData[newValue].Res;
-        HealPercent = TerrainData[newValue].HealPercent;
+        RefreshFields(newValue);
+    }
+    private void RefreshFields(int index)
+    {
+        Id = TerrainData[index].Id;
+        Name = TerrainData[index].Name;
+        Avoid = TerrainData[index].Avoid;
+        Def = TerrainData[index].Def;
+        Res = TerrainData[index].Res;
+        HealPercent = TerrainData[index].HealPercent;
     }
     
     [ObservableProperty]
@@ -35,6 +39,10 @@ public partial class TerrainEditorViewModel : EditorViewModel
             foreach (Terrain terrain in TerrainDataModel.TerrainData.Values)
                 TerrainData.Add(new TerrainDataViewModel(terrain));
         }
+        if (TerrainData.Count == 0)
+            AddTerrainData();
+        SelectedTerrain = 0;
+        RefreshFields(SelectedTerrain);
     }
 
     [RelayCommand]
