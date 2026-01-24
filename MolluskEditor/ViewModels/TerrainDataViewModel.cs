@@ -101,4 +101,8 @@ public partial class TerrainDataViewModel : ObservableObject
             MovementCost = MovementCost,
         };
     }
+    public void Dispose()
+    {
+        TerrainDataModel.TerrainData.Remove(Id);
+    }
 }

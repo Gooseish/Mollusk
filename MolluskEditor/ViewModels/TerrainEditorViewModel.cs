@@ -1,5 +1,6 @@
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MolluskEditor.Models;
@@ -38,12 +39,46 @@ public partial class TerrainEditorViewModel : EditorViewModel
             SelectedTerrainIndex = 0;
         }
     }
+    #region Relay Commands
     [RelayCommand]
     private void AddTerrainData()
     {
         TerrainData.Add(new TerrainDataViewModel());
         SelectedTerrainIndex = TerrainData.Count - 1;
+        SortTerrain();
     }
+    [RelayCommand]
+    private void RemoveTerrainData()
+    {
+        if (SelectedTerrain == null)
+            return;
+        int? lastIndex = SelectedTerrainIndex;
+        SelectedTerrain.Dispose();
+        TerrainData.Remove(SelectedTerrain);
+        FixIndex(lastIndex);
+    }
+    #endregion
+
+    #region Private Utilities
+    private void FixIndex(int? lastIndex)
+    {
+        try
+        {
+            _ = TerrainData[(int)lastIndex - 1];
+            SelectedTerrainIndex = lastIndex - 1;
+            return;
+        }
+        catch
+        {
+            if (TerrainData.Count > 0)
+                SelectedTerrainIndex = 0;
+        }
+    }
+    private void SortTerrain()
+    {
+        TerrainData = new ObservableCollection<TerrainDataViewModel>(TerrainData.OrderBy(i => i.Id));
+    }
+    #endregion
     #region Event Handling
     private void OnProjectLoaded(object? sender, EventArgs args)
     {

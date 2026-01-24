@@ -25,6 +25,7 @@
           </ListBox.ItemTemplate>
         </ListBox>
         <Button Command="{Binding AddTerrainDataCommand}">New Terrain</Button>
+        <Button Command="{Binding RemoveTerrainDataCommand}">Delete Terrain</Button>
       </StackPanel>
     <!-- Edit the fields of the terrain -->
       <Grid ColumnDefinitions="*, *" RowDefinitions="*, *">
