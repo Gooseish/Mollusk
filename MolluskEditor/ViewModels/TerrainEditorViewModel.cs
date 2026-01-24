@@ -12,11 +12,13 @@ public partial class TerrainEditorViewModel : EditorViewModel
     [ObservableProperty]
     private int _selectedTerrain;
     
-    public ObservableCollection<TerrainDataViewModel> TerrainData {get;} = new();
+    [ObservableProperty]
+    private ObservableCollection<TerrainDataViewModel> _terrainData;
 
     public TerrainEditorViewModel()
     {
         EditorName = Data.EditorName.Terrain;
+        TerrainData = [];
 
         getTerrainData();
         void getTerrainData()
