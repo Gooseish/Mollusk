@@ -1,7 +1,7 @@
 {
   "0": {
     "Id": 0,
-    "Name": "New Terrain",
+    "Name": "Fields",
     "Avoid": 0,
     "Def": 0,
     "Res": 0,
@@ -33,10 +33,10 @@
   },
   "1": {
     "Id": 1,
-    "Name": "New Terrain",
-    "Avoid": 0,
-    "Def": 0,
-    "Res": 0,
+    "Name": "Forest",
+    "Avoid": 20,
+    "Def": 1,
+    "Res": 1,
     "Heals": false,
     "HealPercent": 0,
     "MovementCost": [

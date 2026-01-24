@@ -28,8 +28,12 @@ public static class SaveLoadService
     }
     public static void Open()
     {
+        var options = new JsonSerializerOptions
+        {
+            Converters = {new Array2DConverter()},
+        };
         string jsonString = File.ReadAllText(ContentRoot + DATAPATH + TERRAINPATH);
-        Dictionary<int, Terrain>? TerrainData = JsonSerializer.Deserialize<Dictionary<int, Terrain>>(jsonString);
+        Dictionary<int, Terrain>? TerrainData = JsonSerializer.Deserialize<Dictionary<int, Terrain>>(jsonString, options);
         if (TerrainData != null)
             TerrainDataModel.TerrainData = TerrainData;
 
