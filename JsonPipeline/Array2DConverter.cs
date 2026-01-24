@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace MolluskEngine.Data;
+namespace JsonContentPipeline;
 
 // Taken from https://stackoverflow.com/questions/66280645/how-can-i-serialize-a-double-2d-array-to-json-using-system-text-json
 public class Array2DConverter : JsonConverterFactory
