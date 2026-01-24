@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using MolluskEngine.GameBoard;
 
 namespace MolluskEditor.Models;
@@ -30,11 +31,13 @@ public static class TerrainDataModel
             n++;
         return n;
     }
-    private static Dictionary<MovementType, int> DefaultMoveCost()
+    private static int[,] DefaultMoveCost()
     {
-        Dictionary<MovementType, int> result = new();
-        foreach(MovementType movementType in Enum.GetValues(typeof(MovementType)))
-            result[movementType] = 1;
+        int[,] result = new int[Enum.GetNames(typeof(WeatherType)).Count(),
+                                Enum.GetNames(typeof(MovementType)).Count()];
+        foreach(WeatherType weatherType in Enum.GetValues(typeof(WeatherType)))
+            foreach(MovementType movementType in Enum.GetValues(typeof(MovementType)))
+                result[(int)weatherType, (int)movementType] = 1;
         return result;
     }
 }

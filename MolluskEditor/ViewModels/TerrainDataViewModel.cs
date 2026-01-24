@@ -81,8 +81,8 @@ public partial class TerrainDataViewModel : ObservableObject
         TerrainDataModel.TerrainData[Id].HealPercent = newValue;
     }
     [ObservableProperty]
-    private Dictionary<MovementType, int> _movementCost;
-    partial void OnMovementCostChanged(Dictionary<MovementType, int>? oldValue, Dictionary<MovementType, int> newValue)
+    private int[,] _movementCost;
+    partial void OnMovementCostChanged(int[,]? oldValue, int[,] newValue)
     {
         TerrainDataModel.TerrainData[Id].MovementCost = newValue;
     }
