@@ -10,7 +10,10 @@
     <!-- Select terrain from dictionary -->
       <StackPanel>
         <TextBlock Text="All Terrain"/>
-        <ListBox Width="120" Height="300" ItemsSource="{Binding TerrainData}" SelectedIndex = "{Binding SelectedTerrain}">
+        <ListBox Width="120" Height="300"
+            ItemsSource="{Binding TerrainData}" 
+            SelectedIndex = "{Binding SelectedTerrain}"
+            SelectedItem = "{Binding SelectedTerrainViewModel}">
           <ListBox.ItemTemplate>
             <DataTemplate DataType="vm:TerrainDataViewModel">
               <StackPanel Orientation="Horizontal">
@@ -27,15 +30,15 @@
       <Grid ColumnDefinitions="*, *" RowDefinitions="*, *">
         <StackPanel Grid.Row="0" Grid.Column="0">
           <Label>Name</Label>
-          <TextBox Text="{Binding Name}"></TextBox>
+          <TextBox Text="{Binding SelectedTerrainViewModel.Name}"></TextBox>
           <Label>Avoid</Label>
-          <TextBox Text="{Binding Avoid}"></TextBox>
+          <TextBox Text="{Binding SelectedTerrainViewModel.Avoid}"></TextBox>
           <Label>Def</Label>
-          <TextBox Text="{Binding Def}"></TextBox>
+          <TextBox Text="{Binding SelectedTerrainViewModel.Def}"></TextBox>
           <Label>Res</Label>
-          <TextBox Text="{Binding Res}"></TextBox>
+          <TextBox Text="{Binding SelectedTerrainViewModel.Res}"></TextBox>
           <Label>HealPercent</Label>
-          <TextBox Text="{Binding HealPercent}"></TextBox>
+          <TextBox Text="{Binding SelectedTerrainViewModel.HealPercent}"></TextBox>
         </StackPanel>
         <StackPanel Grid.Row="0" Grid.Column="1">
           <Label HorizontalAlignment="Center">Dummy</Label>
