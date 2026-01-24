@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using JsonContentPipeline;
+using JsonPipeline;
 using MolluskEngine.GameBoard;
 
 namespace MolluskEngine.Data;
