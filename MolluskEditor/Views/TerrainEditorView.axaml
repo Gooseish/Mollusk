@@ -10,32 +10,34 @@
     <!-- Select terrain from dictionary -->
       <StackPanel>
         <TextBlock Text="All Terrain"/>
-        <ListBox Width="120" Height="300" ItemsSource="{Binding TerrainData}">
-            <ListBox.ItemTemplate>
-              <DataTemplate DataType="vm:TerrainDataViewModel">
-                <StackPanel Orientation="Horizontal">
-                  <TextBlock Text="{Binding Id}" />
-                  <TextBlock Text=": " />
-                  <TextBlock Text="{Binding Name}" />
-                </StackPanel>
-              </DataTemplate>
-            </ListBox.ItemTemplate>
+        <ListBox Width="120" Height="300" ItemsSource="{Binding TerrainData}" SelectedIndex = "{Binding SelectedTerrain}">
+          <ListBox.ItemTemplate>
+            <DataTemplate DataType="vm:TerrainDataViewModel">
+              <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding Id}" />
+                <TextBlock Text=": " />
+                <TextBlock Text="{Binding Name}" />
+              </StackPanel>
+            </DataTemplate>
+          </ListBox.ItemTemplate>
         </ListBox>
         <Button Command="{Binding AddTerrainDataCommand}">New Terrain</Button>
       </StackPanel>
+    <!-- Edit the fields of the terrain -->
       <Grid ColumnDefinitions="*, *" RowDefinitions="*, *">
-          <StackPanel Grid.Row="0" Grid.Column="0">
-            <Label HorizontalAlignment="Center">Id</Label>
-          </StackPanel>
-          <StackPanel Grid.Row="0" Grid.Column="1">
-            <Label>Avoid</Label>
-          </StackPanel>
-          <StackPanel Grid.Row="1" Grid.Column="0">
-            <Label>Defense</Label>
-          </StackPanel>
-          <StackPanel Grid.Row="1" Grid.Column="1">
-            <Label>Movement cost</Label>
-          </StackPanel>
+        <StackPanel Grid.Row="0" Grid.Column="0">
+          <Label HorizontalAlignment="Center">Id</Label>
+        </StackPanel>
+        <StackPanel Grid.Row="0" Grid.Column="1">
+          <Label>Avoid</Label>
+          <TextBox Text="{Binding Avoid}"></TextBox>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Grid.Column="0">
+          <Label>Defense</Label>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Grid.Column="1">
+          <Label>Movement cost</Label>
+        </StackPanel>
       </Grid>
   </StackPanel>
 </UserControl>
