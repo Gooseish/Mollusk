@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MolluskEngine.Graphics;
+using MolluskEngine.Input;
 using MolluskEngine.Scene;
 
 namespace MolluskEngine.Menus;

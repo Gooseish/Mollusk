@@ -1,7 +1,6 @@
 using System;
-using MolluskEngine.Input;
 
-namespace MolluskEngine.Scene;
+namespace MolluskEngine.Input;
 
 /// <summary>
 /// Send the command signal once and only once when its associated

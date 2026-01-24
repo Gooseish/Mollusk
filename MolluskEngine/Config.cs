@@ -9,4 +9,5 @@ public static class Config
     public static readonly int sourceResolutionHeight = 720;
     public static readonly int tileWidth = 16;
     public static readonly int tileHeight = 16;
+    public static readonly int PLAYER_TEAM = 0;
 }

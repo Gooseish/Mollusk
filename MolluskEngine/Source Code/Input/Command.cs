@@ -1,8 +1,7 @@
 using System;
 using System.Diagnostics;
-using MolluskEngine.Input;
 
-namespace MolluskEngine.Scene;
+namespace MolluskEngine.Input;
 
 public class Command // Maybe this class belongs in the Input namespace?
 {

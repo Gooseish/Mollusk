@@ -1,7 +1,6 @@
 using System;
-using MolluskEngine.Input;
 
-namespace MolluskEngine.Scene;
+namespace MolluskEngine.Input;
 
 public class CombPulseSignalMachine : ISignalMachine
 {

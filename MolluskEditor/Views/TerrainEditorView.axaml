@@ -1,0 +1,51 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             xmlns:vm="clr-namespace:MolluskEditor.ViewModels"
+             x:DataType="vm:TerrainEditorViewModel"
+             x:Class="MolluskEditor.Views.TerrainEditorView">
+  <StackPanel Orientation="Horizontal">
+    <!-- Select terrain from dictionary -->
+      <StackPanel>
+        <TextBlock Text="All Terrain"/>
+        <ListBox Width="120" Height="300" ItemsSource="{Binding TerrainData}" SelectedIndex = "{Binding SelectedTerrain}">
+          <ListBox.ItemTemplate>
+            <DataTemplate DataType="vm:TerrainDataViewModel">
+              <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding Id}" />
+                <TextBlock Text=": " />
+                <TextBlock Text="{Binding Name}" />
+              </StackPanel>
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
+        <Button Command="{Binding AddTerrainDataCommand}">New Terrain</Button>
+      </StackPanel>
+    <!-- Edit the fields of the terrain -->
+      <Grid ColumnDefinitions="*, *" RowDefinitions="*, *">
+        <StackPanel Grid.Row="0" Grid.Column="0">
+          <Label>Name</Label>
+          <TextBox Text="{Binding Name}"></TextBox>
+          <Label>Avoid</Label>
+          <TextBox Text="{Binding Avoid}"></TextBox>
+          <Label>Def</Label>
+          <TextBox Text="{Binding Def}"></TextBox>
+          <Label>Res</Label>
+          <TextBox Text="{Binding Res}"></TextBox>
+          <Label>HealPercent</Label>
+          <TextBox Text="{Binding HealPercent}"></TextBox>
+        </StackPanel>
+        <StackPanel Grid.Row="0" Grid.Column="1">
+          <Label HorizontalAlignment="Center">Dummy</Label>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Grid.Column="0">
+          <Label>Dummy</Label>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Grid.Column="1">
+          <Label>Dummy</Label>
+        </StackPanel>
+      </Grid>
+  </StackPanel>
+</UserControl>

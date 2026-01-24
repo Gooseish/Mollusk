@@ -10,8 +10,16 @@
 
 #-------------------------------- References --------------------------------#
 
+/reference:..\..\JsonPipelineExtension\bin\Debug\net8.0\JsonPipelineExtension.dll
 
 #---------------------------------- Content ---------------------------------#
+
+#begin Data/TerrainData.json
+/importer:JsonContentImporter
+/processor:JsonContentProcessor
+/processorParam:Minify=True
+/processorParam:RuntimeIdentifier=MolluskEngine.Data.TerrainDataReader, MolluskEngine
+/build:Data/TerrainData.json
 
 #begin Fonts/Arial.spritefont
 /importer:FontDescriptionImporter
