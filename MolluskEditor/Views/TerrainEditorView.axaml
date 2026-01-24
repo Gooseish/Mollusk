@@ -12,8 +12,8 @@
         <TextBlock Text="All Terrain"/>
         <ListBox Width="120" Height="300"
             ItemsSource="{Binding TerrainData}" 
-            SelectedIndex = "{Binding SelectedTerrain}"
-            SelectedItem = "{Binding SelectedTerrainViewModel}">
+            SelectedIndex = "{Binding SelectedTerrainIndex}"
+            SelectedItem = "{Binding SelectedTerrain}">
           <ListBox.ItemTemplate>
             <DataTemplate DataType="vm:TerrainDataViewModel">
               <StackPanel Orientation="Horizontal">
@@ -30,15 +30,15 @@
       <Grid ColumnDefinitions="*, *" RowDefinitions="*, *">
         <StackPanel Grid.Row="0" Grid.Column="0">
           <Label>Name</Label>
-          <TextBox Text="{Binding SelectedTerrainViewModel.Name}"></TextBox>
+          <TextBox Text="{Binding SelectedTerrain.Name}"></TextBox>
           <Label>Avoid</Label>
-          <TextBox Text="{Binding SelectedTerrainViewModel.Avoid}"></TextBox>
+          <TextBox Text="{Binding SelectedTerrain.Avoid}"></TextBox>
           <Label>Def</Label>
-          <TextBox Text="{Binding SelectedTerrainViewModel.Def}"></TextBox>
+          <TextBox Text="{Binding SelectedTerrain.Def}"></TextBox>
           <Label>Res</Label>
-          <TextBox Text="{Binding SelectedTerrainViewModel.Res}"></TextBox>
+          <TextBox Text="{Binding SelectedTerrain.Res}"></TextBox>
           <Label>HealPercent</Label>
-          <TextBox Text="{Binding SelectedTerrainViewModel.HealPercent}"></TextBox>
+          <TextBox Text="{Binding SelectedTerrain.HealPercent}"></TextBox>
         </StackPanel>
         <StackPanel Grid.Row="0" Grid.Column="1">
           <Label HorizontalAlignment="Center">Dummy</Label>

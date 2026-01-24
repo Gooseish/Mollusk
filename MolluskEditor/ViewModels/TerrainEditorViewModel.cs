@@ -11,11 +11,11 @@ namespace MolluskEditor.ViewModels;
 public partial class TerrainEditorViewModel : EditorViewModel
 {
     [ObservableProperty]
-    private int? _selectedTerrain;
+    private int? _selectedTerrainIndex;
     [ObservableProperty]
     private ObservableCollection<TerrainDataViewModel> _terrainData;
     [ObservableProperty]
-    private TerrainDataViewModel? _selectedTerrainViewModel;
+    private TerrainDataViewModel? _selectedTerrain;
     public TerrainEditorViewModel()
     {
         Initialize();
@@ -35,14 +35,14 @@ public partial class TerrainEditorViewModel : EditorViewModel
         TerrainData = terrainData;
         if (TerrainData.Count > 0)
         {
-            SelectedTerrain = 0;
+            SelectedTerrainIndex = 0;
         }
     }
     [RelayCommand]
     private void AddTerrainData()
     {
         TerrainData.Add(new TerrainDataViewModel());
-        SelectedTerrain = TerrainData.Count - 1;
+        SelectedTerrainIndex = TerrainData.Count - 1;
     }
     #region Event Handling
     private void OnProjectLoaded(object? sender, EventArgs args)
