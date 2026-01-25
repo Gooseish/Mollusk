@@ -6,6 +6,7 @@ using MolluskEditor.Data;
 using MolluskEditor.Models;
 using MolluskEngine.GameBoard;
 using MolluskEngine.Extensions;
+using System.Collections.Generic;
 
 namespace MolluskEditor.ViewModels;
 
@@ -94,29 +95,11 @@ public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
     }
     private int[,] GetMovementCostArray(ObservableCollection<int> movementCostCollection)
     {
-        // Todo: Make this a generic extension
-        int movementTypeCount = MovementType.Count();
-        int weatherTypeCount = WeatherType.Count();
-        int[,] result = new int[weatherTypeCount,movementTypeCount];
-        int n = 0;
-        for (int m = 0; m < weatherTypeCount; m++)
-            for (int l = 0; l < movementTypeCount; l++)
-            {
-                result[m,l] = movementCostCollection[n];
-                n++;
-            }
-        return result;
+        return movementCostCollection.To2DArray(WeatherType.Count(), MovementType.Count());
     }
     private ObservableCollection<int> GetMovementCostCollection(int[,] movementCostArray)
     {
-        // Todo: Make this a generic extension
-        int movementTypeCount = MovementType.Count();
-        int weatherTypeCount = WeatherType.Count();
-        ObservableCollection<int> result = new();
-        for (int m = 0; m < weatherTypeCount; m++)
-            for (int l = 0; l < movementTypeCount; l++)
-                result.Add(movementCostArray[m, l]);
-        return result;
+        return [.. movementCostArray]; // What the hell is this syntax?
     }
     #endregion
     public Terrain GetTerrain()
