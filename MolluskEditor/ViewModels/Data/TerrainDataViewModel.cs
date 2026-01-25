@@ -28,6 +28,7 @@ public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
         _heals = terrain.Heals;
         _healPercent = terrain.HealPercent;
         _movementCost = GetMovementCostCollection(terrain.MovementCost);
+        WatchMovementCosts();
     }
     public TerrainDataViewModel(Terrain terrain)
     {
@@ -39,6 +40,12 @@ public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
         _heals = terrain.Heals;
         _healPercent = terrain.HealPercent;
         _movementCost = GetMovementCostCollection(terrain.MovementCost);
+        WatchMovementCosts();
+    }
+    public void WatchMovementCosts()
+    {
+        foreach (ObsVal<int> i in MovementCost)
+            i.PropertyChanged += UpdateMovementCost;
     }
     #region Boilerplate Properties
     private Terrain _terrain {get {return TerrainDataModel.TerrainData[Id];}}
@@ -92,6 +99,10 @@ public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
         ObservableCollection<ObsVal<int>> newValue)
     {
         _terrain.MovementCost = GetMovementCostArray(newValue);
+    }
+    public void UpdateMovementCost(object? sender, EventArgs eventArgs)
+    {
+        _terrain.MovementCost = GetMovementCostArray(MovementCost);
     }
     private static int[,] GetMovementCostArray(
         ObservableCollection<ObsVal<int>> movementCostCollection)
