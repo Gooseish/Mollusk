@@ -98,6 +98,8 @@ public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
         ObservableCollection<ObsVal<int>>? oldValue,
         ObservableCollection<ObsVal<int>> newValue)
     {
+        // This presently doesn't do anything because it's never called.
+        // UpdateMovementCost is what actually updates the data model.
         _terrain.MovementCost = GetMovementCostArray(newValue);
     }
     public void UpdateMovementCost(object? sender, EventArgs eventArgs)
