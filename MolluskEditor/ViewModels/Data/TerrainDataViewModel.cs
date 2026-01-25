@@ -94,17 +94,28 @@ public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
     }
     private int[,] GetMovementCostArray(ObservableCollection<int> movementCostCollection)
     {
-        //int movementTypeCount = EnumExtensions.Count<MovementType>();
+        // Todo: Make this a generic extension
         int movementTypeCount = MovementType.Count();
         int weatherTypeCount = WeatherType.Count();
         int[,] result = new int[weatherTypeCount,movementTypeCount];
-
+        int n = 0;
+        for (int m = 0; m < weatherTypeCount; m++)
+            for (int l = 0; l < movementTypeCount; l++)
+            {
+                result[m,l] = movementCostCollection[n];
+                n++;
+            }
         return result;
     }
     private ObservableCollection<int> GetMovementCostCollection(int[,] movementCostArray)
     {
+        // Todo: Make this a generic extension
+        int movementTypeCount = MovementType.Count();
+        int weatherTypeCount = WeatherType.Count();
         ObservableCollection<int> result = new();
-
+        for (int m = 0; m < weatherTypeCount; m++)
+            for (int l = 0; l < movementTypeCount; l++)
+                result.Add(movementCostArray[m, l]);
         return result;
     }
     #endregion
