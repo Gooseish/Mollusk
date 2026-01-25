@@ -17,21 +17,10 @@ public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
     /// terrain instance and registering it in the dictionary
     /// of all terrain data.
     /// </summary>
-    public TerrainDataViewModel()
+    public TerrainDataViewModel(Terrain? terrain = null)
     {
-        Terrain terrain = TerrainDataModel.newTerrain();
-        _id = terrain.Id;
-        _name = terrain.Name;
-        _avoid = terrain.Avoid;
-        _def = terrain.Def;
-        _res = terrain.Res;
-        _heals = terrain.Heals;
-        _healPercent = terrain.HealPercent;
-        _movementCost = GetMovementCostCollection(terrain.MovementCost);
-        WatchMovementCosts();
-    }
-    public TerrainDataViewModel(Terrain terrain)
-    {
+        if (terrain == null)
+            terrain = TerrainDataModel.newTerrain();
         _id = terrain.Id;
         _name = terrain.Name;
         _avoid = terrain.Avoid;
@@ -98,7 +87,7 @@ public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
         ObservableCollection<ObsVal<int>>? oldValue,
         ObservableCollection<ObsVal<int>> newValue)
     {
-        // This presently doesn't do anything because it's never called.
+        // This presently doesn't do anything because it's never called. (?)
         // UpdateMovementCost is what actually updates the data model.
         _terrain.MovementCost = GetMovementCostArray(newValue);
     }
