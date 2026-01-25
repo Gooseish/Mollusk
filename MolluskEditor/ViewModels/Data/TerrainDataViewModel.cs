@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using MolluskEditor.Data;
 using MolluskEditor.Models;
 using MolluskEngine.GameBoard;
+using MolluskEngine.Exensions;
 
 namespace MolluskEditor.ViewModels;
 
@@ -25,7 +27,7 @@ public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
         _res = terrain.Res;
         _heals = terrain.Heals;
         _healPercent = terrain.HealPercent;
-        _movementCost = terrain.MovementCost;
+        _movementCost = GetMovementCostCollection(terrain.MovementCost);
     }
     public TerrainDataViewModel(Terrain terrain)
     {
@@ -36,7 +38,7 @@ public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
         _res = terrain.Res;
         _heals = terrain.Heals;
         _healPercent = terrain.HealPercent;
-        _movementCost = terrain.MovementCost;
+        _movementCost = GetMovementCostCollection(terrain.MovementCost);
     }
     #region Boilerplate Properties
     private Terrain _terrain {get {return TerrainDataModel.TerrainData[Id];}}
@@ -84,10 +86,25 @@ public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
         _terrain.HealPercent = newValue;
     }
     [ObservableProperty]
-    private int[,] _movementCost;
-    partial void OnMovementCostChanged(int[,]? oldValue, int[,] newValue)
+    private ObservableCollection<int> _movementCost;
+    partial void OnMovementCostChanged(
+        ObservableCollection<int>? oldValue,
+        ObservableCollection<int> newValue)
     {
-        _terrain.MovementCost = newValue;
+        _terrain.MovementCost = GetMovementCostArray(newValue);
+    }
+    private int[,] GetMovementCostArray(ObservableCollection<int> movementCostCollection)
+    {
+        int movementTypeCount = EnumExtensions.Count<MovementType>();
+        //int movementTypeCount = MovementType.Count();
+        int weatherTypeCount = EnumExtensions.Count<WeatherType>();
+        int[,] result = new int[weatherTypeCount,movementTypeCount];
+
+        return result;
+    }
+    private ObservableCollection<int> GetMovementCostCollection(int[,] movementCostArray)
+    {
+        
     }
     #endregion
     public Terrain GetTerrain()
@@ -101,7 +118,7 @@ public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
             Res = Res,
             Heals = Heals,
             HealPercent = HealPercent,
-            MovementCost = MovementCost,
+            MovementCost = GetMovementCostArray(MovementCost),
         };
     }
     public void Dispose()

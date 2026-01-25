@@ -28,6 +28,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Source Code\Data\" />
+    <Folder Include="Source Code\Exensions\" />
     <Folder Include="Source Code\GameBoard\" />
     <Folder Include="Source Code\Graphics\" />
     <Folder Include="Source Code\Menus\" />
