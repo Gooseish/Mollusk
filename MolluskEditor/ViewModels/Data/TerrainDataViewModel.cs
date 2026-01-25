@@ -103,8 +103,12 @@ public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
         int[,] movementCostArray)
     {
         ObservableCollection<int> unwrappedCollection = [.. movementCostArray]; // What the hell is this syntax?
-        var result = (ObservableCollection<ObsVal<int>>)
-                        unwrappedCollection.Select(n => new ObsVal<int>(n));
+
+        // This feels like it could be condensed
+        ObservableCollection<ObsVal<int>> result = [];
+        foreach (var i in unwrappedCollection)
+            result.Add(new ObsVal<int>(i));
+        
         return result; 
     }
     #endregion
