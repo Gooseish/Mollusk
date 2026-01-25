@@ -28,7 +28,7 @@
           <!-- ItemsPanel Format-->
             <ItemsControl.ItemsPanel>
               <ItemsPanelTemplate>
-                <UniformGrid Rows="3" Columns="5" />
+                <UniformGrid Rows="{Binding WeatherCount}" Columns="{Binding MovementCount}" />
               </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
           <!-- Item Template -->

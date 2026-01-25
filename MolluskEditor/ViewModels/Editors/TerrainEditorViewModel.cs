@@ -2,6 +2,8 @@ using System;
 using CommunityToolkit.Mvvm.ComponentModel;
 using MolluskEditor.Factories.DataViewModelFactory;
 using MolluskEditor.Services;
+using MolluskEngine.Extensions;
+using MolluskEngine.GameBoard;
 
 namespace MolluskEditor.ViewModels;
 
@@ -43,4 +45,10 @@ public partial class TerrainEditorViewModel : EditorViewModel
         Unsubscribe();
     }
     #endregion
+    
+    // Todo: These should be static and readonly. Not sure how to do the binding
+    [ObservableProperty]
+    private int _weatherCount = WeatherType.Count();
+    [ObservableProperty]
+    public int _movementCount = MovementType.Count();
 }
