@@ -17,7 +17,7 @@ public partial class DataSelectorSidebarViewModel : ViewModelBase
     [ObservableProperty]
     private TerrainDataViewModel? _selectedData;
 
-    private void Initialize()
+    public void Initialize()
     {
         ObservableCollection<TerrainDataViewModel> data = [];
         getTerrainData();

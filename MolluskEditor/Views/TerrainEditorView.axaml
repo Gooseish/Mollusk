@@ -8,38 +8,20 @@
              x:Class="MolluskEditor.Views.TerrainEditorView">
   <StackPanel Orientation="Horizontal">
     <!-- Select terrain from dictionary -->
-      <StackPanel>
-        <TextBlock Text="All Terrain"/>
-        <ListBox Width="120" Height="300"
-            ItemsSource="{Binding TerrainData}" 
-            SelectedIndex = "{Binding SelectedTerrainIndex}"
-            SelectedItem = "{Binding SelectedTerrain}">
-          <ListBox.ItemTemplate>
-            <DataTemplate DataType="vm:TerrainDataViewModel">
-              <StackPanel Orientation="Horizontal">
-                <TextBlock Text="{Binding Id}" />
-                <TextBlock Text=": " />
-                <TextBlock Text="{Binding Name}" />
-              </StackPanel>
-            </DataTemplate>
-          </ListBox.ItemTemplate>
-        </ListBox>
-        <Button Command="{Binding AddTerrainDataCommand}">New Terrain</Button>
-        <Button Command="{Binding RemoveTerrainDataCommand}">Delete Terrain</Button>
-      </StackPanel>
+      <ContentControl Content = "{Binding Data}"/>
     <!-- Edit the fields of the terrain -->
       <Grid ColumnDefinitions="*, *" RowDefinitions="*, *">
         <StackPanel Grid.Row="0" Grid.Column="0">
           <Label>Name</Label>
-          <TextBox Text="{Binding SelectedTerrain.Name}"></TextBox>
+          <TextBox Text="{Binding Data.SelectedData.Name}"></TextBox>
           <Label>Avoid</Label>
-          <TextBox Text="{Binding SelectedTerrain.Avoid}"></TextBox>
+          <TextBox Text="{Binding Data.SelectedData.Avoid}"></TextBox>
           <Label>Def</Label>
-          <TextBox Text="{Binding SelectedTerrain.Def}"></TextBox>
+          <TextBox Text="{Binding Data.SelectedData.Def}"></TextBox>
           <Label>Res</Label>
-          <TextBox Text="{Binding SelectedTerrain.Res}"></TextBox>
+          <TextBox Text="{Binding Data.SelectedData.Res}"></TextBox>
           <Label>HealPercent</Label>
-          <TextBox Text="{Binding SelectedTerrain.HealPercent}"></TextBox>
+          <TextBox Text="{Binding Data.SelectedData.HealPercent}"></TextBox>
         </StackPanel>
         <StackPanel Grid.Row="0" Grid.Column="1">
           <Label HorizontalAlignment="Center">Dummy</Label>
