@@ -34,7 +34,7 @@ public partial class MainWindowViewModel : ViewModelBase
     [RelayCommand]
     private void EjectEditor()
     {
-        //CurrentEditor.Dispose();
+        //CurrentEditor.Dispose(); // Add this line when ejecting an editor removes it from the main window
         _windowFactory.LaunchNewChildWindow(_currentEditor.EditorName);
     }
     [RelayCommand]

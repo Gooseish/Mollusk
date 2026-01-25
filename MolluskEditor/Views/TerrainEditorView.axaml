@@ -9,7 +9,6 @@
   <StackPanel Orientation="Horizontal">
     <!-- Select terrain from dictionary -->
       <ContentControl Content = "{Binding Data}"/>
-    <!-- Edit the fields of the terrain -->
       <Grid ColumnDefinitions="*, *" RowDefinitions="*, *">
         <StackPanel Grid.Row="0" Grid.Column="0">
           <Label>Name</Label>
@@ -24,7 +23,23 @@
           <TextBox Text="{Binding SelectedTerrain.HealPercent}"></TextBox>
         </StackPanel>
         <StackPanel Grid.Row="0" Grid.Column="1">
-          <Label HorizontalAlignment="Center">Dummy</Label>
+          <Label >Movement Costs</Label>
+          <ItemsControl ItemsSource="{Binding SelectedTerrain.MovementCost}" >
+          <!-- ItemsPanel Format-->
+            <ItemsControl.ItemsPanel>
+              <ItemsPanelTemplate>
+                <StackPanel Orientation="Horizontal" />
+              </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+          <!-- Item Template -->
+            <ItemsControl.ItemTemplate>
+              <DataTemplate>
+                <Border BorderBrush="Gray" BorderThickness="1" Padding="5" Margin="0,2,0,2">
+                  <TextBox Text="{Binding .}"/>
+                </Border>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
         </StackPanel>
         <StackPanel Grid.Row="1" Grid.Column="0">
           <Label>Dummy</Label>

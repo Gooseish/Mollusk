@@ -8,10 +8,10 @@ namespace MolluskEditor.Models;
 
 public class TerrainDataModel : IDataModel
 {
-    public static Dictionary<int, Terrain> TerrainData = new();
+    public static Dictionary<int, Terrain> TerrainData = [];
     public static Terrain newTerrain()
     {
-        Terrain result = new Terrain()
+        Terrain result = new()
         {
             Id = NextTerrainId(),
             Name = "New Terrain",
@@ -41,4 +41,3 @@ public class TerrainDataModel : IDataModel
         return result;
     }
 }
-
