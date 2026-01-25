@@ -7,6 +7,7 @@ using MolluskEditor.Data;
 using MolluskEditor.Models;
 using MolluskEngine.GameBoard;
 using MolluskEngine.Exensions;
+using System.IO.Pipelines;
 
 namespace MolluskEditor.ViewModels;
 
@@ -95,16 +96,18 @@ public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
     }
     private int[,] GetMovementCostArray(ObservableCollection<int> movementCostCollection)
     {
-        int movementTypeCount = EnumExtensions.Count<MovementType>();
-        //int movementTypeCount = MovementType.Count();
-        int weatherTypeCount = EnumExtensions.Count<WeatherType>();
+        //int movementTypeCount = EnumExtensions.Count<MovementType>();
+        int movementTypeCount = MovementType.Count();
+        int weatherTypeCount = WeatherType.Count();
         int[,] result = new int[weatherTypeCount,movementTypeCount];
 
         return result;
     }
     private ObservableCollection<int> GetMovementCostCollection(int[,] movementCostArray)
     {
-        
+        ObservableCollection<int> result = new();
+
+        return result;
     }
     #endregion
     public Terrain GetTerrain()
