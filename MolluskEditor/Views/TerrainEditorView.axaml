@@ -28,7 +28,7 @@
           <!-- ItemsPanel Format-->
             <ItemsControl.ItemsPanel>
               <ItemsPanelTemplate>
-                <StackPanel Orientation="Horizontal" />
+                <UniformGrid Rows="3" Columns="5" />
               </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
           <!-- Item Template -->
