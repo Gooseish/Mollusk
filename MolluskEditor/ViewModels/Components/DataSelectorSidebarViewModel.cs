@@ -8,8 +8,22 @@ using MolluskEditor.Factories;
 
 namespace MolluskEditor.ViewModels;
 
+/// <summary>
+/// View model that handles a sidebar which allows an
+/// editor to select a specific data item. For example,
+/// in the terrain editor, an instance of this class is
+/// present to allow the user to select which kind
+/// of terrain they want to edit.
+/// </summary>
 public partial class DataSelectorSidebarViewModel : ViewModelBase
 {
+    /// <summary>
+    /// Factory to add data items to the collection.
+    /// The implementation of this factory essentially
+    /// determines the kind of data a particular instance
+    /// of this class deals with. (e.g terrain data, unit
+    /// data, etc.)
+    /// </summary>
     private IDataViewModelFactory _factory;
     [ObservableProperty]
     private ObservableCollection<IDataViewModel> _data;
@@ -37,6 +51,10 @@ public partial class DataSelectorSidebarViewModel : ViewModelBase
     {
         IndexChanged.Invoke(this, EventArgs.Empty);
     }
+    /// <summary>
+    /// Event that notifies the parent editor that the selected data
+    /// index has changed.
+    /// </summary>
     public event EventHandler IndexChanged;
     #endregion
 
@@ -61,6 +79,12 @@ public partial class DataSelectorSidebarViewModel : ViewModelBase
     #endregion
 
     #region Private Utilities
+    /// <summary>
+    /// Pick a reasonable valid selected item index
+    /// when the number of items in the collection
+    /// changes.
+    /// </summary>
+    /// <param name="lastIndex"></param>
     private void FixIndex(int? lastIndex)
     {
         try
@@ -75,6 +99,9 @@ public partial class DataSelectorSidebarViewModel : ViewModelBase
                 SelectedDataIndex = 0;
         }
     }
+    /// <summary>
+    /// Keep collection items in order of ascending ID.
+    /// </summary>
     private void SortData()
     {
         Data = new ObservableCollection<IDataViewModel>(Data.OrderBy(i => i.Id));

@@ -13,7 +13,6 @@ public class TerrainDataViewModelFactory : IDataViewModelFactory
     {
         return new TerrainDataViewModel();
     }
-
     public ObservableCollection<IDataViewModel> ReadExisting()
     {
         ObservableCollection<IDataViewModel> data = [];
