@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using MolluskEngine.Extensions;
 using MolluskEngine.GameBoard;
 
 namespace MolluskEditor.Models;
@@ -33,8 +34,7 @@ public class TerrainDataModel : IDataModel
     }
     private static int[,] DefaultMoveCost()
     {
-        int[,] result = new int[Enum.GetNames(typeof(WeatherType)).Count(),
-                                Enum.GetNames(typeof(MovementType)).Count()];
+        int[,] result = new int[WeatherType.Count(), MovementType.Count()];
         foreach(WeatherType weatherType in Enum.GetValues(typeof(WeatherType)))
             foreach(MovementType movementType in Enum.GetValues(typeof(MovementType)))
                 result[(int)weatherType, (int)movementType] = 1;

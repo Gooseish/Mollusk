@@ -6,7 +6,6 @@ using MolluskEditor.Data;
 using MolluskEditor.Models;
 using MolluskEngine.GameBoard;
 using MolluskEngine.Extensions;
-using System.Collections.Generic;
 
 namespace MolluskEditor.ViewModels;
 
@@ -93,11 +92,11 @@ public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
     {
         _terrain.MovementCost = GetMovementCostArray(newValue);
     }
-    private int[,] GetMovementCostArray(ObservableCollection<int> movementCostCollection)
+    private static int[,] GetMovementCostArray(ObservableCollection<int> movementCostCollection)
     {
         return movementCostCollection.To2DArray(WeatherType.Count(), MovementType.Count());
     }
-    private ObservableCollection<int> GetMovementCostCollection(int[,] movementCostArray)
+    private static ObservableCollection<int> GetMovementCostCollection(int[,] movementCostArray)
     {
         return [.. movementCostArray]; // What the hell is this syntax?
     }
