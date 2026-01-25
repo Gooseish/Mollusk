@@ -35,14 +35,14 @@ public partial class DataSelectorSidebarViewModel : ViewModelBase
 
     #region Relay Commands
     [RelayCommand]
-    private void AddTerrainData()
+    private void AddData()
     {
         Data.Add(new TerrainDataViewModel());
         SelectedDataIndex = Data.Count - 1;
         SortTerrain();
     }
     [RelayCommand]
-    private void RemoveTerrainData()
+    private void RemoveData()
     {
         if (SelectedData == null)
             return;
