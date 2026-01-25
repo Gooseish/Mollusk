@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 
-namespace MolluskEngine.Exensions;
+namespace MolluskEngine.Extensions;
 
 public static class EnumExtensions
 {
