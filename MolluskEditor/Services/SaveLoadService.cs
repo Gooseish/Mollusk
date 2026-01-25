@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
+using JsonPipeline;
 using MolluskEditor.Models;
 using MolluskEngine.GameBoard;
 
@@ -10,7 +11,8 @@ namespace MolluskEditor.Services;
 public static class SaveLoadService
 {
     public static string? ContentRoot = @"C:/Users/Home/Documents/Monogame Projects/Mollusk/MolluskEngine/Content/"; // Shouldn't be hardcoded
-    public static string TerrainPath = @"Data/";
+    public static readonly string DATAPATH = @"Data/";
+    public static readonly string TERRAINPATH = "TerrainData.json";
     public static void Save()
     {
         if (ContentRoot == null)
@@ -18,15 +20,20 @@ public static class SaveLoadService
     
         var options = new JsonSerializerOptions
         {
-            WriteIndented = true
+            WriteIndented = true,
+            Converters = {new Array2DConverter()},
         };
         string jsonString = JsonSerializer.Serialize(TerrainDataModel.TerrainData, options);
-        File.WriteAllText(ContentRoot + TerrainPath + "TerrainData.json", jsonString);
+        File.WriteAllText(ContentRoot + DATAPATH + TERRAINPATH, jsonString);
     }
     public static void Open()
     {
-        string jsonString = File.ReadAllText(ContentRoot + TerrainPath + "TerrainData.json");
-        Dictionary<int, Terrain>? TerrainData = JsonSerializer.Deserialize<Dictionary<int, Terrain>>(jsonString);
+        var options = new JsonSerializerOptions
+        {
+            Converters = {new Array2DConverter()},
+        };
+        string jsonString = File.ReadAllText(ContentRoot + DATAPATH + TERRAINPATH);
+        Dictionary<int, Terrain>? TerrainData = JsonSerializer.Deserialize<Dictionary<int, Terrain>>(jsonString, options);
         if (TerrainData != null)
             TerrainDataModel.TerrainData = TerrainData;
 

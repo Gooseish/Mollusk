@@ -1,12 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
+using MolluskEditor.Data;
 using MolluskEditor.Models;
 using MolluskEngine.GameBoard;
 
 namespace MolluskEditor.ViewModels;
 
-public partial class TerrainDataViewModel : ObservableObject
+public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
 {
     /// <summary>
     /// Create a new TerrainDataViewModel by creating a new
@@ -37,6 +39,7 @@ public partial class TerrainDataViewModel : ObservableObject
         _movementCost = terrain.MovementCost;
     }
     #region Boilerplate Properties
+    private Terrain _terrain {get {return TerrainDataModel.TerrainData[Id];}}
     [ObservableProperty]
     private int _id;
     partial void OnIdChanged(int oldValue, int newValue)
@@ -48,43 +51,43 @@ public partial class TerrainDataViewModel : ObservableObject
     private string _name;
     partial void OnNameChanged(string? oldValue, string newValue)
     {
-        TerrainDataModel.TerrainData[Id].Name = newValue;
+        _terrain.Name = newValue;
     }
     [ObservableProperty]
     private int _avoid;
     partial void OnAvoidChanged(int oldValue, int newValue)
     {
-        TerrainDataModel.TerrainData[Id].Avoid = newValue;
+        _terrain.Avoid = newValue;
     }
     [ObservableProperty]
     private int _def;
     partial void OnDefChanged(int oldValue, int newValue)
     {
-        TerrainDataModel.TerrainData[Id].Def = newValue;
+        _terrain.Def = newValue;
     }
     [ObservableProperty]
     private int _res;
     partial void OnResChanged(int oldValue, int newValue)
     {
-        TerrainDataModel.TerrainData[Id].Res = newValue;
+        _terrain.Res = newValue;
     }
     [ObservableProperty]
     private bool _heals;
     partial void OnHealsChanged(bool oldValue, bool newValue)
     {
-        TerrainDataModel.TerrainData[Id].Heals = newValue;
+        _terrain.Heals = newValue;
     }
     [ObservableProperty]
     private int _healPercent;
     partial void OnHealPercentChanged(int oldValue, int newValue)
     {
-        TerrainDataModel.TerrainData[Id].HealPercent = newValue;
+        _terrain.HealPercent = newValue;
     }
     [ObservableProperty]
-    private Dictionary<MovementType, int> _movementCost;
-    partial void OnMovementCostChanged(Dictionary<MovementType, int>? oldValue, Dictionary<MovementType, int> newValue)
+    private int[,] _movementCost;
+    partial void OnMovementCostChanged(int[,]? oldValue, int[,] newValue)
     {
-        TerrainDataModel.TerrainData[Id].MovementCost = newValue;
+        _terrain.MovementCost = newValue;
     }
     #endregion
     public Terrain GetTerrain()
@@ -100,5 +103,9 @@ public partial class TerrainDataViewModel : ObservableObject
             HealPercent = HealPercent,
             MovementCost = MovementCost,
         };
+    }
+    public void Dispose()
+    {
+        TerrainDataModel.TerrainData.Remove(Id);
     }
 }

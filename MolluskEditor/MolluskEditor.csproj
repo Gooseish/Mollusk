@@ -10,6 +10,7 @@
   <ItemGroup>
     <Folder Include="Data\" />
     <Folder Include="Factories\" />
+    <Folder Include="Factories\DataViewModelFactory\" />
     <Folder Include="Models\" />
     <AvaloniaResource Include="Assets\**" />
     <Folder Include="Services\" />
@@ -30,6 +31,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\JsonPipeline\JsonPipeline.csproj" />
     <ProjectReference Include="..\MolluskEngine\MolluskEngine.csproj" />
   </ItemGroup>
 
