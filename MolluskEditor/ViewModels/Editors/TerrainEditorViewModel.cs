@@ -14,7 +14,7 @@ public partial class TerrainEditorViewModel : EditorViewModel
     public TerrainEditorViewModel()
     {
         EditorName = MolluskEditor.Data.EditorName.Terrain;
-        Data = new DataSelectorSidebarViewModel();
+        Data = new DataSelectorSidebarViewModel(typeof(TerrainDataViewModel));
         Data.Initialize();
         Subscribe();
     }

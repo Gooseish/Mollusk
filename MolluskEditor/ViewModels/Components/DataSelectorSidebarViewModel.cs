@@ -1,17 +1,15 @@
 using System;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MolluskEditor.Data;
-using MolluskEditor.Models;
-using MolluskEngine.GameBoard;
 
 namespace MolluskEditor.ViewModels;
 
 public partial class DataSelectorSidebarViewModel : ViewModelBase
 {
+    private Type _type;
     [ObservableProperty]
     private ObservableCollection<IDataViewModel> _data;
     [ObservableProperty]
@@ -19,23 +17,15 @@ public partial class DataSelectorSidebarViewModel : ViewModelBase
     [ObservableProperty]
     private IDataViewModel? _selectedData;
 
-    public DataSelectorSidebarViewModel()
+    public DataSelectorSidebarViewModel(Type type)
     {
+        _type = type;
         Initialize();
     }
 
     public void Initialize()
     {
-        ObservableCollection<IDataViewModel> data = [];
-        
-        getTerrainData();
-        void getTerrainData()
-        {
-            foreach (Terrain terrain in TerrainDataModel.TerrainData.Values)
-                data.Add(new TerrainDataViewModel(terrain));
-        }
-        
-        Data = data;
+        Data = IDataViewModel.GetCollection(_type); // Should be using a factory here probably
         if (Data.Count > 0)
         {
             SelectedDataIndex = 0;
@@ -53,7 +43,7 @@ public partial class DataSelectorSidebarViewModel : ViewModelBase
     [RelayCommand]
     private void AddData()
     {
-        Data.Add(new TerrainDataViewModel());
+        Data.Add(IDataViewModel.New(_type)); // Should be using a factory here probably
         SelectedDataIndex = Data.Count - 1;
         SortData();
     }
