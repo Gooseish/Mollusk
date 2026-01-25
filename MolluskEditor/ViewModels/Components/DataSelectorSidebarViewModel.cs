@@ -9,7 +9,7 @@ namespace MolluskEditor.ViewModels;
 
 public partial class DataSelectorSidebarViewModel : ViewModelBase
 {
-    private Type _type;
+    private EditorName _type;
     [ObservableProperty]
     private ObservableCollection<IDataViewModel> _data;
     [ObservableProperty]
@@ -17,7 +17,7 @@ public partial class DataSelectorSidebarViewModel : ViewModelBase
     [ObservableProperty]
     private IDataViewModel? _selectedData;
 
-    public DataSelectorSidebarViewModel(Type type)
+    public DataSelectorSidebarViewModel(EditorName type)
     {
         _type = type;
         Initialize();
