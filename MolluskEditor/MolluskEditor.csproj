@@ -10,6 +10,7 @@
   <ItemGroup>
     <Folder Include="Data\" />
     <Folder Include="Factories\" />
+    <Folder Include="Factories\DataViewModelFactory\" />
     <Folder Include="Models\" />
     <AvaloniaResource Include="Assets\**" />
     <Folder Include="Services\" />

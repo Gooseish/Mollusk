@@ -1,5 +1,6 @@
 using System;
 using CommunityToolkit.Mvvm.ComponentModel;
+using MolluskEditor.Factories.DataViewModelFactory;
 using MolluskEditor.Services;
 
 namespace MolluskEditor.ViewModels;
@@ -13,7 +14,7 @@ public partial class TerrainEditorViewModel : EditorViewModel
     public TerrainEditorViewModel()
     {
         EditorName = MolluskEditor.Data.EditorName.Terrain;
-        Data = new DataSelectorSidebarViewModel(EditorName);
+        Data = new DataSelectorSidebarViewModel(new TerrainDataViewModelFactory());
         Data.Initialize();
         Subscribe();
     }

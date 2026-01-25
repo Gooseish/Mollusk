@@ -4,12 +4,13 @@ using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MolluskEditor.Data;
+using MolluskEditor.Factories;
 
 namespace MolluskEditor.ViewModels;
 
 public partial class DataSelectorSidebarViewModel : ViewModelBase
 {
-    private EditorName _type;
+    private IDataViewModelFactory _factory;
     [ObservableProperty]
     private ObservableCollection<IDataViewModel> _data;
     [ObservableProperty]
@@ -17,15 +18,15 @@ public partial class DataSelectorSidebarViewModel : ViewModelBase
     [ObservableProperty]
     private IDataViewModel? _selectedData;
 
-    public DataSelectorSidebarViewModel(EditorName type)
+    public DataSelectorSidebarViewModel(IDataViewModelFactory factory)
     {
-        _type = type;
+        _factory = factory;
         Initialize();
     }
 
     public void Initialize()
     {
-        Data = IDataViewModel.GetCollection(_type); // Should be using a factory here probably
+        Data = _factory.ReadExisting(); // Should be using a factory here probably
         if (Data.Count > 0)
         {
             SelectedDataIndex = 0;
@@ -43,7 +44,7 @@ public partial class DataSelectorSidebarViewModel : ViewModelBase
     [RelayCommand]
     private void AddData()
     {
-        Data.Add(IDataViewModel.New(_type)); // Should be using a factory here probably
+        Data.Add(_factory.New()); // Should be using a factory here probably
         SelectedDataIndex = Data.Count - 1;
         SortData();
     }
