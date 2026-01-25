@@ -35,7 +35,7 @@
             <ItemsControl.ItemTemplate>
               <DataTemplate>
                 <Border BorderBrush="Gray" BorderThickness="1" Padding="5" Margin="0,2,0,2">
-                  <TextBox Text="{Binding .}"/>
+                  <TextBox Text="{Binding Value}"/>
                 </Border>
               </DataTemplate>
             </ItemsControl.ItemTemplate>

@@ -6,6 +6,7 @@ using MolluskEditor.Data;
 using MolluskEditor.Models;
 using MolluskEngine.GameBoard;
 using MolluskEngine.Extensions;
+using MolluskEditor.Wrappers;
 
 namespace MolluskEditor.ViewModels;
 
@@ -85,20 +86,26 @@ public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
         _terrain.HealPercent = newValue;
     }
     [ObservableProperty]
-    private ObservableCollection<int> _movementCost;
+    private ObservableCollection<ObsVal<int>> _movementCost;
     partial void OnMovementCostChanged(
-        ObservableCollection<int>? oldValue,
-        ObservableCollection<int> newValue)
+        ObservableCollection<ObsVal<int>>? oldValue,
+        ObservableCollection<ObsVal<int>> newValue)
     {
         _terrain.MovementCost = GetMovementCostArray(newValue);
     }
-    private static int[,] GetMovementCostArray(ObservableCollection<int> movementCostCollection)
+    private static int[,] GetMovementCostArray(
+        ObservableCollection<ObsVal<int>> movementCostCollection)
     {
-        return movementCostCollection.To2DArray(WeatherType.Count(), MovementType.Count());
+        var unwrappedCollection = movementCostCollection.Select(n => n.Value);
+        return unwrappedCollection.To2DArray(WeatherType.Count(), MovementType.Count());
     }
-    private static ObservableCollection<int> GetMovementCostCollection(int[,] movementCostArray)
+    private static ObservableCollection<ObsVal<int>> GetMovementCostCollection(
+        int[,] movementCostArray)
     {
-        return [.. movementCostArray]; // What the hell is this syntax?
+        ObservableCollection<int> unwrappedCollection = [.. movementCostArray]; // What the hell is this syntax?
+        var result = (ObservableCollection<ObsVal<int>>)
+                        unwrappedCollection.Select(n => new ObsVal<int>(n));
+        return result; 
     }
     #endregion
     public Terrain GetTerrain()
