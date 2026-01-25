@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
 using CommunityToolkit.Mvvm.ComponentModel;
+using MolluskEditor.Data;
 using MolluskEditor.Models;
 using MolluskEngine.GameBoard;
 
 namespace MolluskEditor.ViewModels;
 
-public partial class TerrainDataViewModel : ObservableObject
+public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
 {
     /// <summary>
     /// Create a new TerrainDataViewModel by creating a new

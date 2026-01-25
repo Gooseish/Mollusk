@@ -5,7 +5,7 @@ using MolluskEngine.GameBoard;
 
 namespace MolluskEditor.Models;
 
-public static class TerrainDataModel
+public class TerrainDataModel : IDataModel
 {
     public static Dictionary<int, Terrain> TerrainData = new();
     public static Terrain newTerrain()

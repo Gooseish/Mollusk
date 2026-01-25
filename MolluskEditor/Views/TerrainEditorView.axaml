@@ -13,15 +13,15 @@
       <Grid ColumnDefinitions="*, *" RowDefinitions="*, *">
         <StackPanel Grid.Row="0" Grid.Column="0">
           <Label>Name</Label>
-          <TextBox Text="{Binding Data.SelectedData.Name}"></TextBox>
+          <TextBox Text="{Binding SelectedTerrain.Name}"></TextBox>
           <Label>Avoid</Label>
-          <TextBox Text="{Binding Data.SelectedData.Avoid}"></TextBox>
+          <TextBox Text="{Binding SelectedTerrain.Avoid}"></TextBox>
           <Label>Def</Label>
-          <TextBox Text="{Binding Data.SelectedData.Def}"></TextBox>
+          <TextBox Text="{Binding SelectedTerrain.Def}"></TextBox>
           <Label>Res</Label>
-          <TextBox Text="{Binding Data.SelectedData.Res}"></TextBox>
+          <TextBox Text="{Binding SelectedTerrain.Res}"></TextBox>
           <Label>HealPercent</Label>
-          <TextBox Text="{Binding Data.SelectedData.HealPercent}"></TextBox>
+          <TextBox Text="{Binding SelectedTerrain.HealPercent}"></TextBox>
         </StackPanel>
         <StackPanel Grid.Row="0" Grid.Column="1">
           <Label HorizontalAlignment="Center">Dummy</Label>
