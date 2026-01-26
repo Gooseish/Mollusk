@@ -6,7 +6,7 @@ using MolluskEngine.Extensions;
 using MolluskEngine.GameBoard;
 
 namespace MolluskEditor.Models;
-
+/*
 public class TerrainDataModel
 {
     public Dictionary<int, Terrain> TerrainData = [];
@@ -28,3 +28,4 @@ public class TerrainDataModel
         return n;
     }
 }
+*/

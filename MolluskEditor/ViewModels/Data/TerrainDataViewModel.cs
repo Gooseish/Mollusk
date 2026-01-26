@@ -12,16 +12,16 @@ namespace MolluskEditor.ViewModels;
 
 public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
 {
-    private TerrainDataModel _terrainData;
+    private DataModel<Terrain> _terrainData;
     /// <summary>
     /// Create a new TerrainDataViewModel by creating a new
     /// terrain instance and registering it in the dictionary
     /// of all terrain data.
     /// </summary>
-    public TerrainDataViewModel(TerrainDataModel terrainData, Terrain? terrain = null)
+    public TerrainDataViewModel(DataModel<Terrain> terrainData, Terrain? terrain = null)
     {
         _terrainData = terrainData;
-        terrain ??= _terrainData.NewTerrain();
+        terrain ??= _terrainData.New();
         _id = terrain.Id;
         _name = terrain.Name;
         _avoid = terrain.Avoid;
@@ -38,13 +38,13 @@ public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
             i.PropertyChanged += UpdateMovementCost;
     }
     #region Boilerplate Properties
-    private Terrain _terrain {get {return (Terrain)_terrainData.TerrainData[Id];}}
+    private Terrain _terrain {get {return (Terrain)_terrainData.Data[Id];}} // Todo: Fix
     [ObservableProperty]
     private int _id;
     partial void OnIdChanged(int oldValue, int newValue)
     {
-        _terrainData.TerrainData.Remove(oldValue);
-        _terrainData.TerrainData[newValue] = GetTerrain();
+        _terrainData.Data.Remove(oldValue);
+        _terrainData.Data[newValue] = GetTerrain();
     }
     [ObservableProperty]
     private string _name;
@@ -125,6 +125,6 @@ public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
     }
     public void Dispose()
     {
-        _terrainData.TerrainData.Remove(Id);
+        _terrainData.Data.Remove(Id);
     }
 }

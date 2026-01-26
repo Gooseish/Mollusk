@@ -9,8 +9,8 @@ namespace MolluskEditor.Factories.DataViewModelFactory;
 
 public class TerrainDataViewModelFactory : IDataViewModelFactory
 {
-    private TerrainDataModel _terrainData;
-    public TerrainDataViewModelFactory(TerrainDataModel terrainData)
+    private DataModel<Terrain> _terrainData;
+    public TerrainDataViewModelFactory(DataModel<Terrain> terrainData)
     {
         _terrainData = terrainData;
     }
@@ -21,7 +21,7 @@ public class TerrainDataViewModelFactory : IDataViewModelFactory
     public ObservableCollection<IDataViewModel> ReadExisting()
     {
         ObservableCollection<IDataViewModel> data = [];
-        foreach (Terrain terrain in _terrainData.TerrainData.Values)
+        foreach (Terrain terrain in _terrainData.Data.Values)
             data.Add(new TerrainDataViewModel(_terrainData, terrain));
         return data;
     }

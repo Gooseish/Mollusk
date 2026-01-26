@@ -11,6 +11,7 @@ using MolluskEditor.Factories;
 using Microsoft.Extensions.DependencyInjection;
 using MolluskEditor.Models;
 using MolluskEditor.Services;
+using MolluskEngine.GameBoard;
 
 
 namespace MolluskEditor;
@@ -41,7 +42,7 @@ public partial class App : Application
             collection.AddSingleton<SaveLoadService>();
 
             // Data Models
-            collection.AddSingleton<TerrainDataModel>();
+            collection.AddSingleton<DataModel<Terrain>>();
             collection.AddSingleton<TilesetDataModel>();
 
             // Editor Factory

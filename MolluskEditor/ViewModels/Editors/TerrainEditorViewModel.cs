@@ -15,7 +15,7 @@ public partial class TerrainEditorViewModel : EditorViewModel
     private DataSelectorSidebarViewModel _data;
     [ObservableProperty]
     private TerrainDataViewModel? _selectedTerrain;
-    public TerrainEditorViewModel(TerrainDataModel terrainDataModel)
+    public TerrainEditorViewModel(DataModel<Terrain> terrainDataModel)
     {
         EditorName = MolluskEditor.Data.EditorName.Terrain;
         Data = new DataSelectorSidebarViewModel(new TerrainDataViewModelFactory(terrainDataModel));
