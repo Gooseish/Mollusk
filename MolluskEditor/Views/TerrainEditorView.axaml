@@ -27,7 +27,7 @@
         <StackPanel Grid.Row="0" Grid.Column="1" Margin="5">
           <Label HorizontalAlignment="Center">Movement Costs</Label>
           <Border BorderBrush="Gray" BorderThickness="1" Padding="5">
-            <Grid ColumnDefinitions="Auto, Auto" RowDefinitions="Auto, Auto" Margin="5">
+            <Grid ColumnDefinitions="Auto, Auto" RowDefinitions="Auto, Auto">
               <!-- Movement Cost Table -->
               <ItemsControl ItemsSource="{Binding SelectedTerrain.MovementCost}" Grid.Row="1" Grid.Column="1">
                 <!-- Grid Format -->

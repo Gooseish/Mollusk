@@ -17,11 +17,21 @@ public static class CollectionExtensions
         int i = 0;
         for (int j = 0; j < rows; j++)
             for (int k = 0; k < columns; k++)
-            {
-                result[j, k] = source.ElementAt(i);
-                i++;
-            }
+                result[j, k] = source.ElementAt(i++);
+
         return result;
+    }
+    public static T[] Flatten<T>(T[,] source)
+    {
+        int width = source.GetLength(0);
+        int height = source.GetLength(1);
+        T[] flattened = new T[width * height];
+        int i = 0;
+        for (int j = 0; j < width; j++)
+            for (int k = 0; k < height; k++)
+                flattened[i++] = source[j, k];
+
+        return flattened;
     }
     public static ObservableCollection<T> ToObservableCollection<T>(this IEnumerable<T> source)
     {
