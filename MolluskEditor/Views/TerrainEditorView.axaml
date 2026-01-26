@@ -9,9 +9,9 @@
   <StackPanel Orientation="Horizontal">
     <!-- Select terrain from dictionary -->
       <ContentControl Content = "{Binding Data}"/>
-      <Grid ColumnDefinitions="*, *" RowDefinitions="*, *">
+      <Grid ColumnDefinitions="*, *" RowDefinitions="*, *" Margin="5">
         <!-- Terrain Fields -->
-        <StackPanel Grid.Row="0" Grid.Column="0">
+        <StackPanel Grid.Row="0" Grid.Column="0" Margin="5">
           <Label>Name</Label>
           <TextBox Text="{Binding SelectedTerrain.Name}"></TextBox>
           <Label>Avoid</Label>
@@ -24,40 +24,50 @@
           <TextBox Text="{Binding SelectedTerrain.HealPercent}"></TextBox>
         </StackPanel>
         <!-- Movement Costs -->
-        <Grid Grid.Row="0" Grid.Column="1" ColumnDefinitions="*, *" RowDefinitions="*, *">
-          <Label Grid.Row="0" Grid.Column="0">Movement Costs</Label>
-          <!-- Movement Cost Column Labels -->
-          <ItemsControl ItemsSource="{Binding MovementNames}" Grid.Row="0" Grid.Column="1">
-            <ItemsControl.ItemsPanel>
-              <ItemsPanelTemplate>
-                <UniformGrid Rows="1" Columns="{Binding MovementCount}" 
-                  ColumnSpacing="5" RowSpacing = "5"/>
-              </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-          </ItemsControl>
-          <!-- Movement Cost Table -->
-          <ItemsControl ItemsSource="{Binding SelectedTerrain.MovementCost}" Grid.Row="1" Grid.Column="1">
-            <!-- Grid Format -->
-            <ItemsControl.ItemsPanel>
-              <ItemsPanelTemplate>
-                <UniformGrid Rows="{Binding WeatherCount}" Columns="{Binding MovementCount}" 
-                  ColumnSpacing="5" RowSpacing = "5"/>
-              </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <!-- Entry Format -->
-            <ItemsControl.ItemTemplate>
-              <DataTemplate>
-                <Border BorderBrush="Gray" BorderThickness="1" Padding="5" Margin="0,2,0,2">
-                  <TextBox Text="{Binding Value}"/>
-                </Border>
-              </DataTemplate>
-            </ItemsControl.ItemTemplate>
-          </ItemsControl>
-          <Label Grid.Row="1" Grid.Column="0">Movement Costs</Label>
-        </Grid>
-        <!-- Dummies -->
+        <Border Grid.Row="0" Grid.Column="1" 
+            BorderBrush="Gray" BorderThickness="1" Padding="5">
+          <Grid ColumnDefinitions="Auto, Auto" RowDefinitions="Auto, Auto" Margin="5">
+            <!-- <Label Grid.Row="0" Grid.Column="0">Movement Costs</Label> -->
+            <!-- Movement Cost Column Labels -->
+            <ItemsControl ItemsSource="{Binding MovementNames}" Grid.Row="0" Grid.Column="1">
+              <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                  <UniformGrid Rows="1" Columns="{Binding MovementCount}" 
+                    ColumnSpacing="5" RowSpacing = "5"/>
+                </ItemsPanelTemplate>
+              </ItemsControl.ItemsPanel>
+            </ItemsControl>
+            <!-- Movement Cost Table -->
+            <ItemsControl ItemsSource="{Binding SelectedTerrain.MovementCost}" Grid.Row="1" Grid.Column="1">
+              <!-- Grid Format -->
+              <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                  <UniformGrid Rows="{Binding WeatherCount}" Columns="{Binding MovementCount}" 
+                    ColumnSpacing="5" RowSpacing = "5" />
+                </ItemsPanelTemplate>
+              </ItemsControl.ItemsPanel>
+              <!-- Entry Format -->
+              <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                  <TextBox Text="{Binding Value}" Margin="1"/>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <!-- Movement Cost Row Labels -->
+            <ItemsControl ItemsSource="{Binding WeatherNames}" Grid.Row="1" Grid.Column="0">
+              <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                  <UniformGrid Rows="{Binding WeatherCount}" Columns="1" 
+                    ColumnSpacing="5" RowSpacing = "5"/>
+                </ItemsPanelTemplate>
+              </ItemsControl.ItemsPanel>
+            </ItemsControl>
+          </Grid>
+        </Border>
+        <!-- Dummies 
         <Label Grid.Row="1" Grid.Column="0">Dummy</Label>
         <Label Grid.Row="1" Grid.Column="1">Dummy</Label>
+        -->
       </Grid>
   </StackPanel>
 </UserControl>
