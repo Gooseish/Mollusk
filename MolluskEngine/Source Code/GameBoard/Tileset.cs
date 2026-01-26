@@ -1,11 +1,11 @@
-
+using MolluskEngine.Data;
 
 namespace MolluskEngine.GameBoard;
 
-public class Tileset
+public class Tileset : IDataType
 {
-    public int Id;
-    public string Name;
+    public int Id {get;set;}
+    public string Name {get;set;}
     /// <summary>
     /// String that corresponds to the image name of the tilemap
     /// </summary>

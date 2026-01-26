@@ -1,15 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using MolluskEngine.Data;
 using MolluskEngine.Extensions;
 using MolluskEngine.GameBoard;
 
 namespace MolluskEditor.Models;
 
-public static class TerrainDataModel
+public class TerrainDataModel
 {
-    public static Dictionary<int, Terrain> TerrainData = [];
-    public static Terrain NewTerrain()
+    public Dictionary<int, Terrain> TerrainData = [];
+    public Terrain NewTerrain()
     {
         Terrain result = new()
         {
@@ -25,7 +26,7 @@ public static class TerrainDataModel
         TerrainData[result.Id] = result;
         return result;
     }
-    private static int NextTerrainId()
+    private int NextTerrainId()
     {
         int n = 0;
         while (TerrainData.ContainsKey(n))

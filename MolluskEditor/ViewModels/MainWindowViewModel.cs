@@ -11,22 +11,24 @@ public partial class MainWindowViewModel : ViewModelBase
     private EditorViewModel _currentEditor;
     private EditorFactory _editorFactory;
     private WindowFactory _windowFactory;
+    private SaveLoadService _saveLoadService;
     
-    public MainWindowViewModel(EditorFactory editorFactory, WindowFactory windowFactory)
+    public MainWindowViewModel(EditorFactory editorFactory, WindowFactory windowFactory, SaveLoadService saveLoadService)
     {
         _editorFactory = editorFactory;
         _windowFactory = windowFactory;
+        _saveLoadService = saveLoadService;
         GoToUnits();
     }
     [RelayCommand]
     private void SaveProject()
     {
-        SaveLoadService.Save();
+        _saveLoadService.Save();
     }
     [RelayCommand]
     private void LoadProject()
     {
-        SaveLoadService.Open();
+        _saveLoadService.Open();
     }
     /// <summary>
     /// Pops out the current editor as a new window

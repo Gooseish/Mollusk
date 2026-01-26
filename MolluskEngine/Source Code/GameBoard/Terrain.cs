@@ -1,8 +1,8 @@
-
+using MolluskEngine.Data;
 
 namespace MolluskEngine.GameBoard;
 
-public class Terrain
+public class Terrain : IDataType
 {
     public int Id {get;set;}
     public string Name {get;set;}

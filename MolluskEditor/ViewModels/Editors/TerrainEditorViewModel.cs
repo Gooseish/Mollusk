@@ -2,6 +2,7 @@ using System;
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using MolluskEditor.Factories.DataViewModelFactory;
+using MolluskEditor.Models;
 using MolluskEditor.Services;
 using MolluskEngine.Extensions;
 using MolluskEngine.GameBoard;
@@ -14,10 +15,10 @@ public partial class TerrainEditorViewModel : EditorViewModel
     private DataSelectorSidebarViewModel _data;
     [ObservableProperty]
     private TerrainDataViewModel? _selectedTerrain;
-    public TerrainEditorViewModel()
+    public TerrainEditorViewModel(TerrainDataModel terrainDataModel)
     {
         EditorName = MolluskEditor.Data.EditorName.Terrain;
-        Data = new DataSelectorSidebarViewModel(new TerrainDataViewModelFactory());
+        Data = new DataSelectorSidebarViewModel(new TerrainDataViewModelFactory(terrainDataModel));
         Data.Initialize();
         Subscribe();
     }

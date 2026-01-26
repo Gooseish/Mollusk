@@ -9,6 +9,8 @@ using System;
 using MolluskEditor.Data;
 using MolluskEditor.Factories;
 using Microsoft.Extensions.DependencyInjection;
+using MolluskEditor.Models;
+using MolluskEditor.Services;
 
 
 namespace MolluskEditor;
@@ -34,6 +36,9 @@ public partial class App : Application
             collection.AddTransient<UnitsEditorViewModel>();
             collection.AddTransient<ChildWindowView>();
             collection.AddTransient<ChildWindowViewModel>();
+
+            collection.AddSingleton<SaveLoadService>();
+            collection.AddSingleton<TerrainDataModel>();
 
             // Editor Factory
             collection.AddSingleton<Func<EditorName, EditorViewModel>>(x => name => name switch

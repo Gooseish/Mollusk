@@ -4,17 +4,24 @@ using System.IO;
 using System.Text.Json;
 using JsonPipeline;
 using MolluskEditor.Models;
+using MolluskEngine.Data;
 using MolluskEngine.GameBoard;
 
 namespace MolluskEditor.Services;
 
-public static class SaveLoadService
+public class SaveLoadService
 {
     public static string? ContentRoot = @"C:/Users/Home/Documents/Monogame Projects/Mollusk/MolluskEngine/Content/"; // Shouldn't be hardcoded
     public static readonly string DATAPATH = @"Data/";
     public static readonly string TERRAINPATH = "TerrainData.json";
     public static readonly string TILESETPATH = "TilesetData.json";
-    public static void Save()
+    private TerrainDataModel _terrainData;
+    //private TilesetDataModel _tilesetData;
+    public SaveLoadService(TerrainDataModel terrainData/*, TilesetDataModel tilesetData*/)
+    {
+        _terrainData = terrainData;
+    }
+    public void Save()
     {
         if (ContentRoot == null)
             return; // Prompt to pick new folder here
@@ -24,28 +31,29 @@ public static class SaveLoadService
             WriteIndented = true,
             Converters = {new Array2DConverter()},
         };
+        
         // Terrain
-        WriteEntry(TerrainDataModel.TerrainData, 
+        WriteEntry(_terrainData.TerrainData, 
             ContentRoot + DATAPATH + TERRAINPATH, options);
         // Tilesets
         WriteEntry(TilesetDataModel.TilesetData, 
             ContentRoot + DATAPATH + TILESETPATH, options);
+        
     }
-    public static void Open()
+    public void Open()
     {
         var options = new JsonSerializerOptions
         {
             Converters = {new Array2DConverter()},
         };
-
+        
         // Terrain
-        TerrainDataModel.TerrainData = ReadEntry<Dictionary<int, Terrain>>(
+        _terrainData.TerrainData = ReadEntry<Dictionary<int, Terrain>>(
             ContentRoot + DATAPATH + TERRAINPATH, options) ?? [];
         // Tilesets
         TilesetDataModel.TilesetData = ReadEntry<Dictionary<int, Tileset>>(
             ContentRoot + DATAPATH + TILESETPATH, options) ?? [];
-            
-
+        
         OnProjectLoaded();
     }
     private static T? ReadEntry<T>(string path, JsonSerializerOptions options)
