@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 
@@ -20,6 +21,13 @@ public static class CollectionExtensions
                 result[j, k] = source.ElementAt(i);
                 i++;
             }
+        return result;
+    }
+    public static ObservableCollection<T> ToObservableCollection<T>(this IEnumerable<T> source)
+    {
+        ObservableCollection<T> result = [];
+        foreach (T i in source)
+            result.Add(i);
         return result;
     }
 }

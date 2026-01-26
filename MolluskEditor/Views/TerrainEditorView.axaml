@@ -23,12 +23,21 @@
           <TextBox Text="{Binding SelectedTerrain.HealPercent}"></TextBox>
         </StackPanel>
         <StackPanel Grid.Row="0" Grid.Column="1">
-          <Label >Movement Costs</Label>
+          <Label>Movement Costs</Label>
+          <ItemsControl ItemsSource="{Binding MovementNames}">
+            <ItemsControl.ItemsPanel>
+              <ItemsPanelTemplate>
+                <UniformGrid Rows="1" Columns="{Binding MovementCount}" 
+                  ColumnSpacing="5" RowSpacing = "5"/>
+              </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+          </ItemsControl>
           <ItemsControl ItemsSource="{Binding SelectedTerrain.MovementCost}" >
           <!-- ItemsPanel Format-->
             <ItemsControl.ItemsPanel>
               <ItemsPanelTemplate>
-                <UniformGrid Rows="{Binding WeatherCount}" Columns="{Binding MovementCount}" />
+                <UniformGrid Rows="{Binding WeatherCount}" Columns="{Binding MovementCount}" 
+                  ColumnSpacing="5" RowSpacing = "5"/>
               </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
           <!-- Item Template -->

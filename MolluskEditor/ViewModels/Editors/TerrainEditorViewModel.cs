@@ -1,4 +1,5 @@
 using System;
+using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using MolluskEditor.Factories.DataViewModelFactory;
 using MolluskEditor.Services;
@@ -50,5 +51,9 @@ public partial class TerrainEditorViewModel : EditorViewModel
     [ObservableProperty]
     private int _weatherCount = WeatherType.Count();
     [ObservableProperty]
-    public int _movementCount = MovementType.Count();
+    private int _movementCount = MovementType.Count();
+    [ObservableProperty]
+    private ObservableCollection<string> _weatherNames = WeatherType.Names().ToObservableCollection();
+    [ObservableProperty]
+    private ObservableCollection<string> _movementNames = MovementType.Names().ToObservableCollection();
 }
