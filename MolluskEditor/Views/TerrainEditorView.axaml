@@ -10,6 +10,7 @@
     <!-- Select terrain from dictionary -->
       <ContentControl Content = "{Binding Data}"/>
       <Grid ColumnDefinitions="*, *" RowDefinitions="*, *">
+        <!-- Terrain Fields -->
         <StackPanel Grid.Row="0" Grid.Column="0">
           <Label>Name</Label>
           <TextBox Text="{Binding SelectedTerrain.Name}"></TextBox>
@@ -22,10 +23,11 @@
           <Label>HealPercent</Label>
           <TextBox Text="{Binding SelectedTerrain.HealPercent}"></TextBox>
         </StackPanel>
-        <StackPanel Grid.Row="0" Grid.Column="1">
-          <Label>Movement Costs</Label>
+        <!-- Movement Costs -->
+        <Grid Grid.Row="0" Grid.Column="1" ColumnDefinitions="*, *" RowDefinitions="*, *">
+          <Label Grid.Row="0" Grid.Column="0">Movement Costs</Label>
           <!-- Movement Cost Column Labels -->
-          <ItemsControl ItemsSource="{Binding MovementNames}">
+          <ItemsControl ItemsSource="{Binding MovementNames}" Grid.Row="0" Grid.Column="1">
             <ItemsControl.ItemsPanel>
               <ItemsPanelTemplate>
                 <UniformGrid Rows="1" Columns="{Binding MovementCount}" 
@@ -34,7 +36,7 @@
             </ItemsControl.ItemsPanel>
           </ItemsControl>
           <!-- Movement Cost Table -->
-          <ItemsControl ItemsSource="{Binding SelectedTerrain.MovementCost}" >
+          <ItemsControl ItemsSource="{Binding SelectedTerrain.MovementCost}" Grid.Row="1" Grid.Column="1">
             <!-- Grid Format -->
             <ItemsControl.ItemsPanel>
               <ItemsPanelTemplate>
@@ -51,14 +53,11 @@
               </DataTemplate>
             </ItemsControl.ItemTemplate>
           </ItemsControl>
-        </StackPanel>
-        <Label Grid.Row="1" Grid.Column="0">Dummy</Label>
-        <Grid ColumnDefinitions="*, *" RowDefinitions="*, *" Grid.Row="1" Grid.Column="1">
-          <Label Grid.Row="0" Grid.Column="0">Dummy</Label>
-          <Label Grid.Row="1" Grid.Column="0">Dummy</Label>
-          <Label Grid.Row="0" Grid.Column="1">Dummy</Label>
-          <Label Grid.Row="1" Grid.Column="1">Dummy</Label>
+          <Label Grid.Row="1" Grid.Column="0">Movement Costs</Label>
         </Grid>
+        <!-- Dummies -->
+        <Label Grid.Row="1" Grid.Column="0">Dummy</Label>
+        <Label Grid.Row="1" Grid.Column="1">Dummy</Label>
       </Grid>
   </StackPanel>
 </UserControl>
