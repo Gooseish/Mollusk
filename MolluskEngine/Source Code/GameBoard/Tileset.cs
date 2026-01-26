@@ -5,6 +5,7 @@ namespace MolluskEngine.GameBoard;
 public class Tileset
 {
     public int Id;
+    public string Name;
     /// <summary>
     /// String that corresponds to the image name of the tilemap
     /// </summary>

@@ -59,7 +59,7 @@
                     <Label Content="{Binding .}" HorizontalAlignment="Center"/>
                   </DataTemplate>
                 </ItemsControl.ItemTemplate>
-              </ItemsControl>   
+              </ItemsControl>
               <!-- Movement Cost Row Labels -->
               <ItemsControl ItemsSource="{Binding WeatherNames}" Grid.Row="1" Grid.Column="0">
                 <!-- Grid Format -->
