@@ -28,16 +28,6 @@
           <Label HorizontalAlignment="Center">Movement Costs</Label>
           <Border BorderBrush="Gray" BorderThickness="1" Padding="5">
             <Grid ColumnDefinitions="Auto, Auto" RowDefinitions="Auto, Auto" Margin="5">
-              <!-- <Label Grid.Row="0" Grid.Column="0">Movement Costs</Label> -->
-              <!-- Movement Cost Column Labels -->
-              <ItemsControl ItemsSource="{Binding MovementNames}" Grid.Row="0" Grid.Column="1">
-                <ItemsControl.ItemsPanel>
-                  <ItemsPanelTemplate>
-                    <UniformGrid Rows="1" Columns="{Binding MovementCount}" 
-                      ColumnSpacing="5" RowSpacing = "5"/>
-                  </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-              </ItemsControl>
               <!-- Movement Cost Table -->
               <ItemsControl ItemsSource="{Binding SelectedTerrain.MovementCost}" Grid.Row="1" Grid.Column="1">
                 <!-- Grid Format -->
@@ -54,14 +44,37 @@
                   </DataTemplate>
                 </ItemsControl.ItemTemplate>
               </ItemsControl>
+              <!-- Movement Cost Column Labels -->
+              <ItemsControl ItemsSource="{Binding MovementNames}" Grid.Row="0" Grid.Column="1">
+                <!-- Grid Format -->
+                <ItemsControl.ItemsPanel>
+                  <ItemsPanelTemplate>
+                    <UniformGrid Rows="1" Columns="{Binding MovementCount}" 
+                      ColumnSpacing="5" RowSpacing = "5"/>
+                  </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <!-- Entry Format -->
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate>
+                    <Label Content="{Binding .}" HorizontalAlignment="Center"/>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>   
               <!-- Movement Cost Row Labels -->
               <ItemsControl ItemsSource="{Binding WeatherNames}" Grid.Row="1" Grid.Column="0">
+                <!-- Grid Format -->
                 <ItemsControl.ItemsPanel>
                   <ItemsPanelTemplate>
                     <UniformGrid Rows="{Binding WeatherCount}" Columns="1" 
                       ColumnSpacing="5" RowSpacing = "5"/>
                   </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
+                <!-- Entry Format -->
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate>
+                    <Label Content="{Binding .}" VerticalAlignment="Center"/>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
               </ItemsControl>
             </Grid>
           </Border>
