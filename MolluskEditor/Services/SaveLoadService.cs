@@ -32,13 +32,8 @@ public class SaveLoadService
             Converters = {new Array2DConverter()},
         };
         
-        // Terrain
-        WriteEntry(_terrainData.Data, 
-            ContentRoot + DATAPATH + TERRAINPATH, options);
-        // Tilesets
-        WriteEntry(_tilesetData.Data, 
-            ContentRoot + DATAPATH + TILESETPATH, options);
-        
+        _terrainData.Write(ContentRoot + DATAPATH + TERRAINPATH, options);
+        _tilesetData.Write(ContentRoot + DATAPATH + TILESETPATH, options);
     }
     public void Open()
     {
@@ -47,12 +42,8 @@ public class SaveLoadService
             Converters = {new Array2DConverter()},
         };
         
-        // Terrain
-        _terrainData.Data = ReadEntry<Dictionary<int, Terrain>>(
-            ContentRoot + DATAPATH + TERRAINPATH, options) ?? [];
-        // Tilesets
-        _tilesetData.Data = ReadEntry<Dictionary<int, Tileset>>(
-            ContentRoot + DATAPATH + TILESETPATH, options) ?? [];
+        _terrainData.Read(ContentRoot + DATAPATH + TERRAINPATH, options);
+        _tilesetData.Read(ContentRoot + DATAPATH + TILESETPATH, options);
         
         OnProjectLoaded();
     }
@@ -66,11 +57,6 @@ public class SaveLoadService
         }
         catch {}
         return data;
-    }
-    private static void WriteEntry<T>(T obj, string path, JsonSerializerOptions options)
-    {
-        string jsonString = JsonSerializer.Serialize(obj, options);
-        File.WriteAllText(path, jsonString);
     }
     private static void OnProjectLoaded()
     {

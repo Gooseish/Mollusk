@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.IO;
+using System.Text.Json;
 using MolluskEngine.Data;
 
 namespace MolluskEditor.Models;
@@ -10,6 +12,7 @@ public class DataModel<T> where T : IDataType, new()
     {
         T result = new();
         result.Id = NextId();
+        Data[result.Id] = result;
         return result;
     }
     private int NextId()
@@ -18,5 +21,20 @@ public class DataModel<T> where T : IDataType, new()
         while (Data.ContainsKey(n))
             n++;
         return n;
+    }
+    public void Write(string path, JsonSerializerOptions options)
+    {
+        string jsonString = JsonSerializer.Serialize(Data, options);
+        File.WriteAllText(path, jsonString);
+    }
+    public void Read(string path, JsonSerializerOptions options)
+    {
+        Data = [];
+        try
+        {
+            string jsonString = File.ReadAllText(path);
+            Data = JsonSerializer.Deserialize<Dictionary<int, T>>(jsonString, options) ?? [];
+        }
+        catch {} // Dangerous?
     }
 }
