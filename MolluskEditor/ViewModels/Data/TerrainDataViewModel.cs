@@ -19,7 +19,7 @@ public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
     /// </summary>
     public TerrainDataViewModel(Terrain? terrain = null)
     {
-        terrain ??= TerrainDataModel.newTerrain();
+        terrain ??= TerrainDataModel.NewTerrain();
         _id = terrain.Id;
         _name = terrain.Name;
         _avoid = terrain.Avoid;

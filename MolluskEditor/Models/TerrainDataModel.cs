@@ -6,10 +6,10 @@ using MolluskEngine.GameBoard;
 
 namespace MolluskEditor.Models;
 
-public class TerrainDataModel : IDataModel
+public static class TerrainDataModel
 {
     public static Dictionary<int, Terrain> TerrainData = [];
-    public static Terrain newTerrain()
+    public static Terrain NewTerrain()
     {
         Terrain result = new()
         {
@@ -28,7 +28,7 @@ public class TerrainDataModel : IDataModel
     private static int NextTerrainId()
     {
         int n = 0;
-        while (TerrainData.Keys.Contains(n))
+        while (TerrainData.ContainsKey(n))
             n++;
         return n;
     }
