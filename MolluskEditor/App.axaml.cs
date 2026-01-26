@@ -43,7 +43,7 @@ public partial class App : Application
 
             // Data Models
             collection.AddSingleton<DataModel<Terrain>>();
-            collection.AddSingleton<TilesetDataModel>();
+            collection.AddSingleton<DataModel<Tileset>>();
 
             // Editor Factory
             collection.AddSingleton<Func<EditorName, EditorViewModel>>(x => name => name switch

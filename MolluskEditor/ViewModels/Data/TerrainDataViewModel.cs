@@ -38,7 +38,7 @@ public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
             i.PropertyChanged += UpdateMovementCost;
     }
     #region Boilerplate Properties
-    private Terrain _terrain {get {return (Terrain)_terrainData.Data[Id];}} // Todo: Fix
+    private Terrain _terrain {get {return _terrainData.Data[Id];}}
     [ObservableProperty]
     private int _id;
     partial void OnIdChanged(int oldValue, int newValue)

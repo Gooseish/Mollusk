@@ -14,4 +14,11 @@ public class Tileset : IDataType
     /// Ids of all terrain 
     /// </summary>
     public int[] TerrainData;
+    public Tileset()
+    {
+        Id = -1;
+        Name = "New Tileset";
+        ImageData = "";
+        TerrainData = new int[1]; // Todo: fix?
+    }
 }

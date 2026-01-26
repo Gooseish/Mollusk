@@ -15,8 +15,8 @@ public class SaveLoadService
     public static readonly string TERRAINPATH = "TerrainData.json";
     public static readonly string TILESETPATH = "TilesetData.json";
     private DataModel<Terrain> _terrainData;
-    private TilesetDataModel _tilesetData;
-    public SaveLoadService(DataModel<Terrain> terrainData, TilesetDataModel tilesetData)
+    private DataModel<Tileset> _tilesetData;
+    public SaveLoadService(DataModel<Terrain> terrainData, DataModel<Tileset> tilesetData)
     {
         _terrainData = terrainData;
         _tilesetData = tilesetData;
@@ -36,7 +36,7 @@ public class SaveLoadService
         WriteEntry(_terrainData.Data, 
             ContentRoot + DATAPATH + TERRAINPATH, options);
         // Tilesets
-        WriteEntry(_tilesetData.TilesetData, 
+        WriteEntry(_tilesetData.Data, 
             ContentRoot + DATAPATH + TILESETPATH, options);
         
     }
@@ -51,7 +51,7 @@ public class SaveLoadService
         _terrainData.Data = ReadEntry<Dictionary<int, Terrain>>(
             ContentRoot + DATAPATH + TERRAINPATH, options) ?? [];
         // Tilesets
-        _tilesetData.TilesetData = ReadEntry<Dictionary<int, Tileset>>(
+        _tilesetData.Data = ReadEntry<Dictionary<int, Tileset>>(
             ContentRoot + DATAPATH + TILESETPATH, options) ?? [];
         
         OnProjectLoaded();
