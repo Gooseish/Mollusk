@@ -25,11 +25,11 @@ public static class SaveLoadService
             Converters = {new Array2DConverter()},
         };
         // Terrain
-        string jsonString = JsonSerializer.Serialize(TerrainDataModel.TerrainData, options);
-        File.WriteAllText(ContentRoot + DATAPATH + TERRAINPATH, jsonString);
+        WriteEntry(TerrainDataModel.TerrainData, 
+            ContentRoot + DATAPATH + TERRAINPATH, options);
         // Tilesets
-        jsonString = JsonSerializer.Serialize(TilesetDataModel.TilesetData, options);
-        File.WriteAllText(ContentRoot + DATAPATH + TILESETPATH, jsonString);
+        WriteEntry(TilesetDataModel.TilesetData, 
+            ContentRoot + DATAPATH + TILESETPATH, options);
     }
     public static void Open()
     {
@@ -39,15 +39,12 @@ public static class SaveLoadService
         };
 
         // Terrain
-        string jsonString = File.ReadAllText(ContentRoot + DATAPATH + TERRAINPATH);
-        Dictionary<int, Terrain>? TerrainData = JsonSerializer.Deserialize<Dictionary<int, Terrain>>(jsonString, options);
-        if (TerrainData != null)
-            TerrainDataModel.TerrainData = TerrainData;
+        TerrainDataModel.TerrainData = ReadEntry<Dictionary<int, Terrain>>(
+            ContentRoot + DATAPATH + TERRAINPATH, options) ?? [];
         // Tilesets
-        /*
         TilesetDataModel.TilesetData = ReadEntry<Dictionary<int, Tileset>>(
-            ContentRoot + DATAPATH + TILESETPATH, options);
-            */
+            ContentRoot + DATAPATH + TILESETPATH, options) ?? [];
+            
 
         OnProjectLoaded();
     }
@@ -60,8 +57,12 @@ public static class SaveLoadService
             data = JsonSerializer.Deserialize<T>(jsonString, options);
         }
         catch {}
-        
         return data;
+    }
+    private static void WriteEntry<T>(T obj, string path, JsonSerializerOptions options)
+    {
+        string jsonString = JsonSerializer.Serialize(obj, options);
+        File.WriteAllText(path, jsonString);
     }
     private static void OnProjectLoaded()
     {
@@ -69,5 +70,5 @@ public static class SaveLoadService
             return;
         ProjectLoaded.Invoke(null, EventArgs.Empty);
     }
-    public static event EventHandler ProjectLoaded;
+    public static event EventHandler? ProjectLoaded;
 }
