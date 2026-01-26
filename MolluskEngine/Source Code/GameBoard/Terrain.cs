@@ -1,4 +1,6 @@
+using System;
 using MolluskEngine.Data;
+using MolluskEngine.Extensions;
 
 namespace MolluskEngine.GameBoard;
 
@@ -17,4 +19,23 @@ public class Terrain : IDataType
     /// type of the unit
     /// </summary>
     public int[,] MovementCost {get;set;}
+    public Terrain()
+    {
+        Id = -1;
+        Name = "New Terrain";
+        Avoid = 0;
+        Def = 0;
+        Res = 0;
+        Heals = false;
+        HealPercent = 0;
+        MovementCost = DefaultMoveCost();
+    }
+    private static int[,] DefaultMoveCost()
+    {
+        int[,] result = new int[WeatherType.Count(), MovementType.Count()];
+        foreach(WeatherType weatherType in Enum.GetValues(typeof(WeatherType)))
+            foreach(MovementType movementType in Enum.GetValues(typeof(MovementType)))
+                result[(int)weatherType, (int)movementType] = 1;
+        return result;
+    }
 }

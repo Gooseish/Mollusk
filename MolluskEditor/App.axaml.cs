@@ -37,8 +37,12 @@ public partial class App : Application
             collection.AddTransient<ChildWindowView>();
             collection.AddTransient<ChildWindowViewModel>();
 
+            // Services
             collection.AddSingleton<SaveLoadService>();
+
+            // Data Models
             collection.AddSingleton<TerrainDataModel>();
+            collection.AddSingleton<TilesetDataModel>();
 
             // Editor Factory
             collection.AddSingleton<Func<EditorName, EditorViewModel>>(x => name => name switch

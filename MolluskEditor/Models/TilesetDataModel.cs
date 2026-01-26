@@ -3,10 +3,10 @@ using MolluskEngine.GameBoard;
 
 namespace MolluskEditor.Models;
 
-public static class TilesetDataModel
+public class TilesetDataModel
 {
-    public static Dictionary<int, Tileset> TilesetData = [];
-    public static Tileset NewTileset()
+    public Dictionary<int, Tileset> TilesetData = [];
+    public Tileset NewTileset()
     {
         Tileset result = new()
         {
@@ -18,7 +18,7 @@ public static class TilesetDataModel
         TilesetData[result.Id] = result;
         return result;
     }
-    private static int NextTilesetId()
+    private int NextTilesetId()
     {
         int n = 0;
         while (TilesetData.ContainsKey(n))

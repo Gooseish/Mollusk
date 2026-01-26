@@ -4,7 +4,6 @@ using System.IO;
 using System.Text.Json;
 using JsonPipeline;
 using MolluskEditor.Models;
-using MolluskEngine.Data;
 using MolluskEngine.GameBoard;
 
 namespace MolluskEditor.Services;
@@ -16,10 +15,11 @@ public class SaveLoadService
     public static readonly string TERRAINPATH = "TerrainData.json";
     public static readonly string TILESETPATH = "TilesetData.json";
     private TerrainDataModel _terrainData;
-    //private TilesetDataModel _tilesetData;
-    public SaveLoadService(TerrainDataModel terrainData/*, TilesetDataModel tilesetData*/)
+    private TilesetDataModel _tilesetData;
+    public SaveLoadService(TerrainDataModel terrainData, TilesetDataModel tilesetData)
     {
         _terrainData = terrainData;
+        _tilesetData = tilesetData;
     }
     public void Save()
     {
@@ -36,7 +36,7 @@ public class SaveLoadService
         WriteEntry(_terrainData.TerrainData, 
             ContentRoot + DATAPATH + TERRAINPATH, options);
         // Tilesets
-        WriteEntry(TilesetDataModel.TilesetData, 
+        WriteEntry(_tilesetData.TilesetData, 
             ContentRoot + DATAPATH + TILESETPATH, options);
         
     }
@@ -51,7 +51,7 @@ public class SaveLoadService
         _terrainData.TerrainData = ReadEntry<Dictionary<int, Terrain>>(
             ContentRoot + DATAPATH + TERRAINPATH, options) ?? [];
         // Tilesets
-        TilesetDataModel.TilesetData = ReadEntry<Dictionary<int, Tileset>>(
+        _tilesetData.TilesetData = ReadEntry<Dictionary<int, Tileset>>(
             ContentRoot + DATAPATH + TILESETPATH, options) ?? [];
         
         OnProjectLoaded();
