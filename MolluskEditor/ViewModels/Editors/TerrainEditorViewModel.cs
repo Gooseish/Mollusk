@@ -11,20 +11,20 @@ namespace MolluskEditor.ViewModels;
 public partial class TerrainEditorViewModel : EditorViewModel
 {
     [ObservableProperty]
-    private TerrainSelectorViewModel _data;
+    private DataSelectorViewModel _data;
     [ObservableProperty]
     private TerrainDataViewModel? _selectedTerrain;
     public TerrainEditorViewModel(DataModel<Terrain> terrainDataModel)
     {
         EditorName = MolluskEditor.Data.EditorName.Terrain;
-        Data = new();
+        Data = new(typeof(TerrainDataViewModel), TerrainDataViewModel.ReadExisting);
         Subscribe();
     }
     
     #region Event Handling
     private void OnSelectionChanged(object? sender, EventArgs args)
     {
-        SelectedTerrain = Data.SelectedData;
+        SelectedTerrain = (TerrainDataViewModel)Data.SelectedData;
     }
     private void OnProjectLoaded(object? sender, EventArgs args)
     {

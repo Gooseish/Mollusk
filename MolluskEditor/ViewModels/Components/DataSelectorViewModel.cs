@@ -15,31 +15,35 @@ namespace MolluskEditor.ViewModels;
 /// present to allow the user to select which kind
 /// of terrain they want to edit.
 /// </summary>
-public partial class DataSelectorViewModel<TViewModel> : ViewModelBase
-    where TViewModel : IDataViewModel<TViewModel>, new()
+public partial class DataSelectorViewModel : ViewModelBase
 {
+    private Type _dataViewModelType;
+    private Func<ObservableCollection<IDataViewModel>> _reader;
     [ObservableProperty]
-    private ObservableCollection<TViewModel> _data;
+    private ObservableCollection<IDataViewModel> _data;
     [ObservableProperty]
     private int? _selectedDataIndex;
     [ObservableProperty]
-    private TViewModel? _selectedData;
+    private IDataViewModel? _selectedData;
 
-    public DataSelectorViewModel()
+    public DataSelectorViewModel(Type dataViewModelType, Func<ObservableCollection<IDataViewModel>> reader)
     {
+        _dataViewModelType = dataViewModelType;
+        _reader = reader;
         Initialize();
     }
 
     public void Initialize()
     {
-        Data = TViewModel.ReadExisting(); // Should be using a factory here probably
+        //Data = IDataViewModel.ReadExisting(); // Should be using a factory here probably
+        Data = _reader.Invoke();
         if (Data.Count > 0)
         {
             SelectedDataIndex = 0;
         }
     }
     #region Events
-    partial void OnSelectedDataChanged(TViewModel? oldValue, TViewModel? newValue)
+    partial void OnSelectedDataChanged(IDataViewModel? oldValue, IDataViewModel? newValue)
     {
         IndexChanged.Invoke(this, EventArgs.Empty);
     }
@@ -54,7 +58,7 @@ public partial class DataSelectorViewModel<TViewModel> : ViewModelBase
     [RelayCommand]
     private void AddData()
     {
-        Data.Add(new TViewModel()); // Should be using a factory here probably
+        Data.Add((IDataViewModel)Activator.CreateInstance(_dataViewModelType));
         SelectedDataIndex = Data.Count - 1;
         SortData();
     }
@@ -96,9 +100,7 @@ public partial class DataSelectorViewModel<TViewModel> : ViewModelBase
     /// </summary>
     private void SortData()
     {
-        Data = new ObservableCollection<TViewModel>(Data.OrderBy(i => i.Id));
+        Data = new ObservableCollection<IDataViewModel>(Data.OrderBy(i => i.Id));
     }
     #endregion
 }
-
-public class TerrainSelectorViewModel : DataSelectorViewModel<TerrainDataViewModel> { }

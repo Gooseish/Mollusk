@@ -11,7 +11,7 @@ using System.Diagnostics;
 
 namespace MolluskEditor.ViewModels;
 
-public partial class TerrainDataViewModel : ObservableObject, IDataViewModel<TerrainDataViewModel>
+public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
 {
     private static DataModel<Terrain>? _terrainData;
     public static void InjectDependency(DataModel<Terrain> terrainData)
@@ -39,12 +39,12 @@ public partial class TerrainDataViewModel : ObservableObject, IDataViewModel<Ter
         WatchMovementCosts();
     }
     public TerrainDataViewModel() : this(null) { }
-    public static ObservableCollection<TerrainDataViewModel> ReadExisting()
+    public static ObservableCollection<IDataViewModel> ReadExisting()
     {
         Debug.Assert(_terrainData != null, 
             "Tried to read terrain data viewmodel without reference to datamodel singleton.");
 
-        ObservableCollection<TerrainDataViewModel> data = [];
+        ObservableCollection<IDataViewModel> data = [];
         foreach (Terrain terrain in _terrainData.Data.Values)
             data.Add(new TerrainDataViewModel(terrain));
         return data;

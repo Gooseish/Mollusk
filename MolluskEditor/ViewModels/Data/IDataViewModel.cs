@@ -2,8 +2,7 @@ using System.Collections.ObjectModel;
 
 namespace MolluskEditor.Data;
 
-public interface IDataViewModel<T> 
-    where T : IDataViewModel<T>
+public interface IDataViewModel
 {
     /// <summary>
     /// When a DataViewModel is removed, it should remove
@@ -11,6 +10,6 @@ public interface IDataViewModel<T>
     /// </summary>
     public void Dispose();
     public int Id {get;set;}
-    public static abstract ObservableCollection<T> ReadExisting(); // Todo: Can I make this non-abstract?
+    //public static abstract ObservableCollection<T> ReadExisting(); // Todo: Can I make this non-abstract?
     
 }
