@@ -6,7 +6,7 @@ using MolluskEditor.ViewModels;
 using MolluskEngine.GameBoard;
 
 namespace MolluskEditor.Factories.DataViewModelFactory;
-
+/*
 public class TerrainDataViewModelFactory : IDataViewModelFactory
 {
     private DataModel<Terrain> _terrainData;
@@ -16,13 +16,14 @@ public class TerrainDataViewModelFactory : IDataViewModelFactory
     }
     public IDataViewModel New()
     {
-        return new TerrainDataViewModel(_terrainData);
+        return new TerrainDataViewModel();
     }
     public ObservableCollection<IDataViewModel> ReadExisting()
     {
         ObservableCollection<IDataViewModel> data = [];
         foreach (Terrain terrain in _terrainData.Data.Values)
-            data.Add(new TerrainDataViewModel(_terrainData, terrain));
+            data.Add(new TerrainDataViewModel(terrain));
         return data;
     }
 }
+*/

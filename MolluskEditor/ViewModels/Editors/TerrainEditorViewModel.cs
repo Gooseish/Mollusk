@@ -12,14 +12,13 @@ namespace MolluskEditor.ViewModels;
 public partial class TerrainEditorViewModel : EditorViewModel
 {
     [ObservableProperty]
-    private DataSelectorSidebarViewModel _data;
+    private DataSelectorSidebarViewModel<TerrainDataViewModel> _data;
     [ObservableProperty]
     private TerrainDataViewModel? _selectedTerrain;
     public TerrainEditorViewModel(DataModel<Terrain> terrainDataModel)
     {
         EditorName = MolluskEditor.Data.EditorName.Terrain;
-        Data = new DataSelectorSidebarViewModel(new TerrainDataViewModelFactory(terrainDataModel));
-        Data.Initialize();
+        Data = new();
         Subscribe();
     }
     

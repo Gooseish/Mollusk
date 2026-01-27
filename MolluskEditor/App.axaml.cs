@@ -67,6 +67,9 @@ public partial class App : Application
 
             var services = collection.BuildServiceProvider();
 
+            // Tell the data view models about the data model singletons
+            TerrainDataViewModel.InjectDependency(services.GetRequiredService<DataModel<Terrain>>());
+
             desktop.MainWindow = new MainWindow
             {
                 DataContext = services.GetRequiredService<MainWindowViewModel>()

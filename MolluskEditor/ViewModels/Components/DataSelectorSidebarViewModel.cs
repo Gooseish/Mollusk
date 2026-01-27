@@ -1,10 +1,10 @@
 using System;
 using System.Collections.ObjectModel;
+using System.Data;
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MolluskEditor.Data;
-using MolluskEditor.Factories;
 
 namespace MolluskEditor.ViewModels;
 
@@ -15,39 +15,31 @@ namespace MolluskEditor.ViewModels;
 /// present to allow the user to select which kind
 /// of terrain they want to edit.
 /// </summary>
-public partial class DataSelectorSidebarViewModel : ViewModelBase
+public partial class DataSelectorSidebarViewModel<T> : ViewModelBase
+    where T : IDataViewModel<T>, new()
 {
-    /// <summary>
-    /// Factory to add data items to the collection.
-    /// The implementation of this factory essentially
-    /// determines the kind of data a particular instance
-    /// of this class deals with. (e.g terrain data, unit
-    /// data, etc.)
-    /// </summary>
-    private IDataViewModelFactory _factory;
     [ObservableProperty]
-    private ObservableCollection<IDataViewModel> _data;
+    private ObservableCollection<T> _data;
     [ObservableProperty]
     private int? _selectedDataIndex;
     [ObservableProperty]
-    private IDataViewModel? _selectedData;
+    private T? _selectedData;
 
-    public DataSelectorSidebarViewModel(IDataViewModelFactory factory)
+    public DataSelectorSidebarViewModel()
     {
-        _factory = factory;
         Initialize();
     }
 
     public void Initialize()
     {
-        Data = _factory.ReadExisting(); // Should be using a factory here probably
+        Data = T.ReadExisting(); // Should be using a factory here probably
         if (Data.Count > 0)
         {
             SelectedDataIndex = 0;
         }
     }
     #region Events
-    partial void OnSelectedDataChanged(IDataViewModel? oldValue, IDataViewModel? newValue)
+    partial void OnSelectedDataChanged(T? oldValue, T? newValue)
     {
         IndexChanged.Invoke(this, EventArgs.Empty);
     }
@@ -62,7 +54,7 @@ public partial class DataSelectorSidebarViewModel : ViewModelBase
     [RelayCommand]
     private void AddData()
     {
-        Data.Add(_factory.New()); // Should be using a factory here probably
+        Data.Add(new T()); // Should be using a factory here probably
         SelectedDataIndex = Data.Count - 1;
         SortData();
     }
@@ -104,7 +96,7 @@ public partial class DataSelectorSidebarViewModel : ViewModelBase
     /// </summary>
     private void SortData()
     {
-        Data = new ObservableCollection<IDataViewModel>(Data.OrderBy(i => i.Id));
+        Data = new ObservableCollection<T>(Data.OrderBy(i => i.Id));
     }
     #endregion
 }

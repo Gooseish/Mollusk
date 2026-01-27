@@ -7,20 +7,26 @@ using MolluskEditor.Models;
 using MolluskEngine.GameBoard;
 using MolluskEngine.Extensions;
 using MolluskEditor.Wrappers;
+using System.Diagnostics;
 
 namespace MolluskEditor.ViewModels;
 
-public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
+public partial class TerrainDataViewModel : ObservableObject, IDataViewModel<TerrainDataViewModel>
 {
-    private DataModel<Terrain> _terrainData;
+    private static DataModel<Terrain>? _terrainData;
+    public static void InjectDependency(DataModel<Terrain> terrainData)
+    {
+        _terrainData = terrainData;
+    }
     /// <summary>
     /// Create a new TerrainDataViewModel by creating a new
     /// terrain instance and registering it in the dictionary
     /// of all terrain data.
     /// </summary>
-    public TerrainDataViewModel(DataModel<Terrain> terrainData, Terrain? terrain = null)
+    public TerrainDataViewModel(Terrain? terrain)
     {
-        _terrainData = terrainData;
+        Debug.Assert(_terrainData != null, 
+            "Tried to create terrain data viewmodel without reference to datamodel singleton.");
         terrain ??= _terrainData.New();
         _id = terrain.Id;
         _name = terrain.Name;
@@ -31,6 +37,20 @@ public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
         _healPercent = terrain.HealPercent;
         _movementCost = GetMovementCostCollection(terrain.MovementCost);
         WatchMovementCosts();
+    }
+    public TerrainDataViewModel() : this(null)
+    {
+        
+    }
+    public static ObservableCollection<TerrainDataViewModel> ReadExisting()
+    {
+        Debug.Assert(_terrainData != null, 
+            "Tried to read terrain data viewmodel without reference to datamodel singleton.");
+
+        ObservableCollection<TerrainDataViewModel> data = [];
+        foreach (Terrain terrain in _terrainData.Data.Values)
+            data.Add(new TerrainDataViewModel(terrain));
+        return data;
     }
     public void WatchMovementCosts()
     {

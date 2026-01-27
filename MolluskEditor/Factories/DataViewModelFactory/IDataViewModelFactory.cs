@@ -7,7 +7,7 @@ namespace MolluskEditor.Factories;
 /// Todo: There will be a lot of duplicated code from the 
 /// numerous implementations of this interface. Perhaps it
 /// would be better as an abstract class.
-
+/*
 public interface IDataViewModelFactory
 {
     /// <summary>
@@ -23,3 +23,4 @@ public interface IDataViewModelFactory
     /// <returns></returns>
     public ObservableCollection<IDataViewModel> ReadExisting();
 }
+*/

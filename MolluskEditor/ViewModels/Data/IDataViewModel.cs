@@ -1,12 +1,9 @@
-using System;
 using System.Collections.ObjectModel;
-using MolluskEditor.Models;
-using MolluskEditor.ViewModels;
-using MolluskEngine.GameBoard;
 
 namespace MolluskEditor.Data;
 
-public interface IDataViewModel
+public interface IDataViewModel<T> 
+    where T : IDataViewModel<T>
 {
     /// <summary>
     /// When a DataViewModel is removed, it should remove
@@ -14,4 +11,6 @@ public interface IDataViewModel
     /// </summary>
     public void Dispose();
     public int Id {get;set;}
+    public static abstract ObservableCollection<T> ReadExisting(); // Todo: Can I make this non-abstract?
+    
 }
