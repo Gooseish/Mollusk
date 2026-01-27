@@ -1,4 +1,4 @@
-using System.Collections.ObjectModel;
+
 
 namespace MolluskEditor.ViewModels;
 
@@ -11,6 +11,4 @@ public interface IDataViewModel
     public void Dispose();
     public int Id {get;set;}
     public string Name {get;set;}
-    //public static abstract ObservableCollection<T> ReadExisting(); // Todo: Can I make this non-abstract?
-    
 }

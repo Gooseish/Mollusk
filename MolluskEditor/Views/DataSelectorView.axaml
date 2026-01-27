@@ -7,7 +7,7 @@
              x:DataType="vm:DataSelectorViewModel"
              x:Class="MolluskEditor.Views.DataSelectorView">
   <StackPanel>
-    <TextBlock Text="All Terrain"/>
+    <TextBlock Text="All Data"/>
     <ListBox Width="120" Height="300"
         ItemsSource="{Binding Data}" 
         SelectedIndex = "{Binding SelectedDataIndex}"
@@ -22,7 +22,7 @@
         </DataTemplate>
       </ListBox.ItemTemplate>
     </ListBox>
-    <Button Command="{Binding AddDataCommand}">New Terrain</Button>
-    <Button Command="{Binding RemoveDataCommand}">Delete Terrain</Button>
+    <Button Command="{Binding AddDataCommand}">New</Button>
+    <Button Command="{Binding RemoveDataCommand}">Delete</Button>
   </StackPanel>
 </UserControl>

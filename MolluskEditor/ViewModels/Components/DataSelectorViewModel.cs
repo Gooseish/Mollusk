@@ -4,7 +4,6 @@ using System.Data;
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using MolluskEditor.Data;
 
 namespace MolluskEditor.ViewModels;
 
@@ -17,8 +16,11 @@ namespace MolluskEditor.ViewModels;
 /// </summary>
 public partial class DataSelectorViewModel : ViewModelBase
 {
+    /// This Type object and getter function are a poor man's method
+    /// of making this behave like a generic class, since xaml
+    /// doesn't play nicely with generics.
     private Type _dataViewModelType;
-    private Func<ObservableCollection<IDataViewModel>> _reader;
+    private Func<ObservableCollection<IDataViewModel>> _getFromDataModel;
     [ObservableProperty]
     private ObservableCollection<IDataViewModel> _data;
     [ObservableProperty]
@@ -26,17 +28,17 @@ public partial class DataSelectorViewModel : ViewModelBase
     [ObservableProperty]
     private IDataViewModel? _selectedData;
 
-    public DataSelectorViewModel(Type dataViewModelType, Func<ObservableCollection<IDataViewModel>> reader)
+    public DataSelectorViewModel(Type dataViewModelType,
+        Func<ObservableCollection<IDataViewModel>> reader)
     {
         _dataViewModelType = dataViewModelType;
-        _reader = reader;
+        _getFromDataModel = reader;
         Initialize();
     }
 
     public void Initialize()
     {
-        //Data = IDataViewModel.ReadExisting(); // Should be using a factory here probably
-        Data = _reader.Invoke();
+        Data = _getFromDataModel.Invoke();
         if (Data.Count > 0)
         {
             SelectedDataIndex = 0;
