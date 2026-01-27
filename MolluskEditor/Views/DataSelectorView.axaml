@@ -13,7 +13,7 @@
         SelectedIndex = "{Binding SelectedDataIndex}"
         SelectedItem = "{Binding SelectedData}">
       <ListBox.ItemTemplate>
-        <DataTemplate DataType="vm:TerrainDataViewModel">
+        <DataTemplate DataType="vm:TerrainDataViewModel"> <!-- Todo: Needs to use the interface... -->
           <StackPanel Orientation="Horizontal">
             <TextBlock Text="{Binding Id}" />
             <TextBlock Text=": " />
