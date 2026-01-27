@@ -1,7 +1,6 @@
 using System;
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
-using MolluskEditor.Factories.DataViewModelFactory;
 using MolluskEditor.Models;
 using MolluskEditor.Services;
 using MolluskEngine.Extensions;
@@ -12,7 +11,7 @@ namespace MolluskEditor.ViewModels;
 public partial class TerrainEditorViewModel : EditorViewModel
 {
     [ObservableProperty]
-    private DataSelectorSidebarViewModel<TerrainDataViewModel> _data;
+    private TerrainSelectorViewModel _data;
     [ObservableProperty]
     private TerrainDataViewModel? _selectedTerrain;
     public TerrainEditorViewModel(DataModel<Terrain> terrainDataModel)
@@ -25,7 +24,7 @@ public partial class TerrainEditorViewModel : EditorViewModel
     #region Event Handling
     private void OnSelectionChanged(object? sender, EventArgs args)
     {
-        SelectedTerrain = (TerrainDataViewModel?)Data.SelectedData;
+        SelectedTerrain = Data.SelectedData;
     }
     private void OnProjectLoaded(object? sender, EventArgs args)
     {

@@ -100,3 +100,5 @@ public partial class DataSelectorSidebarViewModel<T> : ViewModelBase
     }
     #endregion
 }
+
+public class TerrainSelectorViewModel : DataSelectorSidebarViewModel<TerrainDataViewModel> { }

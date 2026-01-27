@@ -4,9 +4,9 @@ using Avalonia.Markup.Xaml;
 
 namespace MolluskEditor.Views;
 
-public partial class DataSelectorSidebarView : UserControl
+public partial class TerrainSelectorView : UserControl
 {
-    public DataSelectorSidebarView()
+    public TerrainSelectorView()
     {
         InitializeComponent();
     }

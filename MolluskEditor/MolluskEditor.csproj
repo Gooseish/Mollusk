@@ -13,6 +13,7 @@
     <Folder Include="Factories\DataViewModelFactory\" />
     <AvaloniaResource Include="Assets\**" />
     <Folder Include="Services\" />
+    <Folder Include="Views\Components\" />
     <Folder Include="Wrappers\" />
   </ItemGroup>
 
