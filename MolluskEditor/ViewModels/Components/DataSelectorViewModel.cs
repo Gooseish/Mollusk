@@ -15,31 +15,31 @@ namespace MolluskEditor.ViewModels;
 /// present to allow the user to select which kind
 /// of terrain they want to edit.
 /// </summary>
-public partial class DataSelectorSidebarViewModel<T> : ViewModelBase
-    where T : IDataViewModel<T>, new()
+public partial class DataSelectorViewModel<TViewModel> : ViewModelBase
+    where TViewModel : IDataViewModel<TViewModel>, new()
 {
     [ObservableProperty]
-    private ObservableCollection<T> _data;
+    private ObservableCollection<TViewModel> _data;
     [ObservableProperty]
     private int? _selectedDataIndex;
     [ObservableProperty]
-    private T? _selectedData;
+    private TViewModel? _selectedData;
 
-    public DataSelectorSidebarViewModel()
+    public DataSelectorViewModel()
     {
         Initialize();
     }
 
     public void Initialize()
     {
-        Data = T.ReadExisting(); // Should be using a factory here probably
+        Data = TViewModel.ReadExisting(); // Should be using a factory here probably
         if (Data.Count > 0)
         {
             SelectedDataIndex = 0;
         }
     }
     #region Events
-    partial void OnSelectedDataChanged(T? oldValue, T? newValue)
+    partial void OnSelectedDataChanged(TViewModel? oldValue, TViewModel? newValue)
     {
         IndexChanged.Invoke(this, EventArgs.Empty);
     }
@@ -54,7 +54,7 @@ public partial class DataSelectorSidebarViewModel<T> : ViewModelBase
     [RelayCommand]
     private void AddData()
     {
-        Data.Add(new T()); // Should be using a factory here probably
+        Data.Add(new TViewModel()); // Should be using a factory here probably
         SelectedDataIndex = Data.Count - 1;
         SortData();
     }
@@ -96,9 +96,9 @@ public partial class DataSelectorSidebarViewModel<T> : ViewModelBase
     /// </summary>
     private void SortData()
     {
-        Data = new ObservableCollection<T>(Data.OrderBy(i => i.Id));
+        Data = new ObservableCollection<TViewModel>(Data.OrderBy(i => i.Id));
     }
     #endregion
 }
 
-public class TerrainSelectorViewModel : DataSelectorSidebarViewModel<TerrainDataViewModel> { }
+public class TerrainSelectorViewModel : DataSelectorViewModel<TerrainDataViewModel> { }
