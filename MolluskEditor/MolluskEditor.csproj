@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
@@ -10,10 +10,10 @@
   <ItemGroup>
     <Folder Include="Data\" />
     <Folder Include="Factories\" />
-    <Folder Include="Factories\DataViewModelFactory\" />
-    <Folder Include="Models\" />
     <AvaloniaResource Include="Assets\**" />
     <Folder Include="Services\" />
+    <Folder Include="Views\Components\" />
+    <Folder Include="Wrappers\" />
   </ItemGroup>
 
   <ItemGroup>

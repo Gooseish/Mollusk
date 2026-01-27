@@ -1,10 +1,6 @@
-using System;
-using System.Collections.ObjectModel;
-using MolluskEditor.Models;
-using MolluskEditor.ViewModels;
-using MolluskEngine.GameBoard;
 
-namespace MolluskEditor.Data;
+
+namespace MolluskEditor.ViewModels;
 
 public interface IDataViewModel
 {
@@ -14,4 +10,5 @@ public interface IDataViewModel
     /// </summary>
     public void Dispose();
     public int Id {get;set;}
+    public string Name {get;set;}
 }

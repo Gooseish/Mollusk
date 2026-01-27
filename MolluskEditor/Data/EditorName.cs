@@ -5,4 +5,5 @@ public enum EditorName // Unnecessary?
     Undefined,
     Units,
     Terrain,
+    Tilesets,
 }

@@ -1,10 +1,9 @@
 using System;
 using System.Collections.ObjectModel;
+using System.Data;
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using MolluskEditor.Data;
-using MolluskEditor.Factories;
 
 namespace MolluskEditor.ViewModels;
 
@@ -15,16 +14,13 @@ namespace MolluskEditor.ViewModels;
 /// present to allow the user to select which kind
 /// of terrain they want to edit.
 /// </summary>
-public partial class DataSelectorSidebarViewModel : ViewModelBase
+public partial class DataSelectorViewModel : ViewModelBase
 {
-    /// <summary>
-    /// Factory to add data items to the collection.
-    /// The implementation of this factory essentially
-    /// determines the kind of data a particular instance
-    /// of this class deals with. (e.g terrain data, unit
-    /// data, etc.)
-    /// </summary>
-    private IDataViewModelFactory _factory;
+    /// This Type object and getter function are a poor man's method
+    /// of making this behave like a generic class, since xaml
+    /// doesn't play nicely with generics.
+    private Type _dataViewModelType;
+    private Func<ObservableCollection<IDataViewModel>> _getFromDataModel;
     [ObservableProperty]
     private ObservableCollection<IDataViewModel> _data;
     [ObservableProperty]
@@ -32,15 +28,17 @@ public partial class DataSelectorSidebarViewModel : ViewModelBase
     [ObservableProperty]
     private IDataViewModel? _selectedData;
 
-    public DataSelectorSidebarViewModel(IDataViewModelFactory factory)
+    public DataSelectorViewModel(Type dataViewModelType,
+        Func<ObservableCollection<IDataViewModel>> reader)
     {
-        _factory = factory;
+        _dataViewModelType = dataViewModelType;
+        _getFromDataModel = reader;
         Initialize();
     }
 
     public void Initialize()
     {
-        Data = _factory.ReadExisting(); // Should be using a factory here probably
+        Data = _getFromDataModel.Invoke();
         if (Data.Count > 0)
         {
             SelectedDataIndex = 0;
@@ -62,7 +60,7 @@ public partial class DataSelectorSidebarViewModel : ViewModelBase
     [RelayCommand]
     private void AddData()
     {
-        Data.Add(_factory.New()); // Should be using a factory here probably
+        Data.Add((IDataViewModel)Activator.CreateInstance(_dataViewModelType));
         SelectedDataIndex = Data.Count - 1;
         SortData();
     }

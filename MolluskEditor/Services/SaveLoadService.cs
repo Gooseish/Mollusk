@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Text.Json;
 using JsonPipeline;
 using MolluskEditor.Models;
@@ -8,14 +6,22 @@ using MolluskEngine.GameBoard;
 
 namespace MolluskEditor.Services;
 
-public static class SaveLoadService
+public class SaveLoadService
 {
-    public static string? ContentRoot = @"C:/Users/Home/Documents/Monogame Projects/Mollusk/MolluskEngine/Content/"; // Shouldn't be hardcoded
-    public static readonly string DATAPATH = @"Data/";
-    public static readonly string TERRAINPATH = "TerrainData.json";
-    public static void Save()
+    private static readonly string? CONTENTROOT = @"C:/Users/Home/Documents/Monogame Projects/Mollusk/MolluskEngine/Content/"; // Shouldn't be hardcoded
+    private static readonly string DATAPATH = @"Data/";
+    private static readonly string TERRAINPATH = "TerrainData.json";
+    private static readonly string TILESETPATH = "TilesetData.json";
+    private DataModel<Terrain> _terrainData;
+    private DataModel<Tileset> _tilesetData;
+    public SaveLoadService(DataModel<Terrain> terrainData, DataModel<Tileset> tilesetData)
     {
-        if (ContentRoot == null)
+        _terrainData = terrainData;
+        _tilesetData = tilesetData;
+    }
+    public void Save()
+    {
+        if (CONTENTROOT == null)
             return; // Prompt to pick new folder here
     
         var options = new JsonSerializerOptions
@@ -23,20 +29,20 @@ public static class SaveLoadService
             WriteIndented = true,
             Converters = {new Array2DConverter()},
         };
-        string jsonString = JsonSerializer.Serialize(TerrainDataModel.TerrainData, options);
-        File.WriteAllText(ContentRoot + DATAPATH + TERRAINPATH, jsonString);
+        
+        _terrainData.Write(CONTENTROOT + DATAPATH + TERRAINPATH, options);
+        _tilesetData.Write(CONTENTROOT + DATAPATH + TILESETPATH, options);
     }
-    public static void Open()
+    public void Open()
     {
         var options = new JsonSerializerOptions
         {
             Converters = {new Array2DConverter()},
         };
-        string jsonString = File.ReadAllText(ContentRoot + DATAPATH + TERRAINPATH);
-        Dictionary<int, Terrain>? TerrainData = JsonSerializer.Deserialize<Dictionary<int, Terrain>>(jsonString, options);
-        if (TerrainData != null)
-            TerrainDataModel.TerrainData = TerrainData;
-
+        
+        _terrainData.Read(CONTENTROOT + DATAPATH + TERRAINPATH, options);
+        _tilesetData.Read(CONTENTROOT + DATAPATH + TILESETPATH, options);
+        
         OnProjectLoaded();
     }
     private static void OnProjectLoaded()
@@ -45,5 +51,5 @@ public static class SaveLoadService
             return;
         ProjectLoaded.Invoke(null, EventArgs.Empty);
     }
-    public static event EventHandler ProjectLoaded;
+    public static event EventHandler? ProjectLoaded;
 }

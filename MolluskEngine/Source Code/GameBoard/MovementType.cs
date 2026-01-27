@@ -1,7 +1,7 @@
 namespace MolluskEngine.GameBoard;
 
 /// <summary>
-/// Warning: Do not manually assign enum values,
+/// Warning: Do not manually assign enum values
 /// as this enum is used as an array indexer.
 /// </summary>
 public enum MovementType
@@ -14,7 +14,7 @@ public enum MovementType
 }
 
 /// <summary>
-/// Warning: Do not manually assign enum values,
+/// Warning: Do not manually assign enum values
 /// as this enum is used as an array indexer.
 /// </summary>
 public enum WeatherType

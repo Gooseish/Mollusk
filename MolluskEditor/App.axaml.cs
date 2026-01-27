@@ -9,6 +9,9 @@ using System;
 using MolluskEditor.Data;
 using MolluskEditor.Factories;
 using Microsoft.Extensions.DependencyInjection;
+using MolluskEditor.Models;
+using MolluskEditor.Services;
+using MolluskEngine.GameBoard;
 
 
 namespace MolluskEditor;
@@ -35,6 +38,13 @@ public partial class App : Application
             collection.AddTransient<ChildWindowView>();
             collection.AddTransient<ChildWindowViewModel>();
 
+            // Services
+            collection.AddSingleton<SaveLoadService>();
+
+            // Data Models
+            collection.AddSingleton<DataModel<Terrain>>();
+            collection.AddSingleton<DataModel<Tileset>>();
+
             // Editor Factory
             collection.AddSingleton<Func<EditorName, EditorViewModel>>(x => name => name switch
             {
@@ -56,6 +66,9 @@ public partial class App : Application
             collection.AddSingleton<WindowFactory>();
 
             var services = collection.BuildServiceProvider();
+
+            // Tell the data view models about the data model singletons
+            TerrainDataViewModel.InjectDependency(services.GetRequiredService<DataModel<Terrain>>());
 
             desktop.MainWindow = new MainWindow
             {

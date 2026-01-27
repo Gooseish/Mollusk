@@ -4,16 +4,16 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              xmlns:vm="clr-namespace:MolluskEditor.ViewModels"
-             x:DataType="vm:DataSelectorSidebarViewModel"
-             x:Class="MolluskEditor.Views.DataSelectorSidebarView">
+             x:DataType="vm:DataSelectorViewModel"
+             x:Class="MolluskEditor.Views.DataSelectorView">
   <StackPanel>
-    <TextBlock Text="All Terrain"/>
+    <TextBlock Text="All Data"/>
     <ListBox Width="120" Height="300"
         ItemsSource="{Binding Data}" 
         SelectedIndex = "{Binding SelectedDataIndex}"
         SelectedItem = "{Binding SelectedData}">
       <ListBox.ItemTemplate>
-        <DataTemplate DataType="vm:TerrainDataViewModel"> <!-- I need to make this generic somehow. Perhaps an interface?-->
+        <DataTemplate DataType="vm:IDataViewModel"> <!-- Todo: Needs to use the interface... -->
           <StackPanel Orientation="Horizontal">
             <TextBlock Text="{Binding Id}" />
             <TextBlock Text=": " />
@@ -22,7 +22,7 @@
         </DataTemplate>
       </ListBox.ItemTemplate>
     </ListBox>
-    <Button Command="{Binding AddDataCommand}">New Terrain</Button>
-    <Button Command="{Binding RemoveDataCommand}">Delete Terrain</Button>
+    <Button Command="{Binding AddDataCommand}">New</Button>
+    <Button Command="{Binding RemoveDataCommand}">Delete</Button>
   </StackPanel>
 </UserControl>

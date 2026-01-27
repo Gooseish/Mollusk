@@ -1,28 +1,30 @@
 using System;
+using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
-using MolluskEditor.Factories.DataViewModelFactory;
+using MolluskEditor.Models;
 using MolluskEditor.Services;
+using MolluskEngine.Extensions;
+using MolluskEngine.GameBoard;
 
 namespace MolluskEditor.ViewModels;
 
 public partial class TerrainEditorViewModel : EditorViewModel
 {
     [ObservableProperty]
-    private DataSelectorSidebarViewModel _data;
+    private DataSelectorViewModel _data;
     [ObservableProperty]
     private TerrainDataViewModel? _selectedTerrain;
-    public TerrainEditorViewModel()
+    public TerrainEditorViewModel(DataModel<Terrain> terrainDataModel)
     {
         EditorName = MolluskEditor.Data.EditorName.Terrain;
-        Data = new DataSelectorSidebarViewModel(new TerrainDataViewModelFactory());
-        Data.Initialize();
+        Data = new(typeof(TerrainDataViewModel), TerrainDataViewModel.ReadExisting);
         Subscribe();
     }
     
     #region Event Handling
     private void OnSelectionChanged(object? sender, EventArgs args)
     {
-        SelectedTerrain = (TerrainDataViewModel?)Data.SelectedData;
+        SelectedTerrain = (TerrainDataViewModel)Data.SelectedData;
     }
     private void OnProjectLoaded(object? sender, EventArgs args)
     {
@@ -43,4 +45,14 @@ public partial class TerrainEditorViewModel : EditorViewModel
         Unsubscribe();
     }
     #endregion
+    
+    // Todo: These should be static and readonly. Not sure how to do the binding
+    [ObservableProperty]
+    private int _weatherCount = WeatherType.Count();
+    [ObservableProperty]
+    private int _movementCount = MovementType.Count();
+    [ObservableProperty]
+    private ObservableCollection<string> _weatherNames = WeatherType.Names().ToObservableCollection();
+    [ObservableProperty]
+    private ObservableCollection<string> _movementNames = MovementType.Names().ToObservableCollection();
 }

@@ -1,23 +1,33 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using MolluskEditor.Data;
 using MolluskEditor.Models;
 using MolluskEngine.GameBoard;
+using MolluskEngine.Extensions;
+using MolluskEditor.Wrappers;
+using System.Diagnostics;
 
 namespace MolluskEditor.ViewModels;
 
 public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
 {
+    private static DataModel<Terrain>? _terrainData;
+    public static void InjectDependency(DataModel<Terrain> terrainData)
+    {
+        _terrainData = terrainData;
+    }
     /// <summary>
     /// Create a new TerrainDataViewModel by creating a new
     /// terrain instance and registering it in the dictionary
     /// of all terrain data.
     /// </summary>
-    public TerrainDataViewModel()
+    public TerrainDataViewModel(Terrain? terrain)
     {
-        Terrain terrain = TerrainDataModel.newTerrain();
+        Debug.Assert(_terrainData != null, 
+            "Tried to create terrain data viewmodel without reference to datamodel singleton.");
+        terrain ??= _terrainData.New();
         _id = terrain.Id;
         _name = terrain.Name;
         _avoid = terrain.Avoid;
@@ -25,27 +35,33 @@ public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
         _res = terrain.Res;
         _heals = terrain.Heals;
         _healPercent = terrain.HealPercent;
-        _movementCost = terrain.MovementCost;
+        _movementCost = GetMovementCostCollection(terrain.MovementCost);
+        WatchMovementCosts();
     }
-    public TerrainDataViewModel(Terrain terrain)
+    public TerrainDataViewModel() : this(null) { }
+    public static ObservableCollection<IDataViewModel> ReadExisting()
     {
-        _id = terrain.Id;
-        _name = terrain.Name;
-        _avoid = terrain.Avoid;
-        _def = terrain.Def;
-        _res = terrain.Res;
-        _heals = terrain.Heals;
-        _healPercent = terrain.HealPercent;
-        _movementCost = terrain.MovementCost;
+        Debug.Assert(_terrainData != null, 
+            "Tried to read terrain data viewmodel without reference to datamodel singleton.");
+
+        ObservableCollection<IDataViewModel> data = [];
+        foreach (Terrain terrain in _terrainData.Data.Values)
+            data.Add(new TerrainDataViewModel(terrain));
+        return data;
+    }
+    public void WatchMovementCosts()
+    {
+        foreach (ObsVal<int> i in MovementCost)
+            i.PropertyChanged += UpdateMovementCost;
     }
     #region Boilerplate Properties
-    private Terrain _terrain {get {return TerrainDataModel.TerrainData[Id];}}
+    private Terrain _terrain {get {return _terrainData.Data[Id];}}
     [ObservableProperty]
     private int _id;
     partial void OnIdChanged(int oldValue, int newValue)
     {
-        TerrainDataModel.TerrainData.Remove(oldValue);
-        TerrainDataModel.TerrainData[newValue] = GetTerrain();
+        _terrainData.Data.Remove(oldValue);
+        _terrainData.Data[newValue] = GetTerrain();
     }
     [ObservableProperty]
     private string _name;
@@ -84,10 +100,30 @@ public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
         _terrain.HealPercent = newValue;
     }
     [ObservableProperty]
-    private int[,] _movementCost;
-    partial void OnMovementCostChanged(int[,]? oldValue, int[,] newValue)
+    private ObservableCollection<ObsVal<int>> _movementCost;
+    partial void OnMovementCostChanged(
+        ObservableCollection<ObsVal<int>>? oldValue,
+        ObservableCollection<ObsVal<int>> newValue)
     {
-        _terrain.MovementCost = newValue;
+        // This presently doesn't do anything because it's never called. (?)
+        // UpdateMovementCost is what actually updates the data model.
+        _terrain.MovementCost = GetMovementCostArray(newValue);
+    }
+    public void UpdateMovementCost(object? sender, EventArgs eventArgs)
+    {
+        _terrain.MovementCost = GetMovementCostArray(MovementCost);
+    }
+    private static int[,] GetMovementCostArray(
+        ObservableCollection<ObsVal<int>> movementCostCollection)
+    {
+        var unwrappedCollection = movementCostCollection.Select(n => n.Value);
+        return unwrappedCollection.To2DArray(WeatherType.Count(), MovementType.Count());
+    }
+    private static ObservableCollection<ObsVal<int>> GetMovementCostCollection(
+        int[,] movementCostArray)
+    {
+        ObservableCollection<int> unwrappedCollection = [.. movementCostArray]; // What the hell is this syntax?
+        return unwrappedCollection.Select(n => new ObsVal<int>(n)).ToObservableCollection();
     }
     #endregion
     public Terrain GetTerrain()
@@ -101,11 +137,11 @@ public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
             Res = Res,
             Heals = Heals,
             HealPercent = HealPercent,
-            MovementCost = MovementCost,
+            MovementCost = GetMovementCostArray(MovementCost),
         };
     }
     public void Dispose()
     {
-        TerrainDataModel.TerrainData.Remove(Id);
+        _terrainData.Data.Remove(Id);
     }
 }
