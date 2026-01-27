@@ -13,7 +13,7 @@
         SelectedIndex = "{Binding SelectedDataIndex}"
         SelectedItem = "{Binding SelectedData}">
       <ListBox.ItemTemplate>
-        <DataTemplate DataType="vm:TerrainDataViewModel"> <!-- I need to make this generic somehow. Perhaps an interface?-->
+        <DataTemplate DataType="vm:TerrainDataViewModel">
           <StackPanel Orientation="Horizontal">
             <TextBlock Text="{Binding Id}" />
             <TextBlock Text=": " />
