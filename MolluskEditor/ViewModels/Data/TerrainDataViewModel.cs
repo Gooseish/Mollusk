@@ -38,10 +38,7 @@ public partial class TerrainDataViewModel : ObservableObject, IDataViewModel<Ter
         _movementCost = GetMovementCostCollection(terrain.MovementCost);
         WatchMovementCosts();
     }
-    public TerrainDataViewModel() : this(null)
-    {
-        
-    }
+    public TerrainDataViewModel() : this(null) { }
     public static ObservableCollection<TerrainDataViewModel> ReadExisting()
     {
         Debug.Assert(_terrainData != null, 
