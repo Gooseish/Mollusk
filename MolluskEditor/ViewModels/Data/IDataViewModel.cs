@@ -1,6 +1,6 @@
 using System.Collections.ObjectModel;
 
-namespace MolluskEditor.Data;
+namespace MolluskEditor.ViewModels;
 
 public interface IDataViewModel
 {
