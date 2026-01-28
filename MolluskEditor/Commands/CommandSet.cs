@@ -1,11 +1,12 @@
 using System;
+using Avalonia.Controls;
 
-namespace MolluskEditor.CommandStack;
+namespace MolluskEditor.Commands;
 
 public class CommandSet<T> : Command
 {
     private T _target;
-    private readonly T? _oldValue;
+    private readonly T _oldValue;
     private readonly T _newValue;
     public CommandSet(T target, T? oldValue, T newValue)
     {

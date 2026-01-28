@@ -1,6 +1,6 @@
 using System;
 
-namespace MolluskEditor.CommandStack;
+namespace MolluskEditor.Commands;
 
 public abstract class Command
 {

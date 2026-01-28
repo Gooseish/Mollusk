@@ -32,8 +32,8 @@
                     <MenuItem Header="_Exit" />
                 </MenuItem>
                 <MenuItem Header="_Edit">
-                    <MenuItem Header="Copy" />
-                    <MenuItem Header="Paste" />
+                    <MenuItem Header="Undo" Command="{Binding UndoCommand}" />
+                    <MenuItem Header="Redo" Command="{Binding RedoCommand}"/>
                 </MenuItem>
             </Menu>
         </DockPanel>

@@ -8,15 +8,18 @@ using MolluskEngine.GameBoard;
 using MolluskEngine.Extensions;
 using MolluskEditor.Wrappers;
 using System.Diagnostics;
+using MolluskEditor.Commands;
 
 namespace MolluskEditor.ViewModels;
 
 public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
 {
+    private static CommandStack _commandStack;
     private static DataModel<Terrain>? _terrainData;
-    public static void InjectDependency(DataModel<Terrain> terrainData)
+    public static void InjectDependency(DataModel<Terrain> terrainData, CommandStack commandStack)
     {
         _terrainData = terrainData;
+        _commandStack = commandStack;
     }
     /// <summary>
     /// Create a new TerrainDataViewModel by creating a new
@@ -79,6 +82,8 @@ public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
     private int _def;
     partial void OnDefChanged(int oldValue, int newValue)
     {
+        //CommandSet<int> command = new(ref _terrain.Def, oldValue, newValue);
+        //_commandStack.IssueCommand(command);
         _terrain.Def = newValue;
     }
     [ObservableProperty]

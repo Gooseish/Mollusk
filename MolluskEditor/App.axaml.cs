@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using MolluskEditor.Models;
 using MolluskEditor.Services;
 using MolluskEngine.GameBoard;
+using MolluskEditor.Commands;
 
 
 namespace MolluskEditor;
@@ -32,6 +33,7 @@ public partial class App : Application
             DisableAvaloniaDataAnnotationValidation();
             
             var collection = new ServiceCollection();
+            collection.AddSingleton<CommandStack>();
             collection.AddSingleton<MainWindowViewModel>();
             collection.AddTransient<TerrainEditorViewModel>();
             collection.AddTransient<UnitsEditorViewModel>();
@@ -67,8 +69,11 @@ public partial class App : Application
 
             var services = collection.BuildServiceProvider();
 
-            // Tell the data view models about the data model singletons
-            TerrainDataViewModel.InjectDependency(services.GetRequiredService<DataModel<Terrain>>());
+            // Tell the data view models about the data model singletons and the command stack
+            // This kind of sucks that I have to do it manually...
+            TerrainDataViewModel.InjectDependency(
+                services.GetRequiredService<DataModel<Terrain>>(),
+                services.GetRequiredService<CommandStack>());
 
             desktop.MainWindow = new MainWindow
             {
