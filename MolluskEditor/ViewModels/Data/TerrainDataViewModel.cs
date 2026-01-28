@@ -69,27 +69,34 @@ public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
     private string _name;
     partial void OnNameChanged(string? oldValue, string newValue)
     {
-        _terrain.Name = newValue;
+        SetCommand<string> command = new(SetName, oldValue, newValue);
+        _commandStack.IssueCommand(command);
     }
+    private void SetName(string value) {_terrain.Name = value;}
     [ObservableProperty]
     private int _avoid;
     partial void OnAvoidChanged(int oldValue, int newValue)
     {
-        _terrain.Avoid = newValue;
+        SetCommand<int> command = new(SetAvo, oldValue, newValue);
+        _commandStack.IssueCommand(command);
     }
+    private void SetAvo(int value) { _terrain.Avoid = value; }
     [ObservableProperty]
     private int _def;
     partial void OnDefChanged(int oldValue, int newValue)
     {
-        SetCommand<int> command = new((int value) => _terrain.Def = value, oldValue, newValue); // syntax is a bit ugly?
+        SetCommand<int> command = new(SetDef, oldValue, newValue);
         _commandStack.IssueCommand(command);
     }
+    private void SetDef(int value) {_terrain.Def = value;}
     [ObservableProperty]
     private int _res;
     partial void OnResChanged(int oldValue, int newValue)
     {
-        _terrain.Res = newValue;
+        SetCommand<int> command = new(SetRes, oldValue, newValue);
+        _commandStack.IssueCommand(command);
     }
+    private void SetRes(int value) { _terrain.Res = value;}
     [ObservableProperty]
     private bool _heals;
     partial void OnHealsChanged(bool oldValue, bool newValue)
@@ -100,22 +107,18 @@ public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
     private int _healPercent;
     partial void OnHealPercentChanged(int oldValue, int newValue)
     {
-        _terrain.HealPercent = newValue;
+        SetCommand<int> command = new(SetHealPercent, oldValue, newValue);
+        _commandStack.IssueCommand(command);
     }
+    private void SetHealPercent(int value) {_terrain.HealPercent = value;}
     [ObservableProperty]
     private ObservableCollection<ObsVal<int>> _movementCost;
-    partial void OnMovementCostChanged(
-        ObservableCollection<ObsVal<int>>? oldValue,
-        ObservableCollection<ObsVal<int>> newValue)
-    {
-        // This presently doesn't do anything because it's never called. (?)
-        // UpdateMovementCost is what actually updates the data model.
-        _terrain.MovementCost = GetMovementCostArray(newValue);
-    }
     public void UpdateMovementCost(object? sender, EventArgs eventArgs)
     {
-        _terrain.MovementCost = GetMovementCostArray(MovementCost);
+        SetCommand<int[,]> command = new(SetMovementCost, _terrain.MovementCost, GetMovementCostArray(MovementCost));
+        _commandStack.IssueCommand(command);
     }
+    private void SetMovementCost(int[,] value) {_terrain.MovementCost = value;}
     private static int[,] GetMovementCostArray(
         ObservableCollection<ObsVal<int>> movementCostCollection)
     {
