@@ -1,14 +1,13 @@
 using System;
-using Avalonia.Controls;
 
 namespace MolluskEditor.Commands;
 
-public class CommandSet<T> : Command
+public class SetCommand<T> : Command
 {
     private Action<T> _setValue;
     private readonly T _oldValue;
     private readonly T _newValue;
-    public CommandSet(Action<T> setValue, T? oldValue, T newValue)
+    public SetCommand(Action<T> setValue, T? oldValue, T newValue)
     {
        _setValue = setValue;
        _oldValue = oldValue;

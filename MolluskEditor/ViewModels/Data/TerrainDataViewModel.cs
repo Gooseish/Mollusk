@@ -81,9 +81,8 @@ public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
     private int _def;
     partial void OnDefChanged(int oldValue, int newValue)
     {
-        CommandSet<int> command = new((int value) => _terrain.Def = value, oldValue, newValue);
+        SetCommand<int> command = new((int value) => _terrain.Def = value, oldValue, newValue); // syntax is a bit ugly?
         _commandStack.IssueCommand(command);
-        //_terrain.Def = newValue;
     }
     [ObservableProperty]
     private int _res;
