@@ -10,41 +10,40 @@ public class CommandStack // Should this be a static class or a singleton?
     {
         SaveLoadService.ProjectLoaded += Clear;
     }
-    private Stack<Command> UndoStack = [];
-    private Stack<Command> RedoStack = [];
+    private Stack<Command> _undoStack = [];
+    private Stack<Command> _redoStack = [];
     public void IssueCommand(Command command)
     {
         command.Do();
-        UndoStack.Push(command);
-        RedoStack.Clear();
+        _undoStack.Push(command);
+        _redoStack.Clear();
     }
     public void Undo()
     {
-        if (UndoStack.Count == 0)
+        if (_undoStack.Count == 0)
             return;
-        Command command = UndoStack.Pop();
+        Command command = _undoStack.Pop();
         command.Undo();
-        RedoStack.Push(command);
+        _redoStack.Push(command);
         
         if (OnUndo != null)
             OnUndo.Invoke(null, EventArgs.Empty);
     }
     public void Redo()
     {
-        if (RedoStack.Count == 0)
+        if (_redoStack.Count == 0)
             return;
-        Command command = RedoStack.Pop();
+        Command command = _redoStack.Pop();
         command.Do();
-        UndoStack.Push(command);
+        _undoStack.Push(command);
 
         if (OnRedo != null)
             OnRedo.Invoke(null, EventArgs.Empty);
     }
     private void Clear(object? sender, EventArgs args)
     {
-        // Could subscribe to the OnLoad event if this was a singleton
-        UndoStack.Clear();
-        RedoStack.Clear();
+        _undoStack.Clear();
+        _redoStack.Clear();
     }
     public EventHandler? OnUndo;
     public EventHandler? OnRedo;
