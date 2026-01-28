@@ -1,6 +1,7 @@
 using System;
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
+using MolluskEditor.Commands;
 using MolluskEditor.Models;
 using MolluskEditor.Services;
 using MolluskEngine.Extensions;
@@ -10,12 +11,14 @@ namespace MolluskEditor.ViewModels;
 
 public partial class TerrainEditorViewModel : EditorViewModel
 {
+    private CommandStack _commandStack;
     [ObservableProperty]
     private DataSelectorViewModel _data;
     [ObservableProperty]
     private TerrainDataViewModel? _selectedTerrain;
-    public TerrainEditorViewModel()
+    public TerrainEditorViewModel(CommandStack commandStack)
     {
+        _commandStack = commandStack;
         EditorName = MolluskEditor.Data.EditorName.Terrain;
         Data = new(typeof(TerrainDataViewModel), TerrainDataViewModel.ReadExisting);
         Subscribe();
@@ -34,17 +37,21 @@ public partial class TerrainEditorViewModel : EditorViewModel
     {
         int? selectedIndex = SelectedTerrain?.Id;
         Data.Initialize();
-        Data.FixIndex(selectedIndex);
+        Data.FixIndexAfterUndo(selectedIndex);
     }
     private void Subscribe()
     {
         SaveLoadService.ProjectLoaded += OnProjectLoaded;
         Data.IndexChanged += OnSelectionChanged;
+        _commandStack.OnUndo += OnUndoOrRedo;
+        _commandStack.OnRedo += OnUndoOrRedo;
     }
     private void Unsubscribe()
     {
         SaveLoadService.ProjectLoaded -= OnProjectLoaded;
         Data.IndexChanged -= OnSelectionChanged; // This should be taken care of by the garbage collector, so maybe is unnecessary
+        _commandStack.OnUndo -= OnUndoOrRedo;
+        _commandStack.OnRedo -= OnUndoOrRedo;
     }
     public override void Dispose()
     {

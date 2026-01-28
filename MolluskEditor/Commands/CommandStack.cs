@@ -25,6 +25,9 @@ public class CommandStack // Should this be a static class or a singleton?
         Command command = UndoStack.Pop();
         command.Undo();
         RedoStack.Push(command);
+        
+        if (OnUndo != null)
+            OnUndo.Invoke(null, EventArgs.Empty);
     }
     public void Redo()
     {
@@ -33,6 +36,9 @@ public class CommandStack // Should this be a static class or a singleton?
         Command command = RedoStack.Pop();
         command.Do();
         UndoStack.Push(command);
+
+        if (OnRedo != null)
+            OnRedo.Invoke(null, EventArgs.Empty);
     }
     private void Clear(object? sender, EventArgs args)
     {
@@ -40,4 +46,6 @@ public class CommandStack // Should this be a static class or a singleton?
         UndoStack.Clear();
         RedoStack.Clear();
     }
+    public EventHandler? OnUndo;
+    public EventHandler? OnRedo;
 }
