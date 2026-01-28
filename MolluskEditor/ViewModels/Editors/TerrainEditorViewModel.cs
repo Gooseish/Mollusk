@@ -14,7 +14,7 @@ public partial class TerrainEditorViewModel : EditorViewModel
     private DataSelectorViewModel _data;
     [ObservableProperty]
     private TerrainDataViewModel? _selectedTerrain;
-    public TerrainEditorViewModel(DataModel<Terrain> terrainDataModel)
+    public TerrainEditorViewModel()
     {
         EditorName = MolluskEditor.Data.EditorName.Terrain;
         Data = new(typeof(TerrainDataViewModel), TerrainDataViewModel.ReadExisting);
@@ -29,6 +29,12 @@ public partial class TerrainEditorViewModel : EditorViewModel
     private void OnProjectLoaded(object? sender, EventArgs args)
     {
         Data.Initialize(); // Perhaps abstract this as well
+    }
+    private void OnUndoOrRedo(object? sender, EventArgs args)
+    {
+        int? selectedIndex = SelectedTerrain?.Id;
+        Data.Initialize();
+        Data.FixIndex(selectedIndex);
     }
     private void Subscribe()
     {

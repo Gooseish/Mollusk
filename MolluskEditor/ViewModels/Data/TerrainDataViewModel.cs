@@ -2,7 +2,6 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
-using MolluskEditor.Data;
 using MolluskEditor.Models;
 using MolluskEngine.GameBoard;
 using MolluskEngine.Extensions;

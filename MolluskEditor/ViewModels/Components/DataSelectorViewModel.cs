@@ -83,7 +83,7 @@ public partial class DataSelectorViewModel : ViewModelBase
     /// changes.
     /// </summary>
     /// <param name="lastIndex"></param>
-    private void FixIndex(int? lastIndex)
+    public void FixIndex(int? lastIndex)
     {
         try
         {
