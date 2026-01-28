@@ -5,22 +5,22 @@ namespace MolluskEditor.Commands;
 
 public class CommandSet<T> : Command
 {
-    private T _target;
+    private Action<T> _setValue;
     private readonly T _oldValue;
     private readonly T _newValue;
-    public CommandSet(T target, T? oldValue, T newValue)
+    public CommandSet(Action<T> setValue, T? oldValue, T newValue)
     {
-       _target = target;
+       _setValue = setValue;
        _oldValue = oldValue;
        _newValue = newValue; 
     }
     public override void Do()
     {
-        _target = _newValue;
+        _setValue(_newValue);
     }
 
     public override void Undo()
     {
-        _target = _oldValue;
+        _setValue(_oldValue);
     }
 }
