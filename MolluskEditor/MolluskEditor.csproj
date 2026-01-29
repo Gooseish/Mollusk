@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <Folder Include="Data\" />
+    <Folder Include="Extensions\" />
     <Folder Include="Factories\" />
     <AvaloniaResource Include="Assets\**" />
     <Folder Include="Services\" />

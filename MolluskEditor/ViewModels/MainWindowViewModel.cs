@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using MolluskEditor.Commands;
 using MolluskEditor.Factories;
 using MolluskEditor.Services;
 
@@ -12,12 +13,15 @@ public partial class MainWindowViewModel : ViewModelBase
     private EditorFactory _editorFactory;
     private WindowFactory _windowFactory;
     private SaveLoadService _saveLoadService;
+    private CommandStack _commandStack;
     
-    public MainWindowViewModel(EditorFactory editorFactory, WindowFactory windowFactory, SaveLoadService saveLoadService)
+    public MainWindowViewModel(EditorFactory editorFactory, WindowFactory windowFactory, 
+        SaveLoadService saveLoadService, CommandStack commandStack)
     {
         _editorFactory = editorFactory;
         _windowFactory = windowFactory;
         _saveLoadService = saveLoadService;
+        _commandStack = commandStack;
         GoToUnits();
     }
     [RelayCommand]
@@ -29,6 +33,16 @@ public partial class MainWindowViewModel : ViewModelBase
     private void LoadProject()
     {
         _saveLoadService.Open();
+    }
+    [RelayCommand]
+    private void Undo()
+    {
+        _commandStack.Undo();
+    }
+    [RelayCommand]
+    private void Redo()
+    {
+        _commandStack.Redo();
     }
     /// <summary>
     /// Pops out the current editor as a new window

@@ -72,7 +72,7 @@ public partial class DataSelectorViewModel : ViewModelBase
         int? lastIndex = SelectedDataIndex;
         SelectedData.Dispose();
         Data.Remove(SelectedData);
-        FixIndex(lastIndex);
+        FixIndexAfterDelete(lastIndex);
     }
     #endregion
 
@@ -83,7 +83,7 @@ public partial class DataSelectorViewModel : ViewModelBase
     /// changes.
     /// </summary>
     /// <param name="lastIndex"></param>
-    private void FixIndex(int? lastIndex)
+    public void FixIndexAfterDelete(int? lastIndex)
     {
         try
         {
@@ -95,6 +95,19 @@ public partial class DataSelectorViewModel : ViewModelBase
         {
             if (Data.Count > 0)
                 SelectedDataIndex = 0;
+        }
+    }
+    public void FixIndexAfterUndo(int? lastIndex)
+    {
+        try
+        {
+            _ = Data[(int)lastIndex];
+            SelectedDataIndex = lastIndex;
+            return;
+        }
+        catch
+        {
+            FixIndexAfterDelete(lastIndex); // This is confusing and it needs to be more clear what the thought process is here
         }
     }
     /// <summary>

@@ -2,21 +2,25 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
-using MolluskEditor.Data;
 using MolluskEditor.Models;
 using MolluskEngine.GameBoard;
 using MolluskEngine.Extensions;
 using MolluskEditor.Wrappers;
 using System.Diagnostics;
+using MolluskEditor.Commands;
+using System.Collections.Generic;
+using MolluskEditor.Extensions;
 
 namespace MolluskEditor.ViewModels;
 
 public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
 {
-    private static DataModel<Terrain>? _terrainData;
-    public static void InjectDependency(DataModel<Terrain> terrainData)
+    private static CommandStack _commandStack;
+    private static DataModel<Terrain>? _terrainData; // Why is this nullable?
+    public static void InjectDependency(DataModel<Terrain> terrainData, CommandStack commandStack)
     {
         _terrainData = terrainData;
+        _commandStack = commandStack;
     }
     /// <summary>
     /// Create a new TerrainDataViewModel by creating a new
@@ -28,13 +32,12 @@ public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
         Debug.Assert(_terrainData != null, 
             "Tried to create terrain data viewmodel without reference to datamodel singleton.");
         terrain ??= _terrainData.New();
-        _id = terrain.Id;
+        _id = terrain.Id.ToString();
         _name = terrain.Name;
-        _avoid = terrain.Avoid;
-        _def = terrain.Def;
-        _res = terrain.Res;
-        _heals = terrain.Heals;
-        _healPercent = terrain.HealPercent;
+        _avoid = terrain.Avoid.ToString();
+        _def = terrain.Def.ToString();
+        _res = terrain.Res.ToString();
+        _healPercent = terrain.HealPercent.ToString();
         _movementCost = GetMovementCostCollection(terrain.MovementCost);
         WatchMovementCosts();
     }
@@ -51,97 +54,120 @@ public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
     }
     public void WatchMovementCosts()
     {
-        foreach (ObsVal<int> i in MovementCost)
+        foreach (ObsVal<string> i in MovementCost)
             i.PropertyChanged += UpdateMovementCost;
     }
     #region Boilerplate Properties
-    private Terrain _terrain {get {return _terrainData.Data[Id];}}
+    private Terrain _terrain {get {return _terrainData.Data[int.Parse(Id)];}}
     [ObservableProperty]
-    private int _id;
-    partial void OnIdChanged(int oldValue, int newValue)
+    private string _id;
+    partial void OnIdChanged(string? oldValue, string newValue)
     {
-        _terrainData.Data.Remove(oldValue);
-        _terrainData.Data[newValue] = GetTerrain();
+        // Todo: validate
+        // Todo: command stack
+        _terrainData.Data.Remove(int.Parse(oldValue));
+        _terrainData.Data[int.Parse(newValue)] = GetTerrain();
     }
     [ObservableProperty]
     private string _name;
     partial void OnNameChanged(string? oldValue, string newValue)
     {
-        _terrain.Name = newValue;
+        SetCommand<string> command = new(SetName, oldValue, newValue);
+        _commandStack.IssueCommand(command);
     }
+    private void SetName(string value) {_terrain.Name = value;}
     [ObservableProperty]
-    private int _avoid;
-    partial void OnAvoidChanged(int oldValue, int newValue)
+    private string _avoid;
+    partial void OnAvoidChanged(string? oldValue, string newValue)
     {
-        _terrain.Avoid = newValue;
+        if (!int.TryParse(Avoid, out int avoid)) 
+        {
+            Avoid = oldValue ?? "";
+            return;
+        }
+        SetCommand<int> command = new(SetAvo, _terrain.Avoid, avoid);
+        _commandStack.IssueCommand(command);
     }
+    private void SetAvo(int value) { _terrain.Avoid = value; }
     [ObservableProperty]
-    private int _def;
-    partial void OnDefChanged(int oldValue, int newValue)
+    private string _def;
+    partial void OnDefChanged(string? oldValue, string newValue)
     {
-        _terrain.Def = newValue;
+        if (!int.TryParse(Def, out int def)) // Validate 
+        {
+            Def = oldValue ?? "";
+            return;
+        }
+        SetCommand<int> command = new(SetDef, _terrain.Def, def);
+        _commandStack.IssueCommand(command);
     }
+    private void SetDef(int value) {_terrain.Def = value;}
     [ObservableProperty]
-    private int _res;
-    partial void OnResChanged(int oldValue, int newValue)
+    private string _res;
+    partial void OnResChanged(string? oldValue, string newValue)
     {
-        _terrain.Res = newValue;
+        if (!int.TryParse(Res, out int res))
+        {
+            Res = oldValue ?? "";
+            return;
+        }
+        SetCommand<int> command = new(SetRes, _terrain.Res, res);
+        _commandStack.IssueCommand(command);
     }
+    private void SetRes(int value) { _terrain.Res = value;}
     [ObservableProperty]
-    private bool _heals;
-    partial void OnHealsChanged(bool oldValue, bool newValue)
+    private string _healPercent;
+    partial void OnHealPercentChanged(string? oldValue, string newValue)
     {
-        _terrain.Heals = newValue;
+        if (!int.TryParse(HealPercent, out int healPercent))
+            {
+                HealPercent = oldValue ?? "";
+                return;
+            }
+        SetCommand<int> command = new(SetHealPercent, _terrain.HealPercent, healPercent);
+        _commandStack.IssueCommand(command);
     }
+    private void SetHealPercent(int value) {_terrain.HealPercent = value;}
     [ObservableProperty]
-    private int _healPercent;
-    partial void OnHealPercentChanged(int oldValue, int newValue)
-    {
-        _terrain.HealPercent = newValue;
-    }
-    [ObservableProperty]
-    private ObservableCollection<ObsVal<int>> _movementCost;
-    partial void OnMovementCostChanged(
-        ObservableCollection<ObsVal<int>>? oldValue,
-        ObservableCollection<ObsVal<int>> newValue)
-    {
-        // This presently doesn't do anything because it's never called. (?)
-        // UpdateMovementCost is what actually updates the data model.
-        _terrain.MovementCost = GetMovementCostArray(newValue);
-    }
+    private ObservableCollection<ObsVal<string>> _movementCost;
     public void UpdateMovementCost(object? sender, EventArgs eventArgs)
     {
-        _terrain.MovementCost = GetMovementCostArray(MovementCost);
+        List<int>? parsedMovementCost = MovementCost.ToIntList();
+        if (parsedMovementCost == null)
+        {
+            MovementCost = _terrain.MovementCost.ToWrappedStringCollection();
+            return;
+        }
+        SetCommand<int[,]> command = new(SetMovementCost, _terrain.MovementCost, GetMovementCostArray(parsedMovementCost));
+        _commandStack.IssueCommand(command);
     }
+    private void SetMovementCost(int[,] value) {_terrain.MovementCost = value;}
     private static int[,] GetMovementCostArray(
-        ObservableCollection<ObsVal<int>> movementCostCollection)
+        List<int> movementCostList)
     {
-        var unwrappedCollection = movementCostCollection.Select(n => n.Value);
-        return unwrappedCollection.To2DArray(WeatherType.Count(), MovementType.Count());
+        return movementCostList.To2DArray(WeatherType.Count(), MovementType.Count());
     }
-    private static ObservableCollection<ObsVal<int>> GetMovementCostCollection(
+    private static ObservableCollection<ObsVal<string>> GetMovementCostCollection(
         int[,] movementCostArray)
     {
-        ObservableCollection<int> unwrappedCollection = [.. movementCostArray]; // What the hell is this syntax?
-        return unwrappedCollection.Select(n => new ObsVal<int>(n)).ToObservableCollection();
+        return movementCostArray.ToWrappedStringCollection();
     }
     #endregion
     public Terrain GetTerrain()
     {
         return new Terrain()
         {
-            Id = Id,
+            Id = int.Parse(Id),
             Name = Name,
-            Avoid = Avoid,
-            Def = Def,
-            Res = Res,
-            Heals = Heals,
-            HealPercent = HealPercent,
-            MovementCost = GetMovementCostArray(MovementCost),
+            Avoid = int.Parse(Avoid),
+            Def = int.Parse(Def),
+            Res = int.Parse(Res),
+            HealPercent = int.Parse(HealPercent),
+            MovementCost = GetMovementCostArray(MovementCost.ToIntList()),
         };
     }
     public void Dispose()
     {
-        _terrainData.Data.Remove(Id);
+        _terrainData?.Data.Remove(int.Parse(Id));
     }
 }
