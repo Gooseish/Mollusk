@@ -65,7 +65,7 @@ public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
         }
         if (_terrainData.Data.ContainsKey(id))
         {
-            Id = _terrainData.NextId().ToString();
+            _id = _terrainData.NextId().ToString();
         }
         // Todo: command stack
         _terrainData.Data.Remove(int.Parse(oldValue));
