@@ -8,6 +8,8 @@ using MolluskEngine.Extensions;
 using MolluskEditor.Wrappers;
 using System.Diagnostics;
 using MolluskEditor.Commands;
+using System.Collections.Generic;
+using MolluskEditor.Extensions;
 
 namespace MolluskEditor.ViewModels;
 
@@ -52,7 +54,7 @@ public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
     }
     public void WatchMovementCosts()
     {
-        foreach (ObsVal<int> i in MovementCost)
+        foreach (ObsVal<string> i in MovementCost)
             i.PropertyChanged += UpdateMovementCost;
     }
     #region Boilerplate Properties
@@ -127,24 +129,28 @@ public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
     }
     private void SetHealPercent(int value) {_terrain.HealPercent = value;}
     [ObservableProperty]
-    private ObservableCollection<ObsVal<int>> _movementCost;
+    private ObservableCollection<ObsVal<string>> _movementCost;
     public void UpdateMovementCost(object? sender, EventArgs eventArgs)
     {
-        SetCommand<int[,]> command = new(SetMovementCost, _terrain.MovementCost, GetMovementCostArray(MovementCost));
+        List<int>? parsedMovementCost = MovementCost.ToIntList();
+        if (parsedMovementCost == null)
+        {
+            MovementCost = _terrain.MovementCost.ToWrappedStringCollection();
+            return;
+        }
+        SetCommand<int[,]> command = new(SetMovementCost, _terrain.MovementCost, GetMovementCostArray(parsedMovementCost));
         _commandStack.IssueCommand(command);
     }
     private void SetMovementCost(int[,] value) {_terrain.MovementCost = value;}
     private static int[,] GetMovementCostArray(
-        ObservableCollection<ObsVal<int>> movementCostCollection)
+        List<int> movementCostList)
     {
-        var unwrappedCollection = movementCostCollection.Select(n => n.Value);
-        return unwrappedCollection.To2DArray(WeatherType.Count(), MovementType.Count());
+        return movementCostList.To2DArray(WeatherType.Count(), MovementType.Count());
     }
-    private static ObservableCollection<ObsVal<int>> GetMovementCostCollection(
+    private static ObservableCollection<ObsVal<string>> GetMovementCostCollection(
         int[,] movementCostArray)
     {
-        ObservableCollection<int> unwrappedCollection = [.. movementCostArray]; // What the hell is this syntax?
-        return unwrappedCollection.Select(n => new ObsVal<int>(n)).ToObservableCollection();
+        return movementCostArray.ToWrappedStringCollection();
     }
     #endregion
     public Terrain GetTerrain()
@@ -157,7 +163,7 @@ public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
             Def = int.Parse(Def),
             Res = int.Parse(Res),
             HealPercent = int.Parse(HealPercent),
-            MovementCost = GetMovementCostArray(MovementCost),
+            MovementCost = GetMovementCostArray(MovementCost.ToIntList()),
         };
     }
     public void Dispose()
