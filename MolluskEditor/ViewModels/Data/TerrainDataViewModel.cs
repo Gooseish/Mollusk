@@ -16,7 +16,7 @@ namespace MolluskEditor.ViewModels;
 public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
 {
     private static CommandStack _commandStack;
-    private static DataModel<Terrain>? _terrainData; // Why is this nullable?
+    private static DataModel<Terrain> _terrainData;
     public static void InjectDependency(DataModel<Terrain> terrainData, CommandStack commandStack)
     {
         _terrainData = terrainData;
@@ -29,8 +29,6 @@ public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
     /// </summary>
     public TerrainDataViewModel(Terrain? terrain)
     {
-        Debug.Assert(_terrainData != null, 
-            "Tried to create terrain data viewmodel without reference to datamodel singleton.");
         terrain ??= _terrainData.New();
         _id = terrain.Id.ToString();
         _name = terrain.Name;
@@ -44,9 +42,6 @@ public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
     public TerrainDataViewModel() : this(null) { }
     public static ObservableCollection<IDataViewModel> ReadExisting()
     {
-        Debug.Assert(_terrainData != null, 
-            "Tried to read terrain data viewmodel without reference to datamodel singleton.");
-
         ObservableCollection<IDataViewModel> data = [];
         foreach (Terrain terrain in _terrainData.Data.Values)
             data.Add(new TerrainDataViewModel(terrain));
@@ -168,6 +163,6 @@ public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
     }
     public void Dispose()
     {
-        _terrainData?.Data.Remove(int.Parse(Id));
+        _terrainData.Data.Remove(int.Parse(Id));
     }
 }
