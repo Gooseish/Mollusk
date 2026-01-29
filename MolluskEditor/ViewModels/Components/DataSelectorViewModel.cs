@@ -60,6 +60,7 @@ public partial class DataSelectorViewModel : ViewModelBase
     [RelayCommand]
     private void AddData()
     {
+        // Todo: Command Stack
         Data.Add((IDataViewModel)Activator.CreateInstance(_dataViewModelType));
         SelectedDataIndex = Data.Count - 1;
         SortData();
@@ -67,6 +68,7 @@ public partial class DataSelectorViewModel : ViewModelBase
     [RelayCommand]
     private void RemoveData()
     {
+        // Todo: Command Stack
         if (SelectedData == null)
             return;
         int? lastIndex = SelectedDataIndex;

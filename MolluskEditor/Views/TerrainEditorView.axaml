@@ -12,6 +12,8 @@
       <Grid ColumnDefinitions="*, *" RowDefinitions="*, *" Margin="5">
         <!-- Terrain Fields -->
         <StackPanel Grid.Row="0" Grid.Column="0" Margin="5">
+          <Label>Id</Label>
+          <TextBox Text="{Binding SelectedTerrain.Id}"></TextBox>
           <Label>Name</Label>
           <TextBox Text="{Binding SelectedTerrain.Name}"></TextBox>
           <Label>Avoid</Label>

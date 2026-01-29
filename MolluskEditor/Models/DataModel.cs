@@ -15,7 +15,7 @@ public class DataModel<T> where T : IDataType, new()
         Data[result.Id] = result;
         return result;
     }
-    private int NextId()
+    public int NextId()
     {
         int n = 0;
         while (Data.ContainsKey(n))

@@ -58,10 +58,18 @@ public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
     private string _id;
     partial void OnIdChanged(string? oldValue, string newValue)
     {
-        // Todo: validate
+        if (!int.TryParse(newValue, out int id))
+        {
+            Id = oldValue;
+            return;
+        }
+        if (_terrainData.Data.ContainsKey(id))
+        {
+            Id = _terrainData.NextId().ToString();
+        }
         // Todo: command stack
         _terrainData.Data.Remove(int.Parse(oldValue));
-        _terrainData.Data[int.Parse(newValue)] = GetTerrain();
+        _terrainData.Data[int.Parse(Id)] = GetTerrain();
     }
     [ObservableProperty]
     private string _name;
