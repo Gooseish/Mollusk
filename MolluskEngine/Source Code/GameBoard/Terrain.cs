@@ -11,7 +11,7 @@ public class Terrain : IDataType
     public int Avoid {get;set;}
     public int Def {get;set;}
     public int Res {get;set;}
-    public bool Heals {get;set;} // Should probably be a property that checks if HealPercent > 0
+    public bool Heals {get {return HealPercent > 0;}} // Should probably be a property that checks if HealPercent > 0
     public int HealPercent {get;set;}
     /// <summary>
     /// Table of movement costs, where the first index is 
@@ -26,7 +26,6 @@ public class Terrain : IDataType
         Avoid = 0;
         Def = 0;
         Res = 0;
-        Heals = false;
         HealPercent = 0;
         MovementCost = DefaultMoveCost();
     }

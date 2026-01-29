@@ -35,7 +35,6 @@ public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
         _avoid = terrain.Avoid;
         _def = terrain.Def;
         _res = terrain.Res;
-        _heals = terrain.Heals;
         _healPercent = terrain.HealPercent;
         _movementCost = GetMovementCostCollection(terrain.MovementCost);
         WatchMovementCosts();
@@ -98,12 +97,6 @@ public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
     }
     private void SetRes(int value) { _terrain.Res = value;}
     [ObservableProperty]
-    private bool _heals;
-    partial void OnHealsChanged(bool oldValue, bool newValue)
-    {
-        _terrain.Heals = newValue;
-    }
-    [ObservableProperty]
     private int _healPercent;
     partial void OnHealPercentChanged(int oldValue, int newValue)
     {
@@ -141,7 +134,6 @@ public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
             Avoid = Avoid,
             Def = Def,
             Res = Res,
-            Heals = Heals,
             HealPercent = HealPercent,
             MovementCost = GetMovementCostArray(MovementCost),
         };
