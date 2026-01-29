@@ -35,7 +35,7 @@ public partial class TerrainEditorViewModel : EditorViewModel
     }
     private void OnUndoOrRedo(object? sender, EventArgs args)
     {
-        int? selectedIndex = SelectedTerrain?.Id;
+        int? selectedIndex = SelectedTerrain == null ? null : int.Parse(SelectedTerrain.Id);
         Data.Initialize();
         Data.FixIndexAfterUndo(selectedIndex);
     }

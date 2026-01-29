@@ -8,14 +8,13 @@ using MolluskEngine.Extensions;
 using MolluskEditor.Wrappers;
 using System.Diagnostics;
 using MolluskEditor.Commands;
-using Avalonia.Utilities;
 
 namespace MolluskEditor.ViewModels;
 
 public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
 {
     private static CommandStack _commandStack;
-    private static DataModel<Terrain>? _terrainData;
+    private static DataModel<Terrain>? _terrainData; // Why is this nullable?
     public static void InjectDependency(DataModel<Terrain> terrainData, CommandStack commandStack)
     {
         _terrainData = terrainData;
@@ -31,12 +30,12 @@ public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
         Debug.Assert(_terrainData != null, 
             "Tried to create terrain data viewmodel without reference to datamodel singleton.");
         terrain ??= _terrainData.New();
-        _id = terrain.Id;
+        _id = terrain.Id.ToString();
         _name = terrain.Name;
         _avoid = terrain.Avoid.ToString();
-        _def = terrain.Def;
-        _res = terrain.Res;
-        _healPercent = terrain.HealPercent;
+        _def = terrain.Def.ToString();
+        _res = terrain.Res.ToString();
+        _healPercent = terrain.HealPercent.ToString();
         _movementCost = GetMovementCostCollection(terrain.MovementCost);
         WatchMovementCosts();
     }
@@ -57,13 +56,15 @@ public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
             i.PropertyChanged += UpdateMovementCost;
     }
     #region Boilerplate Properties
-    private Terrain _terrain {get {return _terrainData.Data[Id];}}
+    private Terrain _terrain {get {return _terrainData.Data[int.Parse(Id)];}}
     [ObservableProperty]
-    private int _id;
-    partial void OnIdChanged(int oldValue, int newValue)
+    private string _id;
+    partial void OnIdChanged(string? oldValue, string newValue)
     {
-        _terrainData.Data.Remove(oldValue);
-        _terrainData.Data[newValue] = GetTerrain();
+        // Todo: validate
+        // Todo: command stack
+        _terrainData.Data.Remove(int.Parse(oldValue));
+        _terrainData.Data[int.Parse(newValue)] = GetTerrain();
     }
     [ObservableProperty]
     private string _name;
@@ -75,35 +76,53 @@ public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
     private void SetName(string value) {_terrain.Name = value;}
     [ObservableProperty]
     private string _avoid;
-    partial void OnAvoidChanged(string oldValue, string newValue)
+    partial void OnAvoidChanged(string? oldValue, string newValue)
     {
-        if (!int.TryParse(Avoid, out int avoid))
+        if (!int.TryParse(Avoid, out int avoid)) 
+        {
+            Avoid = oldValue ?? "";
             return;
+        }
         SetCommand<int> command = new(SetAvo, _terrain.Avoid, avoid);
         _commandStack.IssueCommand(command);
     }
     private void SetAvo(int value) { _terrain.Avoid = value; }
     [ObservableProperty]
-    private int _def;
-    partial void OnDefChanged(int oldValue, int newValue)
+    private string _def;
+    partial void OnDefChanged(string? oldValue, string newValue)
     {
-        SetCommand<int> command = new(SetDef, oldValue, newValue);
+        if (!int.TryParse(Def, out int def)) // Validate 
+        {
+            Def = oldValue ?? "";
+            return;
+        }
+        SetCommand<int> command = new(SetDef, _terrain.Def, def);
         _commandStack.IssueCommand(command);
     }
     private void SetDef(int value) {_terrain.Def = value;}
     [ObservableProperty]
-    private int _res;
-    partial void OnResChanged(int oldValue, int newValue)
+    private string _res;
+    partial void OnResChanged(string? oldValue, string newValue)
     {
-        SetCommand<int> command = new(SetRes, oldValue, newValue);
+        if (!int.TryParse(Res, out int res))
+        {
+            Res = oldValue ?? "";
+            return;
+        }
+        SetCommand<int> command = new(SetRes, _terrain.Res, res);
         _commandStack.IssueCommand(command);
     }
     private void SetRes(int value) { _terrain.Res = value;}
     [ObservableProperty]
-    private int _healPercent;
-    partial void OnHealPercentChanged(int oldValue, int newValue)
+    private string _healPercent;
+    partial void OnHealPercentChanged(string? oldValue, string newValue)
     {
-        SetCommand<int> command = new(SetHealPercent, oldValue, newValue);
+        if (!int.TryParse(HealPercent, out int healPercent))
+            {
+                HealPercent = oldValue ?? "";
+                return;
+            }
+        SetCommand<int> command = new(SetHealPercent, _terrain.HealPercent, healPercent);
         _commandStack.IssueCommand(command);
     }
     private void SetHealPercent(int value) {_terrain.HealPercent = value;}
@@ -132,17 +151,17 @@ public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
     {
         return new Terrain()
         {
-            Id = Id,
+            Id = int.Parse(Id),
             Name = Name,
             Avoid = int.Parse(Avoid),
-            Def = Def,
-            Res = Res,
-            HealPercent = HealPercent,
+            Def = int.Parse(Def),
+            Res = int.Parse(Res),
+            HealPercent = int.Parse(HealPercent),
             MovementCost = GetMovementCostArray(MovementCost),
         };
     }
     public void Dispose()
     {
-        _terrainData.Data.Remove(Id);
+        _terrainData?.Data.Remove(int.Parse(Id));
     }
 }
