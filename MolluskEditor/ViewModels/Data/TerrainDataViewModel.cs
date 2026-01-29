@@ -8,6 +8,7 @@ using MolluskEngine.Extensions;
 using MolluskEditor.Wrappers;
 using System.Diagnostics;
 using MolluskEditor.Commands;
+using Avalonia.Utilities;
 
 namespace MolluskEditor.ViewModels;
 
@@ -32,7 +33,7 @@ public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
         terrain ??= _terrainData.New();
         _id = terrain.Id;
         _name = terrain.Name;
-        _avoid = terrain.Avoid;
+        _avoid = terrain.Avoid.ToString();
         _def = terrain.Def;
         _res = terrain.Res;
         _healPercent = terrain.HealPercent;
@@ -73,10 +74,12 @@ public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
     }
     private void SetName(string value) {_terrain.Name = value;}
     [ObservableProperty]
-    private int _avoid;
-    partial void OnAvoidChanged(int oldValue, int newValue)
+    private string _avoid;
+    partial void OnAvoidChanged(string oldValue, string newValue)
     {
-        SetCommand<int> command = new(SetAvo, oldValue, newValue);
+        if (!int.TryParse(Avoid, out int avoid))
+            return;
+        SetCommand<int> command = new(SetAvo, _terrain.Avoid, avoid);
         _commandStack.IssueCommand(command);
     }
     private void SetAvo(int value) { _terrain.Avoid = value; }
@@ -131,7 +134,7 @@ public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
         {
             Id = Id,
             Name = Name,
-            Avoid = Avoid,
+            Avoid = int.Parse(Avoid),
             Def = Def,
             Res = Res,
             HealPercent = HealPercent,
