@@ -60,12 +60,11 @@ public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
     {
         if (!int.TryParse(newValue, out int id))
         {
-            Id = oldValue;
             return;
         }
         if (_terrainData.Data.ContainsKey(id))
         {
-            _id = _terrainData.NextId().ToString();
+            return;
         }
         // Todo: command stack
         _terrainData.Data.Remove(int.Parse(oldValue));
@@ -85,7 +84,6 @@ public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
     {
         if (!int.TryParse(Avoid, out int avoid)) 
         {
-            Avoid = oldValue ?? "";
             return;
         }
         SetCommand<int> command = new(SetAvo, _terrain.Avoid, avoid);
@@ -98,7 +96,6 @@ public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
     {
         if (!int.TryParse(Def, out int def)) // Validate 
         {
-            Def = oldValue ?? "";
             return;
         }
         SetCommand<int> command = new(SetDef, _terrain.Def, def);
@@ -111,7 +108,6 @@ public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
     {
         if (!int.TryParse(Res, out int res))
         {
-            Res = oldValue ?? "";
             return;
         }
         SetCommand<int> command = new(SetRes, _terrain.Res, res);
@@ -123,10 +119,9 @@ public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
     partial void OnHealPercentChanged(string? oldValue, string newValue)
     {
         if (!int.TryParse(HealPercent, out int healPercent))
-            {
-                HealPercent = oldValue ?? "";
-                return;
-            }
+        {
+            return;
+        }
         SetCommand<int> command = new(SetHealPercent, _terrain.HealPercent, healPercent);
         _commandStack.IssueCommand(command);
     }
@@ -138,7 +133,6 @@ public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
         List<int>? parsedMovementCost = MovementCost.ToIntList();
         if (parsedMovementCost == null)
         {
-            MovementCost = _terrain.MovementCost.ToWrappedStringCollection();
             return;
         }
         SetCommand<int[,]> command = new(SetMovementCost, _terrain.MovementCost, GetMovementCostArray(parsedMovementCost));
