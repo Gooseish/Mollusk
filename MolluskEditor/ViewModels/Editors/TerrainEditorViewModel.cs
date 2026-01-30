@@ -12,13 +12,15 @@ namespace MolluskEditor.ViewModels;
 public partial class TerrainEditorViewModel : EditorViewModel
 {
     private CommandStack _commandStack;
+    DataModel<Terrain> _dataModel;
     [ObservableProperty]
     private DataSelectorViewModel _data;
     [ObservableProperty]
     private TerrainDataViewModel? _selectedTerrain;
-    public TerrainEditorViewModel(CommandStack commandStack)
+    public TerrainEditorViewModel(CommandStack commandStack, DataModel<Terrain> dataModel)
     {
         _commandStack = commandStack;
+        _dataModel = dataModel;
         EditorName = MolluskEditor.Data.EditorName.Terrain;
         Data = new(typeof(TerrainDataViewModel), TerrainDataViewModel.ReadExisting);
         Subscribe();
@@ -43,6 +45,7 @@ public partial class TerrainEditorViewModel : EditorViewModel
     {
         SaveLoadService.ProjectLoaded += OnProjectLoaded;
         Data.IndexChanged += OnSelectionChanged;
+        _dataModel.IdsChanged += Data.SortDataEvent;
         _commandStack.OnUndo += OnUndoOrRedo;
         _commandStack.OnRedo += OnUndoOrRedo;
     }
@@ -50,6 +53,7 @@ public partial class TerrainEditorViewModel : EditorViewModel
     {
         SaveLoadService.ProjectLoaded -= OnProjectLoaded;
         Data.IndexChanged -= OnSelectionChanged; // This should be taken care of by the garbage collector, so maybe is unnecessary
+        _dataModel.IdsChanged -= Data.SortDataEvent;
         _commandStack.OnUndo -= OnUndoOrRedo;
         _commandStack.OnRedo -= OnUndoOrRedo;
     }

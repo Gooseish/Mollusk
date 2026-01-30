@@ -11,7 +11,7 @@ public class SetCommand<T> : Command
     {
        _setValue = setValue;
        _oldValue = oldValue;
-       _newValue = newValue; 
+       _newValue = newValue;
     }
     public override void Do()
     {

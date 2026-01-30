@@ -119,5 +119,9 @@ public partial class DataSelectorViewModel : ViewModelBase
     {
         Data = new ObservableCollection<IDataViewModel>(Data.OrderBy(i => i.Id));
     }
+    public void SortDataEvent(object? sender, EventArgs args)
+    {
+        SortData();
+    }
     #endregion
 }

@@ -32,20 +32,21 @@ public class CommandSequence : Command
         if (_calcified) throw new Exception(
             "Tried to add commands to an already executed command sequence");
     }
-
     public override void Do()
     {
         _calcified = true;
         foreach(Command command in _commands)
             { command.Do(); }
-        foreach(Action action in _cleanupActions)
-            { action.Invoke(); }
+        Cleanup();
     }
-
     public override void Undo()
     {
         for (int n = _commands.Count - 1; n >= 0; n--)
             _commands[n].Undo();
+        Cleanup();
+    }
+    private void Cleanup()
+    {
         foreach(Action action in _cleanupActions)
             { action.Invoke(); }
     }
