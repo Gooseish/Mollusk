@@ -12,8 +12,7 @@ namespace MolluskEditor.Wrappers;
 public partial class ObsVal<T> : ObservableValidator
 {
     [ObservableProperty]
-    [NotifyDataErrorInfo]
-    [ParseAsInt]
+    [NotifyDataErrorInfo][ParseAsInt]
     private T _value;
     public ObsVal(T value)
     {

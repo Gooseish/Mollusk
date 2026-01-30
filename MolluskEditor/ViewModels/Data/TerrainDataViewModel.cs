@@ -56,10 +56,7 @@ public partial class TerrainDataViewModel : ObservableValidator, IDataViewModel
     }
     #region Boilerplate Properties
     [ObservableProperty]
-    [NotifyDataErrorInfo]
-    [ParseAsInt]
-    [DontOverrideId]
-    // Needs validator to check id list
+    [NotifyDataErrorInfo][ParseAsInt][DontOverrideId]
     private string _id;
     partial void OnIdChanged(string? oldValue, string newValue)
     {
@@ -67,8 +64,8 @@ public partial class TerrainDataViewModel : ObservableValidator, IDataViewModel
         int id = int.Parse(Id);
         // Todo: command stack
         _terrainData.Data.Remove(_terrain.Id);
-        _terrain.Id = id;
         _terrainData.Data[id] = _terrain;
+        _terrain.Id = id;
     }
     public bool CheckIdAvailable(string idString)
         { return _terrainData.CheckIdAvailable(idString, _terrain.Id); }
@@ -81,8 +78,7 @@ public partial class TerrainDataViewModel : ObservableValidator, IDataViewModel
     }
     private void SetName(string value) {_terrain.Name = value;}
     [ObservableProperty]
-    [NotifyDataErrorInfo]
-    [ParseAsInt]
+    [NotifyDataErrorInfo][ParseAsInt]
     private string _avoid;
     partial void OnAvoidChanged(string? oldValue, string newValue)
     {
@@ -93,8 +89,7 @@ public partial class TerrainDataViewModel : ObservableValidator, IDataViewModel
     }
     private void SetAvo(int value) { _terrain.Avoid = value; }
     [ObservableProperty]
-    [NotifyDataErrorInfo]
-    [ParseAsInt]
+    [NotifyDataErrorInfo][ParseAsInt]
     private string _def;
     partial void OnDefChanged(string? oldValue, string newValue)
     {
@@ -105,8 +100,7 @@ public partial class TerrainDataViewModel : ObservableValidator, IDataViewModel
     }
     private void SetDef(int value) {_terrain.Def = value;}
     [ObservableProperty]
-    [NotifyDataErrorInfo]
-    [ParseAsInt]
+    [NotifyDataErrorInfo][ParseAsInt]
     private string _res;
     partial void OnResChanged(string? oldValue, string newValue)
     {
@@ -117,8 +111,7 @@ public partial class TerrainDataViewModel : ObservableValidator, IDataViewModel
     }
     private void SetRes(int value) { _terrain.Res = value;}
     [ObservableProperty]
-    [NotifyDataErrorInfo]
-    [ParseAsInt]
+    [NotifyDataErrorInfo][ParseAsInt]
     private string _healPercent;
     partial void OnHealPercentChanged(string? oldValue, string newValue)
     {
