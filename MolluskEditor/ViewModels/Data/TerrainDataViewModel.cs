@@ -1,15 +1,15 @@
 using System;
 using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using MolluskEditor.Models;
-using MolluskEngine.GameBoard;
-using MolluskEngine.Extensions;
 using MolluskEditor.Wrappers;
 using MolluskEditor.Commands;
-using System.Collections.Generic;
 using MolluskEditor.Extensions;
 using MolluskEditor.Validators;
+using MolluskEngine.GameBoard;
+using MolluskEngine.Extensions;
 
 namespace MolluskEditor.ViewModels;
 
@@ -62,10 +62,14 @@ public partial class TerrainDataViewModel : ObservableValidator, IDataViewModel
     {
         if (GetErrors(nameof(Id)).Any()) { return; }
         int id = int.Parse(Id);
-        // Todo: command stack
-        _terrainData.Data.Remove(_terrain.Id);
-        _terrainData.Data[id] = _terrain;
-        _terrain.Id = id;
+        ChangeDictKey(id, _terrain.Id);
+        SetId(id);
+    }
+    private void SetId(int value) {_terrain.Id = value;}
+    private void ChangeDictKey(int newValue, int oldValue)
+    {
+        _terrainData.Data.Remove(oldValue);
+        _terrainData.Data[newValue] = _terrain;
     }
     public bool CheckIdAvailable(string idString)
         { return _terrainData.CheckIdAvailable(idString, _terrain.Id); }
@@ -130,7 +134,8 @@ public partial class TerrainDataViewModel : ObservableValidator, IDataViewModel
         {
             return;
         }
-        SetCommand<int[,]> command = new(SetMovementCost, _terrain.MovementCost, GetMovementCostArray(parsedMovementCost));
+        SetCommand<int[,]> command = new(SetMovementCost, 
+            _terrain.MovementCost, GetMovementCostArray(parsedMovementCost));
         _commandStack.IssueCommand(command);
     }
     private void SetMovementCost(int[,] value) {_terrain.MovementCost = value;}
