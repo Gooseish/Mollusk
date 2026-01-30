@@ -43,6 +43,7 @@ public partial class DataSelectorViewModel : ViewModelBase
         {
             SelectedDataIndex = 0;
         }
+        SortData();
     }
     #region Events
     partial void OnSelectedDataChanged(IDataViewModel? oldValue, IDataViewModel? newValue)
