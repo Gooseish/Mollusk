@@ -65,6 +65,7 @@ public partial class TerrainDataViewModel : ObservableValidator, IDataViewModel
         CommandSequence command = new();
         command.Add(new MoveInDictCommand(ChangeDictKey, _terrain.Id, id));
         command.Add(new SetCommand<int>(SetId, _terrain.Id, id));
+        command.AddCleanup(_terrainData.OnIdsChanged);
         _commandStack.IssueCommand(command);
     }
     private void SetId(int value) {_terrain.Id = value;}

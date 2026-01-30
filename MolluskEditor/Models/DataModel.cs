@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
@@ -45,4 +46,13 @@ public class DataModel<T> where T : IDataType, new()
         }
         catch {} // Dangerous?
     }
+    # region Events
+    public void OnIdsChanged()
+    {
+        if (IdsChanged == null)
+            return;
+        IdsChanged.Invoke(null, EventArgs.Empty);
+    }
+    public EventHandler? IdsChanged;
+    #endregion
 }

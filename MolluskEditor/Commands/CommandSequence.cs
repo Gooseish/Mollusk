@@ -10,6 +10,7 @@ namespace MolluskEditor.Commands;
 public class CommandSequence : Command
 {
     private List<Command> _commands = [];
+    private List<Action> _cleanupActions = [];
     /// <summary>
     /// When Do() is first called, the command queue is
     /// calcified, preventing further modifications to the
@@ -18,23 +19,34 @@ public class CommandSequence : Command
     private bool _calcified;
     public void Add(Command command)
     {
-        if (_calcified)
-            throw new Exception("Tried to add commands to an already executed command sequence");
+        CalcifiedCheck();
         _commands.Add(command);
+    }
+    public void AddCleanup(Action action)
+    {
+        CalcifiedCheck();
+        _cleanupActions.Add(action);
+    }
+    private void CalcifiedCheck()
+    {
+        if (_calcified) throw new Exception(
+            "Tried to add commands to an already executed command sequence");
     }
 
     public override void Do()
     {
         _calcified = true;
         foreach(Command command in _commands)
-        {
-            command.Do();
-        }
+            { command.Do(); }
+        foreach(Action action in _cleanupActions)
+            { action.Invoke(); }
     }
 
     public override void Undo()
     {
         for (int n = _commands.Count - 1; n >= 0; n--)
             _commands[n].Undo();
+        foreach(Action action in _cleanupActions)
+            { action.Invoke(); }
     }
 }
