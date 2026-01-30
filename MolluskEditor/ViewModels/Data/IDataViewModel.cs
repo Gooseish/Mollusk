@@ -11,5 +11,5 @@ public interface IDataViewModel
     public void Dispose();
     public string Id {get;set;}
     public string Name {get;set;}
-    public bool IsIdAvailable(string idString);
+    public bool CheckIdAvailable(string idString);
 }

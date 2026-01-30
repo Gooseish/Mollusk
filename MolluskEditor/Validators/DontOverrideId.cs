@@ -21,7 +21,7 @@ public class DontOverrideId : ValidationAttribute
         if (value == null)
             return ValidationResult.Success;
         var parentObject = (IDataViewModel)validationContext.ObjectInstance;
-        if (parentObject.IsIdAvailable((string)value))
+        if (parentObject.CheckIdAvailable((string)value))
             return ValidationResult.Success;
         
         return new ValidationResult(_errorMessage ?? "ID already taken");

@@ -22,6 +22,14 @@ public class DataModel<T> where T : IDataType, new()
             n++;
         return n;
     }
+    public bool CheckIdAvailable(string idString, int inquirerId) // This should be part of the DataModel class?
+    {
+        if (!int.TryParse(idString, out int id)) // Don't reject because ParseAsInt should reject it
+            return true;
+        if (id == inquirerId) // Id is "available" because it's already yours
+            return true;
+        return !Data.ContainsKey(id);
+    }
     public void Write(string path, JsonSerializerOptions options)
     {
         string jsonString = JsonSerializer.Serialize(Data, options);

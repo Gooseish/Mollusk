@@ -23,14 +23,6 @@ public partial class TerrainDataViewModel : ObservableValidator, IDataViewModel
         _commandStack = commandStack;
     }
     private Terrain _terrain;
-    public bool IsIdAvailable(string idString)
-    {
-        if (!int.TryParse(idString, out int id))
-            return true;
-        if (id == _terrain.Id)
-            return true;
-        return !_terrainData.Data.ContainsKey(id);
-    }
     /// <summary>
     /// Create a new TerrainDataViewModel by creating a new
     /// terrain instance and registering it in the dictionary
@@ -78,6 +70,8 @@ public partial class TerrainDataViewModel : ObservableValidator, IDataViewModel
         _terrain.Id = id;
         _terrainData.Data[id] = _terrain;
     }
+    public bool CheckIdAvailable(string idString)
+        { return _terrainData.CheckIdAvailable(idString, _terrain.Id); }
     [ObservableProperty]
     private string _name;
     partial void OnNameChanged(string? oldValue, string newValue)
