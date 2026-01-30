@@ -6,12 +6,10 @@ using MolluskEditor.Models;
 using MolluskEngine.GameBoard;
 using MolluskEngine.Extensions;
 using MolluskEditor.Wrappers;
-using System.Diagnostics;
 using MolluskEditor.Commands;
 using System.Collections.Generic;
 using MolluskEditor.Extensions;
 using MolluskEditor.Validators;
-using System.ComponentModel.DataAnnotations;
 
 namespace MolluskEditor.ViewModels;
 
@@ -57,6 +55,9 @@ public partial class TerrainDataViewModel : ObservableValidator, IDataViewModel
     #region Boilerplate Properties
     private Terrain _terrain {get {return _terrainData.Data[int.Parse(Id)];}}
     [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [ParseAsInt]
+    // Needs validator to check id list
     private string _id;
     partial void OnIdChanged(string? oldValue, string newValue)
     {
@@ -86,47 +87,44 @@ public partial class TerrainDataViewModel : ObservableValidator, IDataViewModel
     private string _avoid;
     partial void OnAvoidChanged(string? oldValue, string newValue)
     {
-        if (GetErrors(nameof(Avoid)).Any()) 
-        {
-            return;
-        }
+        if (GetErrors(nameof(Avoid)).Any()) { return; }
         int avoid = int.Parse(Avoid);
         SetCommand<int> command = new(SetAvo, _terrain.Avoid, avoid);
         _commandStack.IssueCommand(command);
     }
     private void SetAvo(int value) { _terrain.Avoid = value; }
     [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [ParseAsInt]
     private string _def;
     partial void OnDefChanged(string? oldValue, string newValue)
     {
-        if (!int.TryParse(Def, out int def)) // Validate 
-        {
-            return;
-        }
+        if (GetErrors(nameof(Def)).Any()) { return; }
+        int def = int.Parse(Def);
         SetCommand<int> command = new(SetDef, _terrain.Def, def);
         _commandStack.IssueCommand(command);
     }
     private void SetDef(int value) {_terrain.Def = value;}
     [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [ParseAsInt]
     private string _res;
     partial void OnResChanged(string? oldValue, string newValue)
     {
-        if (!int.TryParse(Res, out int res))
-        {
-            return;
-        }
+        if (GetErrors(nameof(Res)).Any()) { return; }
+        int res = int.Parse(Res);
         SetCommand<int> command = new(SetRes, _terrain.Res, res);
         _commandStack.IssueCommand(command);
     }
     private void SetRes(int value) { _terrain.Res = value;}
     [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [ParseAsInt]
     private string _healPercent;
     partial void OnHealPercentChanged(string? oldValue, string newValue)
     {
-        if (!int.TryParse(HealPercent, out int healPercent))
-        {
-            return;
-        }
+        if (GetErrors(nameof(HealPercent)).Any()) { return; }
+        int healPercent = int.Parse(HealPercent);
         SetCommand<int> command = new(SetHealPercent, _terrain.HealPercent, healPercent);
         _commandStack.IssueCommand(command);
     }
