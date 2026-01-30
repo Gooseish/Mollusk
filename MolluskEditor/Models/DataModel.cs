@@ -7,7 +7,7 @@ namespace MolluskEditor.Models;
 
 public class DataModel<T> where T : IDataType, new()
 {
-    public Dictionary<int, T> Data = [];
+    public Dictionary<int, T> Data = []; // Public face should be IReadOnlyDictionary?
     public T New()
     {
         T result = new();

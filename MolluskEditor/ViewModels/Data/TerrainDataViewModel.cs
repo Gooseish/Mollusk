@@ -23,6 +23,14 @@ public partial class TerrainDataViewModel : ObservableValidator, IDataViewModel
         _commandStack = commandStack;
     }
     private Terrain _terrain;
+    public bool IsIdAvailable(string idString)
+    {
+        if (!int.TryParse(idString, out int id))
+            return true;
+        if (id == _terrain.Id)
+            return true;
+        return !_terrainData.Data.ContainsKey(id);
+    }
     /// <summary>
     /// Create a new TerrainDataViewModel by creating a new
     /// terrain instance and registering it in the dictionary
@@ -58,21 +66,16 @@ public partial class TerrainDataViewModel : ObservableValidator, IDataViewModel
     [ObservableProperty]
     [NotifyDataErrorInfo]
     [ParseAsInt]
+    [DontOverrideId]
     // Needs validator to check id list
     private string _id;
     partial void OnIdChanged(string? oldValue, string newValue)
     {
-        if (!int.TryParse(newValue, out int id))
-        {
-            return;
-        }
-        if (_terrainData.Data.ContainsKey(id))
-        {
-            return;
-        }
+        if (GetErrors(nameof(Id)).Any()) { return; }
+        int id = int.Parse(Id);
         // Todo: command stack
+        _terrainData.Data.Remove(_terrain.Id);
         _terrain.Id = id;
-        _terrainData.Data.Remove(int.Parse(oldValue));
         _terrainData.Data[id] = _terrain;
     }
     [ObservableProperty]
