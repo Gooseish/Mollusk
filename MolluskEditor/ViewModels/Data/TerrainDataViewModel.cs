@@ -10,10 +10,12 @@ using System.Diagnostics;
 using MolluskEditor.Commands;
 using System.Collections.Generic;
 using MolluskEditor.Extensions;
+using MolluskEditor.Validators;
+using System.ComponentModel.DataAnnotations;
 
 namespace MolluskEditor.ViewModels;
 
-public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
+public partial class TerrainDataViewModel : ObservableValidator, IDataViewModel
 {
     private static CommandStack _commandStack;
     private static DataModel<Terrain> _terrainData;
@@ -79,13 +81,16 @@ public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
     }
     private void SetName(string value) {_terrain.Name = value;}
     [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [ParseAsInt]
     private string _avoid;
     partial void OnAvoidChanged(string? oldValue, string newValue)
     {
-        if (!int.TryParse(Avoid, out int avoid)) 
+        if (GetErrors(nameof(Avoid)).Any()) 
         {
             return;
         }
+        int avoid = int.Parse(Avoid);
         SetCommand<int> command = new(SetAvo, _terrain.Avoid, avoid);
         _commandStack.IssueCommand(command);
     }
