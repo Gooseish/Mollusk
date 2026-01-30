@@ -22,6 +22,7 @@ public partial class TerrainDataViewModel : ObservableValidator, IDataViewModel
         _terrainData = terrainData;
         _commandStack = commandStack;
     }
+    private Terrain _terrain;
     /// <summary>
     /// Create a new TerrainDataViewModel by creating a new
     /// terrain instance and registering it in the dictionary
@@ -30,6 +31,7 @@ public partial class TerrainDataViewModel : ObservableValidator, IDataViewModel
     public TerrainDataViewModel(Terrain? terrain)
     {
         terrain ??= _terrainData.New();
+        _terrain = terrain;
         _id = terrain.Id.ToString();
         _name = terrain.Name;
         _avoid = terrain.Avoid.ToString();
@@ -53,7 +55,6 @@ public partial class TerrainDataViewModel : ObservableValidator, IDataViewModel
             i.PropertyChanged += UpdateMovementCost;
     }
     #region Boilerplate Properties
-    private Terrain _terrain {get {return _terrainData.Data[int.Parse(Id)];}}
     [ObservableProperty]
     [NotifyDataErrorInfo]
     [ParseAsInt]
@@ -70,8 +71,9 @@ public partial class TerrainDataViewModel : ObservableValidator, IDataViewModel
             return;
         }
         // Todo: command stack
+        _terrain.Id = id;
         _terrainData.Data.Remove(int.Parse(oldValue));
-        _terrainData.Data[int.Parse(Id)] = GetTerrain();
+        _terrainData.Data[id] = _terrain;
     }
     [ObservableProperty]
     private string _name;
@@ -153,19 +155,6 @@ public partial class TerrainDataViewModel : ObservableValidator, IDataViewModel
         return movementCostArray.ToWrappedStringCollection();
     }
     #endregion
-    public Terrain GetTerrain()
-    {
-        return new Terrain()
-        {
-            Id = int.Parse(Id),
-            Name = Name,
-            Avoid = int.Parse(Avoid),
-            Def = int.Parse(Def),
-            Res = int.Parse(Res),
-            HealPercent = int.Parse(HealPercent),
-            MovementCost = GetMovementCostArray(MovementCost.ToIntList()),
-        };
-    }
     public void Dispose()
     {
         _terrainData.Data.Remove(int.Parse(Id));
