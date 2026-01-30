@@ -34,7 +34,7 @@ public class CommandSequence : Command
 
     public override void Undo()
     {
-        for (int n = _commands.Count; n > 0; --n)
+        for (int n = _commands.Count - 1; n >= 0; n--)
             _commands[n].Undo();
     }
 }

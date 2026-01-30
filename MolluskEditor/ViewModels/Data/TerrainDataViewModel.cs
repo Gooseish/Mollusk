@@ -62,8 +62,10 @@ public partial class TerrainDataViewModel : ObservableValidator, IDataViewModel
     {
         if (GetErrors(nameof(Id)).Any()) { return; }
         int id = int.Parse(Id);
-        ChangeDictKey(id, _terrain.Id);
-        SetId(id);
+        CommandSequence command = new();
+        command.Add(new MoveInDictCommand(ChangeDictKey, _terrain.Id, id));
+        command.Add(new SetCommand<int>(SetId, _terrain.Id, id));
+        _commandStack.IssueCommand(command);
     }
     private void SetId(int value) {_terrain.Id = value;}
     private void ChangeDictKey(int newValue, int oldValue)
