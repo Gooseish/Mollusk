@@ -15,4 +15,5 @@ public interface IDataViewModel
     public string Name {get;set;}
     public bool CheckIdAvailable(string idString);
     public void FixFields();
+    public void OnAdded();
 }

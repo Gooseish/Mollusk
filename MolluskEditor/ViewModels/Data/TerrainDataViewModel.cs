@@ -177,6 +177,7 @@ public partial class TerrainDataViewModel : ObservableValidator, IDataViewModel
     public void Dispose()
     {
         _terrainData.Data.Remove(int.Parse(Id));
+        _terrainData.OnAnyChange();
     }
     public void FixFields()
     {
@@ -186,5 +187,10 @@ public partial class TerrainDataViewModel : ObservableValidator, IDataViewModel
         FixRes();
         FixHealPercent();
         FixMovementCost();
+    }
+
+    public void OnAdded()
+    {
+        _terrainData.OnAnyChange();
     }
 }

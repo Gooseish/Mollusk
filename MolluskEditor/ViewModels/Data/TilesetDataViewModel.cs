@@ -121,4 +121,9 @@ public partial class TilesetDataViewModel : ObservableValidator, IDataViewModel
         FixId();
         FixTerrainData();
     }
+
+    public void OnAdded()
+    {
+        
+    }
 }

@@ -73,6 +73,7 @@ public partial class DataSelectorViewModel : ViewModelBase
         // Todo: Command Stack
         Data.Add((IDataViewModel)Activator.CreateInstance(_dataViewModelType));
         SelectedDataIndex = Data.Count - 1;
+        SelectedData?.OnAdded();
     }
     [RelayCommand]
     private void RemoveData()
