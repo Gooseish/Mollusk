@@ -66,6 +66,7 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         UnitsTabVisible = VisibleEditorTabs.Contains(EditorName.Units);
         TerrainTabVisible = VisibleEditorTabs.Contains(EditorName.Terrain);
+        TilesetsTabVisible = VisibleEditorTabs.Contains(EditorName.Tilesets);
     }
     private void ChildWindowClosed(object? sender, EventArgs args)
     {
@@ -91,4 +92,12 @@ public partial class MainWindowViewModel : ViewModelBase
     }
     [ObservableProperty]
     private bool _terrainTabVisible = true;
+    [RelayCommand]
+    private void GoToTilesets()
+    {
+        try { CurrentEditor.Dispose(); } catch {}
+        CurrentEditor = _editorFactory.GetEditorViewModel(EditorName.Tilesets);
+    }
+    [ObservableProperty]
+    private bool _tilesetsTabVisible = true;
 }

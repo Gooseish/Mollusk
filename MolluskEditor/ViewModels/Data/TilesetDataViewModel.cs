@@ -31,6 +31,7 @@ public partial class TilesetDataViewModel : ObservableValidator, IDataViewModel
         _name = tileset.Name;
         _imageData = tileset.ImageData;
         _terrainData = tileset.TerrainData.ToWrappedStringCollection();
+        WatchTerrainData();
     }
     public TilesetDataViewModel() : this(null) { }
 
@@ -45,16 +46,62 @@ public partial class TilesetDataViewModel : ObservableValidator, IDataViewModel
     [ObservableProperty]
     [NotifyDataErrorInfo][ParseAsInt][DontOverrideId]
     private string _id;
+    partial void OnIdChanged(string? oldValue, string newValue)
+    {
+        if (GetErrors(nameof(Id)).Any()) { return; }
+        int id = int.Parse(Id);
+        if (id == _tileset.Id) { return; }
+        CommandSequence command = new();
+        command.Add(new MoveInDictCommand(ChangeDictKey, _tileset.Id, id));
+        command.Add(new SetCommand<int>(SetId, _tileset.Id, id));
+        command.AddCleanup(_tilesetData.OnIdsChanged);
+        _commandStack.IssueCommand(command);
+    }
     private void SetId(int value) {_tileset.Id = value;}
     private void FixId() {Id = _tileset.Id.ToString();}
+    private void ChangeDictKey(int newValue, int oldValue)
+    {
+        _tilesetData.Data.Remove(oldValue);
+        _tilesetData.Data[newValue] = _tileset;
+    }
     public bool CheckIdAvailable(string idString)
         { return _tilesetData.CheckIdAvailable(idString, _tileset.Id); }
     [ObservableProperty]
     private string _name;
+    partial void OnNameChanged(string? oldValue, string newValue)
+    {
+        SetCommand<string> command = new(SetName, oldValue, newValue);
+        _commandStack.IssueCommand(command);
+    }
+    private void SetName(string value) {_tileset.Name = value;}
     [ObservableProperty]
+    // Needs validation to make sure image name is correct
     private string _imageData;
+    partial void OnImageDataChanged(string? oldValue, string newValue)
+    {
+        SetCommand<string> command = new(SetImageData, oldValue, newValue);
+        _commandStack.IssueCommand(command);
+    }
+    private void SetImageData(string value) {_tileset.ImageData = value;}
     [ObservableProperty]
     private ObservableCollection<ObsVal<string>> _terrainData;
+    private void UpdateTerrainData(object? sender, EventArgs args)
+    {
+        List<int>? parsedTerrainData = TerrainData.ToIntList();
+        if (parsedTerrainData == null) { return; }
+        if (parsedTerrainData == (List<int>)[.. _tileset.TerrainData])
+            { return; }
+        SetCommand<int[]> command = new(SetTerrainData,
+            _tileset.TerrainData, parsedTerrainData.ToArray());
+        _commandStack.IssueCommand(command);
+    }
+    private void SetTerrainData(int[] value) {_tileset.TerrainData = value;}
+    private void FixTerrainData() {TerrainData = _tileset.TerrainData.ToWrappedStringCollection();}
+    private void WatchTerrainData()
+    {
+        foreach (ObsVal<string> i in TerrainData)
+            i.PropertyChanged += UpdateTerrainData;
+    }
     #endregion
     public void Dispose()
     {
@@ -63,5 +110,6 @@ public partial class TilesetDataViewModel : ObservableValidator, IDataViewModel
     public void FixFields()
     {
         FixId();
+        FixTerrainData();
     }
 }

@@ -49,11 +49,6 @@ public partial class TerrainDataViewModel : ObservableValidator, IDataViewModel
             data.Add(new TerrainDataViewModel(terrain));
         return data;
     }
-    public void WatchMovementCosts()
-    {
-        foreach (ObsVal<string> i in MovementCost)
-            i.PropertyChanged += UpdateMovementCost;
-    }
     #region Boilerplate Properties
     [ObservableProperty]
     [NotifyDataErrorInfo][ParseAsInt][DontOverrideId]
@@ -140,7 +135,7 @@ public partial class TerrainDataViewModel : ObservableValidator, IDataViewModel
     private void FixHealPercent() { HealPercent = _terrain.HealPercent.ToString();}
     [ObservableProperty]
     private ObservableCollection<ObsVal<string>> _movementCost;
-    public void UpdateMovementCost(object? sender, EventArgs eventArgs)
+    private void UpdateMovementCost(object? sender, EventArgs eventArgs)
     {
         List<int>? parsedMovementCost = MovementCost.ToIntList();
         if (parsedMovementCost == null) { return; }
@@ -162,6 +157,11 @@ public partial class TerrainDataViewModel : ObservableValidator, IDataViewModel
         return movementCostArray.ToWrappedStringCollection();
     }
     private void FixMovementCost() { MovementCost = GetMovementCostCollection(_terrain.MovementCost); }
+    private void WatchMovementCosts()
+    {
+        foreach (ObsVal<string> i in MovementCost)
+            i.PropertyChanged += UpdateMovementCost;
+    }
     #endregion
     public void Dispose()
     {
