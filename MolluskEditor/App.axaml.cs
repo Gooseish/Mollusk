@@ -63,6 +63,7 @@ public partial class App : Application
                 ChildWindowViewModel resultViewModel = x.GetRequiredService<ChildWindowViewModel>();
                 resultViewModel.GoToEditor(name); // Is there a way to handle this in the constructor?
                 resultView.DataContext = resultViewModel;
+                resultView.Subscribe();
                 return resultView;
             });
             collection.AddSingleton<WindowFactory>();
