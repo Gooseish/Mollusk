@@ -21,4 +21,11 @@ public partial class ChildWindowViewModel: ViewModelBase
     {
         CurrentEditor = _editorFactory.GetEditorViewModel(name);
     }
+    public void OnClose()
+    {
+        if (ChildWindowClosed == null)
+            return;
+        ChildWindowClosed.Invoke(this, EventArgs.Empty);
+    }
+    public EventHandler? ChildWindowClosed;
 }

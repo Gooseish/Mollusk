@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Avalonia.Controls.Notifications;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -50,7 +51,9 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         if (VisibleEditorTabs.Count() <= 1)
             return;
-        _childWindows.Add(_windowFactory.LaunchNewChildWindow(_currentEditor.EditorName));
+        var childWindow = _windowFactory.LaunchNewChildWindow(_currentEditor.EditorName);
+        _childWindows.Add(childWindow);
+        childWindow.ChildWindowClosed += ChildWindowClosed;
         GoToFirstTab();
         RefreshEditorTabs();
     }
@@ -64,7 +67,14 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         UnitsTabVisible = VisibleEditorTabs.Contains(EditorName.Units);
         TerrainTabVisible = VisibleEditorTabs.Contains(EditorName.Terrain);
-
+    }
+    private void ChildWindowClosed(object? sender, EventArgs args)
+    {
+        var senderChildWindow = (ChildWindowViewModel?)sender;
+        if (senderChildWindow == null)
+            return; // But this should never happen
+        _childWindows.Remove(senderChildWindow);
+        //senderChildWindow.ChildWindowClosed -= WindowClosed; // Handled by garbage collector?
     }
     [RelayCommand]
     private void GoToUnits()
