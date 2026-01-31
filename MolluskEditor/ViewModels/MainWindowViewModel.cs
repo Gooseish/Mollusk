@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Avalonia.Controls.Notifications;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MolluskEditor.Commands;
@@ -74,7 +73,6 @@ public partial class MainWindowViewModel : ViewModelBase
         if (senderChildWindow == null)
             return; // But this should never happen
         _childWindows.Remove(senderChildWindow);
-        //senderChildWindow.ChildWindowClosed -= WindowClosed; // Handled by garbage collector?
         RefreshEditorTabs();
     }
     [RelayCommand]
