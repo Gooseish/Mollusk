@@ -39,8 +39,12 @@
         </DockPanel>
         <Button Command="{Binding EjectEditorCommand}">Eject Editor</Button>
         <StackPanel Orientation="Horizontal">
-            <Button Command="{Binding GoToUnitsCommand}">Units</Button>
-            <Button Command="{Binding GoToTerrainCommand}">Terrain</Button>
+            <Button Command="{Binding GoToUnitsCommand}"
+                    Content="Units"
+                    IsVisible="{Binding UnitsTabVisible}"/>
+            <Button Command="{Binding GoToTerrainCommand}"
+                    Content="Terrain"
+                    IsVisible="{Binding TerrainTabVisible}"/>
         </StackPanel>
         <ContentControl Content = "{Binding CurrentEditor}"/>
     </StackPanel>

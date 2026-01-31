@@ -43,11 +43,14 @@ public partial class DataSelectorViewModel : ViewModelBase
         {
             SelectedDataIndex = 0;
         }
+        SortData();
     }
     #region Events
     partial void OnSelectedDataChanged(IDataViewModel? oldValue, IDataViewModel? newValue)
     {
         IndexChanged.Invoke(this, EventArgs.Empty);
+        if (SelectedData != null)
+            SelectedData.FixFields();
     }
     /// <summary>
     /// Event that notifies the parent editor that the selected data
@@ -60,6 +63,7 @@ public partial class DataSelectorViewModel : ViewModelBase
     [RelayCommand]
     private void AddData()
     {
+        // Todo: Command Stack
         Data.Add((IDataViewModel)Activator.CreateInstance(_dataViewModelType));
         SelectedDataIndex = Data.Count - 1;
         SortData();
@@ -67,6 +71,7 @@ public partial class DataSelectorViewModel : ViewModelBase
     [RelayCommand]
     private void RemoveData()
     {
+        // Todo: Command Stack
         if (SelectedData == null)
             return;
         int? lastIndex = SelectedDataIndex;
@@ -116,6 +121,10 @@ public partial class DataSelectorViewModel : ViewModelBase
     private void SortData()
     {
         Data = new ObservableCollection<IDataViewModel>(Data.OrderBy(i => i.Id));
+    }
+    public void SortDataEvent(object? sender, EventArgs args)
+    {
+        SortData();
     }
     #endregion
 }

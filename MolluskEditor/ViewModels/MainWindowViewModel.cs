@@ -1,8 +1,13 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MolluskEditor.Commands;
+using MolluskEditor.Data;
 using MolluskEditor.Factories;
 using MolluskEditor.Services;
+using MolluskEngine.Extensions;
 
 namespace MolluskEditor.ViewModels;
 
@@ -14,6 +19,11 @@ public partial class MainWindowViewModel : ViewModelBase
     private WindowFactory _windowFactory;
     private SaveLoadService _saveLoadService;
     private CommandStack _commandStack;
+    private List<ChildWindowViewModel> _childWindows = [];
+    public IEnumerable<EditorName?> ChildWindows { get {
+        return _childWindows.Select(n => n.EditorName);}}
+    public IEnumerable<EditorName> VisibleEditorTabs { get{
+        return EditorName.Values().Where(n => !ChildWindows.Contains(n)); }}
     
     public MainWindowViewModel(EditorFactory editorFactory, WindowFactory windowFactory, 
         SaveLoadService saveLoadService, CommandStack commandStack)
@@ -25,46 +35,60 @@ public partial class MainWindowViewModel : ViewModelBase
         GoToUnits();
     }
     [RelayCommand]
-    private void SaveProject()
-    {
-        _saveLoadService.Save();
-    }
+    private void SaveProject() { _saveLoadService.Save(); }
     [RelayCommand]
-    private void LoadProject()
-    {
-        _saveLoadService.Open();
-    }
+    private void LoadProject() { _saveLoadService.Open(); }
     [RelayCommand]
-    private void Undo()
-    {
-        _commandStack.Undo();
-    }
+    private void Undo() { _commandStack.Undo(); }
     [RelayCommand]
-    private void Redo()
-    {
-        _commandStack.Redo();
-    }
+    private void Redo() { _commandStack.Redo(); }
     /// <summary>
     /// Pops out the current editor as a new window
     /// </summary>
     [RelayCommand]
     private void EjectEditor()
     {
-        //CurrentEditor.Dispose(); // Add this line when ejecting an editor removes it from the main window
-        _windowFactory.LaunchNewChildWindow(_currentEditor.EditorName);
+        if (VisibleEditorTabs.Count() <= 1)
+            return;
+        var childWindow = _windowFactory.LaunchNewChildWindow(_currentEditor.EditorName);
+        _childWindows.Add(childWindow);
+        childWindow.ChildWindowClosed += ChildWindowClosed;
+        GoToFirstTab();
+        RefreshEditorTabs();
+    }
+    private void GoToFirstTab()
+    {
+        try { CurrentEditor.Dispose(); } catch {}
+        CurrentEditor = _editorFactory.GetEditorViewModel(
+            VisibleEditorTabs.ElementAt(0));
+    }
+    private void RefreshEditorTabs()
+    {
+        UnitsTabVisible = VisibleEditorTabs.Contains(EditorName.Units);
+        TerrainTabVisible = VisibleEditorTabs.Contains(EditorName.Terrain);
+    }
+    private void ChildWindowClosed(object? sender, EventArgs args)
+    {
+        var senderChildWindow = (ChildWindowViewModel?)sender;
+        if (senderChildWindow == null)
+            return; // But this should never happen
+        _childWindows.Remove(senderChildWindow);
+        RefreshEditorTabs();
     }
     [RelayCommand]
     private void GoToUnits()
     {
-        try {CurrentEditor.Dispose();}
-        catch {}
-        CurrentEditor = _editorFactory.GetEditorViewModel(Data.EditorName.Units);
+        try { CurrentEditor.Dispose(); } catch {}
+        CurrentEditor = _editorFactory.GetEditorViewModel(EditorName.Units);
     }
+    [ObservableProperty]
+    private bool _unitsTabVisible = true;
     [RelayCommand]
     private void GoToTerrain()
     {
-        try {CurrentEditor.Dispose();}
-        catch {}
-        CurrentEditor = _editorFactory.GetEditorViewModel(Data.EditorName.Terrain);
+        try { CurrentEditor.Dispose(); } catch {}
+        CurrentEditor = _editorFactory.GetEditorViewModel(EditorName.Terrain);
     }
+    [ObservableProperty]
+    private bool _terrainTabVisible = true;
 }

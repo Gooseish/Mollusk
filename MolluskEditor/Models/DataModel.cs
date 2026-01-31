@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
@@ -7,7 +8,7 @@ namespace MolluskEditor.Models;
 
 public class DataModel<T> where T : IDataType, new()
 {
-    public Dictionary<int, T> Data = [];
+    public Dictionary<int, T> Data = []; // Public face should be IReadOnlyDictionary?
     public T New()
     {
         T result = new();
@@ -15,12 +16,20 @@ public class DataModel<T> where T : IDataType, new()
         Data[result.Id] = result;
         return result;
     }
-    private int NextId()
+    public int NextId()
     {
         int n = 0;
         while (Data.ContainsKey(n))
             n++;
         return n;
+    }
+    public bool CheckIdAvailable(string idString, int inquirerId) // This should be part of the DataModel class?
+    {
+        if (!int.TryParse(idString, out int id)) // Don't reject because ParseAsInt should reject it
+            return true;
+        if (id == inquirerId) // Id is "available" because it's already yours
+            return true;
+        return !Data.ContainsKey(id);
     }
     public void Write(string path, JsonSerializerOptions options)
     {
@@ -37,4 +46,13 @@ public class DataModel<T> where T : IDataType, new()
         }
         catch {} // Dangerous?
     }
+    # region Events
+    public void OnIdsChanged()
+    {
+        if (IdsChanged == null)
+            return;
+        IdsChanged.Invoke(null, EventArgs.Empty);
+    }
+    public EventHandler? IdsChanged;
+    #endregion
 }

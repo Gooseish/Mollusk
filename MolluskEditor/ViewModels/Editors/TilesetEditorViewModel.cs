@@ -6,6 +6,6 @@ public class TilesetEditorViewModel : EditorViewModel
 {
     public TilesetEditorViewModel()
     {
-        EditorName = Data.EditorName.Tilesets;
+        //EditorName = Data.EditorName.Tilesets;
     }
 }

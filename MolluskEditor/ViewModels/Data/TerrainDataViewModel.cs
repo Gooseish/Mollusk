@@ -1,27 +1,28 @@
 using System;
 using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using MolluskEditor.Models;
+using MolluskEditor.Wrappers;
+using MolluskEditor.Commands;
+using MolluskEditor.Extensions;
+using MolluskEditor.Validators;
 using MolluskEngine.GameBoard;
 using MolluskEngine.Extensions;
-using MolluskEditor.Wrappers;
-using System.Diagnostics;
-using MolluskEditor.Commands;
-using System.Collections.Generic;
-using MolluskEditor.Extensions;
 
 namespace MolluskEditor.ViewModels;
 
-public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
+public partial class TerrainDataViewModel : ObservableValidator, IDataViewModel
 {
     private static CommandStack _commandStack;
-    private static DataModel<Terrain>? _terrainData; // Why is this nullable?
+    private static DataModel<Terrain> _terrainData;
     public static void InjectDependency(DataModel<Terrain> terrainData, CommandStack commandStack)
     {
         _terrainData = terrainData;
         _commandStack = commandStack;
     }
+    private Terrain _terrain;
     /// <summary>
     /// Create a new TerrainDataViewModel by creating a new
     /// terrain instance and registering it in the dictionary
@@ -29,9 +30,8 @@ public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
     /// </summary>
     public TerrainDataViewModel(Terrain? terrain)
     {
-        Debug.Assert(_terrainData != null, 
-            "Tried to create terrain data viewmodel without reference to datamodel singleton.");
         terrain ??= _terrainData.New();
+        _terrain = terrain;
         _id = terrain.Id.ToString();
         _name = terrain.Name;
         _avoid = terrain.Avoid.ToString();
@@ -44,9 +44,6 @@ public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
     public TerrainDataViewModel() : this(null) { }
     public static ObservableCollection<IDataViewModel> ReadExisting()
     {
-        Debug.Assert(_terrainData != null, 
-            "Tried to read terrain data viewmodel without reference to datamodel singleton.");
-
         ObservableCollection<IDataViewModel> data = [];
         foreach (Terrain terrain in _terrainData.Data.Values)
             data.Add(new TerrainDataViewModel(terrain));
@@ -58,16 +55,29 @@ public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
             i.PropertyChanged += UpdateMovementCost;
     }
     #region Boilerplate Properties
-    private Terrain _terrain {get {return _terrainData.Data[int.Parse(Id)];}}
     [ObservableProperty]
+    [NotifyDataErrorInfo][ParseAsInt][DontOverrideId]
     private string _id;
     partial void OnIdChanged(string? oldValue, string newValue)
     {
-        // Todo: validate
-        // Todo: command stack
-        _terrainData.Data.Remove(int.Parse(oldValue));
-        _terrainData.Data[int.Parse(newValue)] = GetTerrain();
+        if (GetErrors(nameof(Id)).Any()) { return; }
+        int id = int.Parse(Id);
+        if (id == _terrain.Id) { return; }
+        CommandSequence command = new();
+        command.Add(new MoveInDictCommand(ChangeDictKey, _terrain.Id, id));
+        command.Add(new SetCommand<int>(SetId, _terrain.Id, id));
+        command.AddCleanup(_terrainData.OnIdsChanged);
+        _commandStack.IssueCommand(command);
     }
+    private void SetId(int value) {_terrain.Id = value;}
+    private void FixId() {Id = _terrain.Id.ToString();}
+    private void ChangeDictKey(int newValue, int oldValue)
+    {
+        _terrainData.Data.Remove(oldValue);
+        _terrainData.Data[newValue] = _terrain;
+    }
+    public bool CheckIdAvailable(string idString)
+        { return _terrainData.CheckIdAvailable(idString, _terrain.Id); }
     [ObservableProperty]
     private string _name;
     partial void OnNameChanged(string? oldValue, string newValue)
@@ -77,68 +87,67 @@ public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
     }
     private void SetName(string value) {_terrain.Name = value;}
     [ObservableProperty]
+    [NotifyDataErrorInfo][ParseAsInt]
     private string _avoid;
     partial void OnAvoidChanged(string? oldValue, string newValue)
     {
-        if (!int.TryParse(Avoid, out int avoid)) 
-        {
-            Avoid = oldValue ?? "";
-            return;
-        }
+        if (GetErrors(nameof(Avoid)).Any()) { return; }
+        int avoid = int.Parse(Avoid);
+        if (avoid == _terrain.Avoid) { return; }
         SetCommand<int> command = new(SetAvo, _terrain.Avoid, avoid);
         _commandStack.IssueCommand(command);
     }
     private void SetAvo(int value) { _terrain.Avoid = value; }
+    private void FixAvoid() {Avoid = _terrain.Avoid.ToString();}
     [ObservableProperty]
+    [NotifyDataErrorInfo][ParseAsInt]
     private string _def;
     partial void OnDefChanged(string? oldValue, string newValue)
     {
-        if (!int.TryParse(Def, out int def)) // Validate 
-        {
-            Def = oldValue ?? "";
-            return;
-        }
+        if (GetErrors(nameof(Def)).Any()) { return; }
+        int def = int.Parse(Def);
+        if (def == _terrain.Def) { return; }
         SetCommand<int> command = new(SetDef, _terrain.Def, def);
         _commandStack.IssueCommand(command);
     }
     private void SetDef(int value) {_terrain.Def = value;}
+    private void FixDef() {Def = _terrain.Def.ToString();}
     [ObservableProperty]
+    [NotifyDataErrorInfo][ParseAsInt]
     private string _res;
     partial void OnResChanged(string? oldValue, string newValue)
     {
-        if (!int.TryParse(Res, out int res))
-        {
-            Res = oldValue ?? "";
-            return;
-        }
+        if (GetErrors(nameof(Res)).Any()) { return; }
+        int res = int.Parse(Res);
+        if (res == _terrain.Res) { return; }
         SetCommand<int> command = new(SetRes, _terrain.Res, res);
         _commandStack.IssueCommand(command);
     }
     private void SetRes(int value) { _terrain.Res = value;}
+    private void FixRes() { Res = _terrain.Res.ToString();}
     [ObservableProperty]
+    [NotifyDataErrorInfo][ParseAsInt]
     private string _healPercent;
     partial void OnHealPercentChanged(string? oldValue, string newValue)
     {
-        if (!int.TryParse(HealPercent, out int healPercent))
-            {
-                HealPercent = oldValue ?? "";
-                return;
-            }
+        if (GetErrors(nameof(HealPercent)).Any()) { return; }
+        int healPercent = int.Parse(HealPercent);
+        if (healPercent == _terrain.HealPercent) { return; }
         SetCommand<int> command = new(SetHealPercent, _terrain.HealPercent, healPercent);
         _commandStack.IssueCommand(command);
     }
     private void SetHealPercent(int value) {_terrain.HealPercent = value;}
+    private void FixHealPercent() { HealPercent = _terrain.HealPercent.ToString();}
     [ObservableProperty]
     private ObservableCollection<ObsVal<string>> _movementCost;
     public void UpdateMovementCost(object? sender, EventArgs eventArgs)
     {
         List<int>? parsedMovementCost = MovementCost.ToIntList();
-        if (parsedMovementCost == null)
-        {
-            MovementCost = _terrain.MovementCost.ToWrappedStringCollection();
-            return;
-        }
-        SetCommand<int[,]> command = new(SetMovementCost, _terrain.MovementCost, GetMovementCostArray(parsedMovementCost));
+        if (parsedMovementCost == null) { return; }
+        if (parsedMovementCost == (List<int>)[.. _terrain.MovementCost]) 
+            { return; }
+        SetCommand<int[,]> command = new(SetMovementCost, 
+            _terrain.MovementCost, GetMovementCostArray(parsedMovementCost));
         _commandStack.IssueCommand(command);
     }
     private void SetMovementCost(int[,] value) {_terrain.MovementCost = value;}
@@ -152,22 +161,19 @@ public partial class TerrainDataViewModel : ObservableObject, IDataViewModel
     {
         return movementCostArray.ToWrappedStringCollection();
     }
+    private void FixMovementCost() { MovementCost = GetMovementCostCollection(_terrain.MovementCost); }
     #endregion
-    public Terrain GetTerrain()
-    {
-        return new Terrain()
-        {
-            Id = int.Parse(Id),
-            Name = Name,
-            Avoid = int.Parse(Avoid),
-            Def = int.Parse(Def),
-            Res = int.Parse(Res),
-            HealPercent = int.Parse(HealPercent),
-            MovementCost = GetMovementCostArray(MovementCost.ToIntList()),
-        };
-    }
     public void Dispose()
     {
-        _terrainData?.Data.Remove(int.Parse(Id));
+        _terrainData.Data.Remove(int.Parse(Id));
+    }
+    public void FixFields()
+    {
+        FixId();
+        FixAvoid();
+        FixDef();
+        FixRes();
+        FixHealPercent();
+        FixMovementCost();
     }
 }

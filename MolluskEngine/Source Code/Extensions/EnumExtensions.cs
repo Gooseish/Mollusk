@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MolluskEngine.Extensions;
 
@@ -14,6 +15,10 @@ public static class EnumExtensions
         public static string[] Names()
         {
             return Enum.GetNames(typeof(T));
+        }
+        public static IEnumerable<T> Values()
+        {
+            return Enum.GetValues(typeof(T)).Cast<T>();
         }
     }
 }
