@@ -8,5 +8,13 @@
              x:Class="MolluskEditor.Views.TilesetEditorView">
   <StackPanel Orientation="Horizontal">
     <ContentControl Content = "{Binding Data}"/>
+    <Grid ColumnDefinitions="*, *" RowDefinitions="*, *" Margin="5">
+      <StackPanel Grid.Row="0" Grid.Column="0" Margin="5">
+          <Label>Id</Label>
+          <TextBox Text="{Binding SelectedTileset.Id}"></TextBox>
+          <Label>Name</Label>
+          <TextBox Text="{Binding SelectedTileset.Name}"></TextBox>
+        </StackPanel>
+    </Grid>
   </StackPanel>
 </UserControl>

@@ -1,1 +1,16 @@
-{}
+{
+  "0": {
+    "Id": 0,
+    "Name": "Fields",
+    "TerrainData": [
+      0
+    ]
+  },
+  "1": {
+    "Id": 1,
+    "Name": "Fort",
+    "TerrainData": [
+      0
+    ]
+  }
+}
