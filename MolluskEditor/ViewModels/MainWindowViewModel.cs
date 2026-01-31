@@ -19,7 +19,7 @@ public partial class MainWindowViewModel : ViewModelBase
     private WindowFactory _windowFactory;
     private SaveLoadService _saveLoadService;
     private CommandStack _commandStack;
-    private List<ChildWindowViewModel> _childWindows;
+    private List<ChildWindowViewModel> _childWindows = [];
     public IEnumerable<EditorName?> ChildWindows { get {
         return _childWindows.Select(n => n.EditorName);}}
     public IEnumerable<EditorName> VisibleEditorTabs { get{
@@ -48,20 +48,28 @@ public partial class MainWindowViewModel : ViewModelBase
     [RelayCommand]
     private void EjectEditor()
     {
-        //CurrentEditor.Dispose(); // Add this line when ejecting an editor removes it from the main window
+        if (VisibleEditorTabs.Count() == 0)
+            return;
         _windowFactory.LaunchNewChildWindow(_currentEditor.EditorName);
+        GoToFirstTab();
+    }
+    private void GoToFirstTab()
+    {
+        try { CurrentEditor.Dispose(); } catch {}
+        CurrentEditor = _editorFactory.GetEditorViewModel(
+            VisibleEditorTabs.ElementAt(0));
     }
     [RelayCommand]
     private void GoToUnits()
     {
-        try {CurrentEditor.Dispose();} catch {}
+        try { CurrentEditor.Dispose(); } catch {}
         CurrentEditor = _editorFactory.GetEditorViewModel(EditorName.Units);
     }
     public bool UnitsTabVisible{ get { return VisibleEditorTabs.Contains(EditorName.Units); }}
     [RelayCommand]
     private void GoToTerrain()
     {
-        try {CurrentEditor.Dispose();} catch {}
+        try { CurrentEditor.Dispose(); } catch {}
         CurrentEditor = _editorFactory.GetEditorViewModel(EditorName.Terrain);
     }
     public bool TerrainTabVisible{ get { return VisibleEditorTabs.Contains(EditorName.Terrain); }}
