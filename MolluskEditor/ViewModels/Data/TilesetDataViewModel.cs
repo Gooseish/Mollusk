@@ -87,8 +87,10 @@ public partial class TilesetDataViewModel : ObservableValidator, IDataViewModel
     private Bitmap? _image;
     private void FixImage()
     {
-        Uri uri = new Uri(SaveLoadService.CONTENTROOT + SaveLoadService.TILESETIMAGES + _tileset.Name + ".png");
-        Image = new Bitmap(AssetLoader.Open(uri));
+        string full_path = SaveLoadService.CONTENTROOT + SaveLoadService.TILESETIMAGES + _tileset.Name + ".png";
+        bool file_exists = System.IO.File.Exists(full_path);
+        if (file_exists)
+            Image = new Bitmap(full_path);
     }
     [ObservableProperty]
     private ObservableCollection<ObsVal<string>> _terrainData;
