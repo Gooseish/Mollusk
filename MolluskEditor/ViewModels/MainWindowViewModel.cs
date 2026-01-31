@@ -75,6 +75,7 @@ public partial class MainWindowViewModel : ViewModelBase
             return; // But this should never happen
         _childWindows.Remove(senderChildWindow);
         //senderChildWindow.ChildWindowClosed -= WindowClosed; // Handled by garbage collector?
+        RefreshEditorTabs();
     }
     [RelayCommand]
     private void GoToUnits()
