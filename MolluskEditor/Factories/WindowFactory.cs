@@ -1,5 +1,6 @@
 using System;
 using MolluskEditor.Data;
+using MolluskEditor.ViewModels;
 using MolluskEditor.Views;
 
 namespace MolluskEditor.Factories;
@@ -13,10 +14,10 @@ public class WindowFactory
         windowFactory = factory;
     }
 
-    public ChildWindowView LaunchNewChildWindow(EditorName name)
+    public ChildWindowViewModel LaunchNewChildWindow(EditorName name)
     {
         var window = windowFactory.Invoke(name);
         window.Show();
-        return window;
+        return (ChildWindowViewModel)window.DataContext;
     }
 }

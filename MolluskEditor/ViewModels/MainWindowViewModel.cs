@@ -48,10 +48,9 @@ public partial class MainWindowViewModel : ViewModelBase
     [RelayCommand]
     private void EjectEditor()
     {
-        if (VisibleEditorTabs.Count() == 0)
+        if (VisibleEditorTabs.Count() <= 1)
             return;
-        _childWindows.Add((ChildWindowViewModel)
-            _windowFactory.LaunchNewChildWindow(_currentEditor.EditorName).DataContext);
+        _childWindows.Add(_windowFactory.LaunchNewChildWindow(_currentEditor.EditorName));
         GoToFirstTab();
         RefreshEditorTabs();
     }
@@ -65,6 +64,7 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         UnitsTabVisible = VisibleEditorTabs.Contains(EditorName.Units);
         TerrainTabVisible = VisibleEditorTabs.Contains(EditorName.Terrain);
+
     }
     [RelayCommand]
     private void GoToUnits()
