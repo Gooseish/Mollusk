@@ -62,6 +62,7 @@ public partial class TerrainDataViewModel : ObservableValidator, IDataViewModel
         command.Add(new MoveInDictCommand(ChangeDictKey, _terrain.Id, id));
         command.Add(new SetCommand<int>(SetId, _terrain.Id, id));
         command.AddCleanup(_terrainData.OnIdsChanged);
+        command.AddCleanup(_terrainData.OnAnyChange);
         _commandStack.IssueCommand(command);
     }
     private void SetId(int value) {_terrain.Id = value;}
@@ -77,7 +78,9 @@ public partial class TerrainDataViewModel : ObservableValidator, IDataViewModel
     private string _name;
     partial void OnNameChanged(string? oldValue, string newValue)
     {
-        SetCommand<string> command = new(SetName, oldValue, newValue);
+        CommandSequence command = new();
+        command.Add(new SetCommand<string>(SetName, oldValue, newValue));
+        command.AddCleanup(_terrainData.OnAnyChange);
         _commandStack.IssueCommand(command);
     }
     private void SetName(string value) {_terrain.Name = value;}
@@ -89,7 +92,9 @@ public partial class TerrainDataViewModel : ObservableValidator, IDataViewModel
         if (GetErrors(nameof(Avoid)).Any()) { return; }
         int avoid = int.Parse(Avoid);
         if (avoid == _terrain.Avoid) { return; }
-        SetCommand<int> command = new(SetAvo, _terrain.Avoid, avoid);
+        CommandSequence command = new();
+        command.Add(new SetCommand<int>(SetAvo, _terrain.Avoid, avoid));
+        command.AddCleanup(_terrainData.OnAnyChange);
         _commandStack.IssueCommand(command);
     }
     private void SetAvo(int value) { _terrain.Avoid = value; }
@@ -102,7 +107,9 @@ public partial class TerrainDataViewModel : ObservableValidator, IDataViewModel
         if (GetErrors(nameof(Def)).Any()) { return; }
         int def = int.Parse(Def);
         if (def == _terrain.Def) { return; }
-        SetCommand<int> command = new(SetDef, _terrain.Def, def);
+        CommandSequence command = new();
+        command.Add(new SetCommand<int>(SetDef, _terrain.Def, def));
+        command.AddCleanup(_terrainData.OnAnyChange);
         _commandStack.IssueCommand(command);
     }
     private void SetDef(int value) {_terrain.Def = value;}
@@ -128,7 +135,9 @@ public partial class TerrainDataViewModel : ObservableValidator, IDataViewModel
         if (GetErrors(nameof(HealPercent)).Any()) { return; }
         int healPercent = int.Parse(HealPercent);
         if (healPercent == _terrain.HealPercent) { return; }
-        SetCommand<int> command = new(SetHealPercent, _terrain.HealPercent, healPercent);
+        CommandSequence command = new();
+        command.Add(new SetCommand<int>(SetHealPercent, _terrain.HealPercent, healPercent));
+        command.AddCleanup(_terrainData.OnAnyChange);
         _commandStack.IssueCommand(command);
     }
     private void SetHealPercent(int value) {_terrain.HealPercent = value;}
@@ -141,8 +150,10 @@ public partial class TerrainDataViewModel : ObservableValidator, IDataViewModel
         if (parsedMovementCost == null) { return; }
         if (parsedMovementCost == (List<int>)[.. _terrain.MovementCost]) 
             { return; }
-        SetCommand<int[,]> command = new(SetMovementCost, 
-            _terrain.MovementCost, GetMovementCostArray(parsedMovementCost));
+        CommandSequence command = new();
+        command.Add(new SetCommand<int[,]>(SetMovementCost, 
+            _terrain.MovementCost, GetMovementCostArray(parsedMovementCost)));
+        command.AddCleanup(_terrainData.OnAnyChange);
         _commandStack.IssueCommand(command);
     }
     private void SetMovementCost(int[,] value) {_terrain.MovementCost = value;}

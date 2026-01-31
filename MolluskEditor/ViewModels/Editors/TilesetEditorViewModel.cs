@@ -10,6 +10,7 @@ namespace MolluskEditor.ViewModels;
 public partial class TilesetEditorViewModel : EditorViewModel
 {
     private DataModel<Tileset> _dataModel;
+    private DataModel<Terrain> _terrainDataModel;
     [ObservableProperty]
     private DataSelectorViewModel _data;
     [ObservableProperty]
@@ -19,10 +20,11 @@ public partial class TilesetEditorViewModel : EditorViewModel
     [ObservableProperty]
     private TerrainDataViewModel? _selectedTerrain;
 
-    public TilesetEditorViewModel(CommandStack commandStack, DataModel<Tileset> dataModel)
+    public TilesetEditorViewModel(CommandStack commandStack, DataModel<Tileset> dataModel, DataModel<Terrain> terrainDataModel)
         : base(commandStack)
     {
         _dataModel = dataModel;
+        _terrainDataModel = terrainDataModel;
         EditorName = EditorName.Tilesets;
         Data = new(typeof(TilesetDataViewModel), TilesetDataViewModel.ReadExisting);
         TerrainData = new(typeof(TerrainDataViewModel), TerrainDataViewModel.ReadExisting, false);
@@ -49,7 +51,12 @@ public partial class TilesetEditorViewModel : EditorViewModel
         Data.Initialize();
         Data.FixIndexAfterUndo(selectedIndex);
     }
-
+    private void RefreshTerrainData(object? sender, EventArgs args)
+    {
+        int? selectedIndex = SelectedTerrain == null ? null : int.Parse(SelectedTerrain.Id);
+        TerrainData.Initialize();
+        TerrainData.FixIndexAfterUndo(selectedIndex);
+    }
     private void Subscribe()
     {
         // Subscriptions to singletons/statics (must be manually unsubscribed from)
@@ -57,6 +64,7 @@ public partial class TilesetEditorViewModel : EditorViewModel
         _dataModel.IdsChanged += Data.SortDataEvent;
         _commandStack.OnUndo += OnUndoOrRedo;
         _commandStack.OnRedo += OnUndoOrRedo;
+        _terrainDataModel.AnyChange += RefreshTerrainData;
         // Subscriptions to transients (events destructed by garbage collector)
         Data.IndexChanged += OnSelectionChanged;
         TerrainData.IndexChanged += OnSelectedTerrainChanged;
@@ -67,6 +75,7 @@ public partial class TilesetEditorViewModel : EditorViewModel
         _dataModel.IdsChanged -= Data.SortDataEvent;
         _commandStack.OnUndo -= OnUndoOrRedo;
         _commandStack.OnRedo -= OnUndoOrRedo;
+        _terrainDataModel.AnyChange -= RefreshTerrainData;
     }
     public override void Dispose()
     {

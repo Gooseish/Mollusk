@@ -54,5 +54,13 @@ public class DataModel<T> where T : IDataType, new()
         IdsChanged.Invoke(null, EventArgs.Empty);
     }
     public EventHandler? IdsChanged;
+
+    public void OnAnyChange()
+    {
+        if (AnyChange == null)
+            return;
+        AnyChange.Invoke(null, EventArgs.Empty);
+    }
+    public EventHandler? AnyChange;
     #endregion
 }
