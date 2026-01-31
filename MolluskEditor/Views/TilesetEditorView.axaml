@@ -15,5 +15,6 @@
         <TextBox Text="{Binding SelectedTileset.Name}"></TextBox>
     </StackPanel>
     <Image Source="{Binding SelectedTileset.Image}"/>
+    <ContentControl Content = "{Binding TerrainData}"/>
   </StackPanel>
 </UserControl>

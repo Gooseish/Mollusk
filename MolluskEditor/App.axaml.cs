@@ -6,7 +6,6 @@ using Avalonia.Markup.Xaml;
 using MolluskEditor.ViewModels;
 using MolluskEditor.Views;
 using System;
-using MolluskEditor.Data;
 using MolluskEditor.Factories;
 using Microsoft.Extensions.DependencyInjection;
 using MolluskEditor.Models;

@@ -1,7 +1,6 @@
 using System;
 using CommunityToolkit.Mvvm.ComponentModel;
 using MolluskEditor.Commands;
-using MolluskEditor.Data;
 
 namespace MolluskEditor.ViewModels;
 

@@ -22,7 +22,7 @@
         </DataTemplate>
       </ListBox.ItemTemplate>
     </ListBox>
-    <Button Command="{Binding AddDataCommand}">New</Button>
-    <Button Command="{Binding RemoveDataCommand}">Delete</Button>
+    <Button Command="{Binding AddDataCommand}" IsVisible = "{Binding Writeable}">New</Button>
+    <Button Command="{Binding RemoveDataCommand}" IsVisible = "{Binding Writeable}">Delete</Button>
   </StackPanel>
 </UserControl>

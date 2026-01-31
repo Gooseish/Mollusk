@@ -21,7 +21,7 @@ public partial class TerrainEditorViewModel : EditorViewModel
         : base(commandStack)
     {
         _dataModel = dataModel;
-        EditorName = MolluskEditor.Data.EditorName.Terrain;
+        EditorName = EditorName.Terrain;
         Data = new(typeof(TerrainDataViewModel), TerrainDataViewModel.ReadExisting);
         Subscribe();
     }

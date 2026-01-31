@@ -20,6 +20,12 @@ public partial class DataSelectorViewModel : ViewModelBase
     /// of making this behave like a generic class, since xaml
     /// doesn't play nicely with generics.
     private Type _dataViewModelType;
+    /// <summary>
+    /// Some data selectors are not intended to be used as editors and are readonly,
+    /// so have this value as false.
+    /// </summary>
+    [ObservableProperty]
+    private bool _writeable;
     private Func<ObservableCollection<IDataViewModel>> _getFromDataModel;
     [ObservableProperty]
     private ObservableCollection<IDataViewModel> _data;
@@ -29,10 +35,11 @@ public partial class DataSelectorViewModel : ViewModelBase
     private IDataViewModel? _selectedData;
 
     public DataSelectorViewModel(Type dataViewModelType,
-        Func<ObservableCollection<IDataViewModel>> reader)
+        Func<ObservableCollection<IDataViewModel>> reader, bool writeable = true)
     {
         _dataViewModelType = dataViewModelType;
         _getFromDataModel = reader;
+        _writeable = writeable;
         Initialize();
     }
 

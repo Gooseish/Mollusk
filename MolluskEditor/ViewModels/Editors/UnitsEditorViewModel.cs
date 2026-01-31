@@ -9,7 +9,7 @@ public partial class UnitsEditorViewModel : EditorViewModel
     public UnitsEditorViewModel(CommandStack commandStack)
         : base(commandStack)
     {
-        EditorName = Data.EditorName.Units;
+        EditorName = EditorName.Units;
     }
 
     public override void Dispose()

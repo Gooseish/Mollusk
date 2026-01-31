@@ -4,7 +4,6 @@ using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MolluskEditor.Commands;
-using MolluskEditor.Data;
 using MolluskEditor.Factories;
 using MolluskEditor.Services;
 using MolluskEngine.Extensions;

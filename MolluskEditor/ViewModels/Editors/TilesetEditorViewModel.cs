@@ -3,7 +3,6 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using MolluskEditor.Commands;
 using MolluskEditor.Models;
 using MolluskEngine.GameBoard;
-using MolluskEditor.Data;
 using MolluskEditor.Services;
 
 namespace MolluskEditor.ViewModels;
@@ -15,12 +14,18 @@ public partial class TilesetEditorViewModel : EditorViewModel
     private DataSelectorViewModel _data;
     [ObservableProperty]
     private TilesetDataViewModel? _selectedTileset;
+    [ObservableProperty]
+    private DataSelectorViewModel _terrainData;
+    [ObservableProperty]
+    private TerrainDataViewModel? _selectedTerrain;
+
     public TilesetEditorViewModel(CommandStack commandStack, DataModel<Tileset> dataModel)
         : base(commandStack)
     {
         _dataModel = dataModel;
         EditorName = EditorName.Tilesets;
         Data = new(typeof(TilesetDataViewModel), TilesetDataViewModel.ReadExisting);
+        TerrainData = new(typeof(TerrainDataViewModel), TerrainDataViewModel.ReadExisting, false);
         Subscribe();
     }
 
@@ -29,9 +34,14 @@ public partial class TilesetEditorViewModel : EditorViewModel
     {
         SelectedTileset = (TilesetDataViewModel?)Data.SelectedData;
     }
+    private void OnSelectedTerrainChanged(object? sender, EventArgs args)
+    {
+        SelectedTerrain = (TerrainDataViewModel?)TerrainData.SelectedData;
+    }
     private void OnProjectLoaded(object? sender, EventArgs args)
     {
         Data.Initialize(); // Perhaps abstract this as well
+        TerrainData.Initialize();
     }
     private void OnUndoOrRedo(object? sender, EventArgs args)
     {
@@ -42,16 +52,18 @@ public partial class TilesetEditorViewModel : EditorViewModel
 
     private void Subscribe()
     {
+        // Subscriptions to singletons/statics (must be manually unsubscribed from)
         SaveLoadService.ProjectLoaded += OnProjectLoaded;
-        Data.IndexChanged += OnSelectionChanged;
         _dataModel.IdsChanged += Data.SortDataEvent;
         _commandStack.OnUndo += OnUndoOrRedo;
         _commandStack.OnRedo += OnUndoOrRedo;
+        // Subscriptions to transients (events destructed by garbage collector)
+        Data.IndexChanged += OnSelectionChanged;
+        TerrainData.IndexChanged += OnSelectedTerrainChanged;
     }
     private void Unsubscribe()
     {
         SaveLoadService.ProjectLoaded -= OnProjectLoaded;
-        //Data.IndexChanged -= OnSelectionChanged; // This should be taken care of by the garbage collector, so maybe is unnecessary
         _dataModel.IdsChanged -= Data.SortDataEvent;
         _commandStack.OnUndo -= OnUndoOrRedo;
         _commandStack.OnRedo -= OnUndoOrRedo;
