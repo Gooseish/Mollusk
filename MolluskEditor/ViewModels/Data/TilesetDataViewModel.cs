@@ -9,7 +9,6 @@ using MolluskEditor.Commands;
 using MolluskEditor.Extensions;
 using MolluskEditor.Validators;
 using MolluskEngine.GameBoard;
-using MolluskEngine.Extensions;
 
 namespace MolluskEditor.ViewModels;
 
@@ -29,7 +28,6 @@ public partial class TilesetDataViewModel : ObservableValidator, IDataViewModel
         _tileset = tileset;
         _id = tileset.Id.ToString();
         _name = tileset.Name;
-        _imageData = tileset.ImageData;
         _terrainData = tileset.TerrainData.ToWrappedStringCollection();
         WatchTerrainData();
     }
@@ -68,21 +66,13 @@ public partial class TilesetDataViewModel : ObservableValidator, IDataViewModel
         { return _tilesetData.CheckIdAvailable(idString, _tileset.Id); }
     [ObservableProperty]
     private string _name;
+    // Needs validation to make sure image name is correct
     partial void OnNameChanged(string? oldValue, string newValue)
     {
         SetCommand<string> command = new(SetName, oldValue, newValue);
         _commandStack.IssueCommand(command);
     }
     private void SetName(string value) {_tileset.Name = value;}
-    [ObservableProperty]
-    // Needs validation to make sure image name is correct
-    private string _imageData;
-    partial void OnImageDataChanged(string? oldValue, string newValue)
-    {
-        SetCommand<string> command = new(SetImageData, oldValue, newValue);
-        _commandStack.IssueCommand(command);
-    }
-    private void SetImageData(string value) {_tileset.ImageData = value;}
     [ObservableProperty]
     private ObservableCollection<ObsVal<string>> _terrainData;
     private void UpdateTerrainData(object? sender, EventArgs args)

@@ -6,5 +6,7 @@
              xmlns:vm="clr-namespace:MolluskEditor.ViewModels"
              x:DataType="vm:TilesetEditorViewModel"
              x:Class="MolluskEditor.Views.TilesetEditorView">
-  Welcome to Avalonia!
+  <StackPanel Orientation="Horizontal">
+    <ContentControl Content = "{Binding Data}"/>
+  </StackPanel>
 </UserControl>
