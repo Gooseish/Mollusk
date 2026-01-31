@@ -9,6 +9,9 @@ using MolluskEditor.Commands;
 using MolluskEditor.Extensions;
 using MolluskEditor.Validators;
 using MolluskEngine.GameBoard;
+using Avalonia.Media.Imaging;
+using Avalonia.Platform;
+using MolluskEditor.Services;
 
 namespace MolluskEditor.ViewModels;
 
@@ -29,6 +32,7 @@ public partial class TilesetDataViewModel : ObservableValidator, IDataViewModel
         _id = tileset.Id.ToString();
         _name = tileset.Name;
         _terrainData = tileset.TerrainData.ToWrappedStringCollection();
+        FixImage();
         WatchTerrainData();
     }
     public TilesetDataViewModel() : this(null) { }
@@ -69,10 +73,23 @@ public partial class TilesetDataViewModel : ObservableValidator, IDataViewModel
     // Needs validation to make sure image name is correct
     partial void OnNameChanged(string? oldValue, string newValue)
     {
-        SetCommand<string> command = new(SetName, oldValue, newValue);
+        if (Name == _tileset.Name) {return;}
+        CommandSequence command = new();
+        command.Add(new SetCommand<string>(SetName, _tileset.Name, Name));
+        command.AddCleanup(FixImage);
         _commandStack.IssueCommand(command);
     }
-    private void SetName(string value) {_tileset.Name = value;}
+    private void SetName(string value)
+    {
+        _tileset.Name = value;
+    }
+    [ObservableProperty]
+    private Bitmap? _image;
+    private void FixImage()
+    {
+        Uri uri = new Uri(SaveLoadService.CONTENTROOT + SaveLoadService.TILESETIMAGES + _tileset.Name + ".png");
+        Image = new Bitmap(AssetLoader.Open(uri));
+    }
     [ObservableProperty]
     private ObservableCollection<ObsVal<string>> _terrainData;
     private void UpdateTerrainData(object? sender, EventArgs args)

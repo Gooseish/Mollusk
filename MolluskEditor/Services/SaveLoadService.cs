@@ -8,8 +8,9 @@ namespace MolluskEditor.Services;
 
 public class SaveLoadService
 {
-    private static readonly string? CONTENTROOT = @"C:/Users/Home/Documents/Monogame Projects/Mollusk/MolluskEngine/Content/"; // Shouldn't be hardcoded
+    public static readonly string? CONTENTROOT = @"C:/Users/Home/Documents/Monogame_Projects/Mollusk/MolluskEngine/Content/"; // Shouldn't be hardcoded
     private static readonly string DATAPATH = @"Data/";
+    public static readonly string TILESETIMAGES = @"Graphics/Tilesets/";
     private static readonly string TERRAINPATH = "TerrainData.json";
     private static readonly string TILESETPATH = "TilesetData.json";
     private DataModel<Terrain> _terrainData;
