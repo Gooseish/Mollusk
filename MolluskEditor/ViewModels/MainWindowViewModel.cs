@@ -50,8 +50,10 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         if (VisibleEditorTabs.Count() == 0)
             return;
-        _windowFactory.LaunchNewChildWindow(_currentEditor.EditorName);
+        _childWindows.Add((ChildWindowViewModel)
+            _windowFactory.LaunchNewChildWindow(_currentEditor.EditorName).DataContext);
         GoToFirstTab();
+        RefreshEditorTabs();
     }
     private void GoToFirstTab()
     {
@@ -59,18 +61,25 @@ public partial class MainWindowViewModel : ViewModelBase
         CurrentEditor = _editorFactory.GetEditorViewModel(
             VisibleEditorTabs.ElementAt(0));
     }
+    private void RefreshEditorTabs()
+    {
+        UnitsTabVisible = VisibleEditorTabs.Contains(EditorName.Units);
+        TerrainTabVisible = VisibleEditorTabs.Contains(EditorName.Terrain);
+    }
     [RelayCommand]
     private void GoToUnits()
     {
         try { CurrentEditor.Dispose(); } catch {}
         CurrentEditor = _editorFactory.GetEditorViewModel(EditorName.Units);
     }
-    public bool UnitsTabVisible{ get { return VisibleEditorTabs.Contains(EditorName.Units); }}
+    [ObservableProperty]
+    private bool _unitsTabVisible = true;
     [RelayCommand]
     private void GoToTerrain()
     {
         try { CurrentEditor.Dispose(); } catch {}
         CurrentEditor = _editorFactory.GetEditorViewModel(EditorName.Terrain);
     }
-    public bool TerrainTabVisible{ get { return VisibleEditorTabs.Contains(EditorName.Terrain); }}
+    [ObservableProperty]
+    private bool _terrainTabVisible = true;
 }
