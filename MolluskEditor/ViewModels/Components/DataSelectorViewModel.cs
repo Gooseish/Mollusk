@@ -49,6 +49,8 @@ public partial class DataSelectorViewModel : ViewModelBase
     partial void OnSelectedDataChanged(IDataViewModel? oldValue, IDataViewModel? newValue)
     {
         IndexChanged.Invoke(this, EventArgs.Empty);
+        if (SelectedData != null)
+            SelectedData.FixFields();
     }
     /// <summary>
     /// Event that notifies the parent editor that the selected data

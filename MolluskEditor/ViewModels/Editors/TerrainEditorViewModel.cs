@@ -29,7 +29,7 @@ public partial class TerrainEditorViewModel : EditorViewModel
     #region Event Handling
     private void OnSelectionChanged(object? sender, EventArgs args)
     {
-        SelectedTerrain = (TerrainDataViewModel)Data.SelectedData;
+        SelectedTerrain = (TerrainDataViewModel?)Data.SelectedData;
     }
     private void OnProjectLoaded(object? sender, EventArgs args)
     {
