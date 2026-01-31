@@ -20,9 +20,9 @@ public partial class MainWindowViewModel : ViewModelBase
     private SaveLoadService _saveLoadService;
     private CommandStack _commandStack;
     private List<ChildWindowViewModel> _childWindows;
-    public IEnumerable<EditorName?> ChildWindows {get {
+    public IEnumerable<EditorName?> ChildWindows { get {
         return _childWindows.Select(n => n.EditorName);}}
-    public IEnumerable<EditorName> VisibleEditorTabs {get{
+    public IEnumerable<EditorName> VisibleEditorTabs { get{
         return EditorName.Values().Where(n => !ChildWindows.Contains(n)); }}
     
     public MainWindowViewModel(EditorFactory editorFactory, WindowFactory windowFactory, 
@@ -54,16 +54,14 @@ public partial class MainWindowViewModel : ViewModelBase
     [RelayCommand]
     private void GoToUnits()
     {
-        try {CurrentEditor.Dispose();}
-        catch {}
+        try {CurrentEditor.Dispose();} catch {}
         CurrentEditor = _editorFactory.GetEditorViewModel(EditorName.Units);
     }
     public bool UnitsTabVisible{ get { return VisibleEditorTabs.Contains(EditorName.Units); }}
     [RelayCommand]
     private void GoToTerrain()
     {
-        try {CurrentEditor.Dispose();}
-        catch {}
+        try {CurrentEditor.Dispose();} catch {}
         CurrentEditor = _editorFactory.GetEditorViewModel(EditorName.Terrain);
     }
     public bool TerrainTabVisible{ get { return VisibleEditorTabs.Contains(EditorName.Terrain); }}
