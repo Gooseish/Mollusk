@@ -11,15 +11,15 @@ namespace MolluskEditor.ViewModels;
 
 public partial class TerrainEditorViewModel : EditorViewModel
 {
-    private CommandStack _commandStack;
-    DataModel<Terrain> _dataModel;
+    
+    private DataModel<Terrain> _dataModel;
     [ObservableProperty]
     private DataSelectorViewModel _data;
     [ObservableProperty]
     private TerrainDataViewModel? _selectedTerrain;
     public TerrainEditorViewModel(CommandStack commandStack, DataModel<Terrain> dataModel)
+        : base(commandStack)
     {
-        _commandStack = commandStack;
         _dataModel = dataModel;
         EditorName = MolluskEditor.Data.EditorName.Terrain;
         Data = new(typeof(TerrainDataViewModel), TerrainDataViewModel.ReadExisting);

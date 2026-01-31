@@ -30,4 +30,13 @@ public static class EditorExtensions
             result.Add(new ObsVal<string>(i.ToString()));
         return result;
     }
+    public static ObservableCollection<ObsVal<string>> ToWrappedStringCollection(
+        this int[] source)
+    {
+        ObservableCollection<ObsVal<string>> result = [];
+        List<int> sourceList = [.. source];
+        foreach(int i in sourceList)
+            result.Add(new ObsVal<string>(i.ToString()));
+        return result;
+    }
 }

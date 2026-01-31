@@ -9,11 +9,11 @@ public class Tileset : IDataType
     /// <summary>
     /// String that corresponds to the image name of the tilemap
     /// </summary>
-    public string ImageData;
+    public string ImageData {get;set;}
     /// <summary>
     /// Ids of all terrain 
     /// </summary>
-    public int[] TerrainData;
+    public int[] TerrainData {get;set;}
     public Tileset()
     {
         Id = -1;
