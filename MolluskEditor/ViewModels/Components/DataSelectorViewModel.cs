@@ -78,6 +78,13 @@ public partial class DataSelectorViewModel : ViewModelBase
     {
         DoSearch(newValue);
     }
+    [RelayCommand]
+    private void SnapToSearchResult()
+    {
+        if (SearchFilteredData.Count() > 0)
+            SelectedData = SearchFilteredData[0];
+        SearchText = "";
+    }
     private void DoSearch(string searchText) // Make this an async task
     {
         if (string.IsNullOrEmpty(searchText))

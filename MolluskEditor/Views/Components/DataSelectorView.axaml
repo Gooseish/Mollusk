@@ -8,9 +8,14 @@
              x:Class="MolluskEditor.Views.DataSelectorView">
   <StackPanel>
     <TextBlock Text="All Data"/>
-    <TextBox Watermark="Search..." Text="{Binding SearchText}"/>
+    <TextBox Watermark="Search..." Text="{Binding SearchText}">
+      <TextBox.KeyBindings>
+        <KeyBinding Gesture="Enter" 
+                    Command="{Binding SnapToSearchResultCommand}"/>
+      </TextBox.KeyBindings>
+    </TextBox>
     <ListBox Width="120" Height="300"
-        ItemsSource="{Binding Data}" 
+        ItemsSource="{Binding SearchFilteredData}" 
         SelectedIndex = "{Binding SelectedDataIndex}"
         SelectedItem = "{Binding SelectedData}">
       <ListBox.ItemTemplate>
