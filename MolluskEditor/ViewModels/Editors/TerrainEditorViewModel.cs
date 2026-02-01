@@ -45,15 +45,15 @@ public partial class TerrainEditorViewModel : EditorViewModel
     private void Subscribe()
     {
         SaveLoadService.ProjectLoaded += OnProjectLoaded;
-        Data.IndexChanged += OnSelectionChanged;
         _dataModel.IdsChanged += Data.SortDataEvent;
         _commandStack.OnUndo += OnUndoOrRedo;
         _commandStack.OnRedo += OnUndoOrRedo;
+        // Garbage Collected
+        Data.IndexChanged += OnSelectionChanged;
     }
     private void Unsubscribe()
     {
         SaveLoadService.ProjectLoaded -= OnProjectLoaded;
-        Data.IndexChanged -= OnSelectionChanged; // This should be taken care of by the garbage collector, so maybe is unnecessary
         _dataModel.IdsChanged -= Data.SortDataEvent;
         _commandStack.OnUndo -= OnUndoOrRedo;
         _commandStack.OnRedo -= OnUndoOrRedo;

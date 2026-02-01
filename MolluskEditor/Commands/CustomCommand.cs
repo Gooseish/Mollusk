@@ -4,13 +4,20 @@ namespace MolluskEditor.Commands;
 
 public class CustomCommand : Command
 {
+    private Action _do;
+    private Action _undo;
+    public CustomCommand(Action __do, Action __undo)
+    {
+        _do = __do;
+        _undo = __undo;
+    }
     public override void Do()
     {
-        throw new NotImplementedException();
+        _do.Invoke();
     }
 
     public override void Undo()
     {
-        throw new NotImplementedException();
+        _undo.Invoke();
     }
 }

@@ -13,7 +13,6 @@ public class DataModel<T> where T : IDataType, new()
     {
         T result = new();
         result.Id = NextId();
-        Data[result.Id] = result;
         return result;
     }
     public int NextId()

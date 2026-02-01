@@ -112,9 +112,13 @@ public partial class TilesetDataViewModel : ObservableValidator, IDataViewModel
             i.PropertyChanged += UpdateTerrainData;
     }
     #endregion
-    public void Dispose()
+    public void Register()
     {
-        _tilesetData.Data.Remove(int.Parse(Id));
+        _tilesetData.Data[_tileset.Id] = _tileset;
+    }
+    public void Unregister()
+    {
+        _tilesetData.Data.Remove(_tileset.Id);
     }
     public void FixFields()
     {
@@ -122,8 +126,10 @@ public partial class TilesetDataViewModel : ObservableValidator, IDataViewModel
         FixTerrainData();
     }
 
-    public void OnAdded()
+    public void NotifyChange()
     {
         
     }
+
+    
 }

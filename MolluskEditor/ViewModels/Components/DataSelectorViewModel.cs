@@ -36,6 +36,7 @@ public partial class DataSelectorViewModel : ViewModelBase
     private IDataViewModel? _selectedData;
     private CommandStack _commandStack;
 
+    // Constructor's getting unwieldy, maybe build with factory model and DI?
     public DataSelectorViewModel(Type dataViewModelType,
         Func<ObservableCollection<IDataViewModel>> reader, CommandStack commandStack,
         bool writeable = true)
@@ -74,21 +75,31 @@ public partial class DataSelectorViewModel : ViewModelBase
     [RelayCommand]
     private void AddData()
     {
-        // Todo: Command Stack
-        Data.Add((IDataViewModel)Activator.CreateInstance(_dataViewModelType));
-        SelectedDataIndex = Data.Count - 1;
-        SelectedData?.OnAdded();
+        var newElement = (IDataViewModel)Activator.CreateInstance(_dataViewModelType);
+        // Issue Command
+        CommandSequence command = new();
+        command.Add(new CustomCommand(newElement.Register, newElement.Unregister)); // Register to the datamodel
+        command.Add(new AddToCollectionCommand<IDataViewModel>(Data, newElement)); // Add to the collection
+        command.AddCleanup(newElement.NotifyChange); // Notify any readonly selectors that might be listening
+        _commandStack.IssueCommand(command);
+        // Cleanup
+        SelectedDataIndex = Data.Count - 1; // Fix Index
     }
     [RelayCommand]
     private void RemoveData()
     {
-        // Todo: Command Stack
         if (SelectedData == null)
             return;
         int? lastIndex = SelectedDataIndex;
-        SelectedData.Dispose();
-        Data.Remove(SelectedData);
-        FixIndexAfterDelete(lastIndex);
+        var selectedData = SelectedData;
+        // Issue Command
+        CommandSequence command = new();
+        command.Add(new CustomCommand(selectedData.Unregister, selectedData.Register)); // Unregister from the datamodel
+        command.Add(new RemoveFromCollectionCommand<IDataViewModel>(Data, selectedData)); // Remove from the collection
+        command.AddCleanup(selectedData.NotifyChange); // Notify any readonly selectors that might be listening
+        _commandStack.IssueCommand(command);
+        // Cleanup
+        FixIndexAfterDelete(lastIndex); // Fix Index
     }
     #endregion
 

@@ -174,10 +174,13 @@ public partial class TerrainDataViewModel : ObservableValidator, IDataViewModel
             i.PropertyChanged += UpdateMovementCost;
     }
     #endregion
-    public void Dispose()
+    public void Unregister()
     {
-        _terrainData.Data.Remove(int.Parse(Id));
-        _terrainData.OnAnyChange();
+        _terrainData.Data.Remove(_terrain.Id);
+    }
+    public void Register()
+    {
+        _terrainData.Data[_terrain.Id] = _terrain;
     }
     public void FixFields()
     {
@@ -188,8 +191,7 @@ public partial class TerrainDataViewModel : ObservableValidator, IDataViewModel
         FixHealPercent();
         FixMovementCost();
     }
-
-    public void OnAdded()
+    public void NotifyChange()
     {
         _terrainData.OnAnyChange();
     }
