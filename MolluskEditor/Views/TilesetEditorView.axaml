@@ -10,24 +10,27 @@
   <StackPanel Orientation="Horizontal">
     <!-- Tileset Selector -->
     <ContentControl Content = "{Binding Data}"/>
-    <!-- Tilset Fields -->
+    <!-- Main Editor -->
     <StackPanel Margin="5">
+      <!-- Terrain Fields -->
+      <StackPanel Orientation="Horizontal" Margin="5">
         <Label>Id</Label>
         <TextBox Text="{Binding SelectedTileset.Id}"></TextBox>
         <Label>Name</Label>
         <TextBox Text="{Binding SelectedTileset.Name}"></TextBox>
-    </StackPanel>
-    <!-- Tilemap -->
-    <ScrollViewer VerticalScrollBarVisibility="Auto"
-                  HorizontalScrollBarVisibility="Auto">
-      <paz:ZoomBorder Name="ZoomBorder" Stretch="None" ZoomSpeed="1.2"
-                      Background="SlateBlue" ClipToBounds="True" Focusable="True"
-                      VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
-                      AutoCalculateMinZoom="True" AutoCalculateMaxZoom="True"
-                      BoundsMode="FillViewport">
-              <Image Source="{Binding SelectedTileset.Image}"/>
-      </paz:ZoomBorder>  
-    </ScrollViewer>
+      </StackPanel>
+      <!-- Tilemap -->
+      <ScrollViewer VerticalScrollBarVisibility="Auto"
+                    HorizontalScrollBarVisibility="Auto">
+        <paz:ZoomBorder Name="ZoomBorder" Stretch="None" ZoomSpeed="1.2"
+                        Background="SlateBlue" ClipToBounds="True" Focusable="True"
+                        VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                        AutoCalculateMinZoom="True" AutoCalculateMaxZoom="True"
+                        BoundsMode="FillViewport">
+          <Image Source="{Binding SelectedTileset.Image}"/>
+        </paz:ZoomBorder>  
+      </ScrollViewer>
+      </StackPanel>
     <!-- Terrain Selector -->
     <ContentControl Content = "{Binding TerrainData}"/>
   </StackPanel>
