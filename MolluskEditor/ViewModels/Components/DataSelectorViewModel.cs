@@ -3,6 +3,8 @@ using System.Collections.ObjectModel;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
+using System.Security;
+using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MolluskEditor.Commands;
@@ -38,13 +40,11 @@ public partial class DataSelectorViewModel : ViewModelBase
     /// Collection of all the data models.
     /// </summary>
     [ObservableProperty]
-    private ObservableCollection<IDataViewModel> _data;
+    private ObservableCollection<IDataViewModel> _data = [];
     [ObservableProperty]
     private int? _selectedDataIndex;
     [ObservableProperty]
     private IDataViewModel? _selectedData;
-    [ObservableProperty]
-    private string _searchText;
     private CommandStack _commandStack;
 
     // Constructor's getting unwieldy, maybe build with factory model and DI?
@@ -57,6 +57,7 @@ public partial class DataSelectorViewModel : ViewModelBase
         _commandStack = commandStack;
         _writeable = writeable;
         Initialize();
+        SearchText = "";
     }
 
     public void Initialize()
@@ -68,9 +69,33 @@ public partial class DataSelectorViewModel : ViewModelBase
         }
         SortData();
     }
+    #region Search Box
+    [ObservableProperty]
+    private string _searchText;
+    [ObservableProperty]
+    private ObservableCollection<IDataViewModel> _searchFilteredData = [];
+    partial void OnSearchTextChanged(string? oldValue, string newValue)
+    {
+        DoSearch(newValue);
+    }
+    private void DoSearch(string searchText) // Make this an async task
+    {
+        if (string.IsNullOrEmpty(searchText))
+        {
+            SearchFilteredData = Data;
+            return;
+        }
+        ObservableCollection<IDataViewModel> result = [];
+        foreach (IDataViewModel viewModel in Data)
+            if (viewModel.Name.Contains(searchText, StringComparison.OrdinalIgnoreCase))
+                result.Add(viewModel);
+        SearchFilteredData = result;
+    }
+    #endregion
     #region Events
     partial void OnSelectedDataChanged(IDataViewModel? oldValue, IDataViewModel? newValue)
     {
+        if (IndexChanged == null) {return;}
         IndexChanged.Invoke(this, EventArgs.Empty);
         if (SelectedData != null)
             SelectedData.FixFields();
@@ -79,7 +104,11 @@ public partial class DataSelectorViewModel : ViewModelBase
     /// Event that notifies the parent editor that the selected data
     /// index has changed.
     /// </summary>
-    public event EventHandler IndexChanged;
+    public event EventHandler? IndexChanged;
+    public void SortDataEvent(object? sender, EventArgs args)
+    {
+        SortData();
+    }
     #endregion
 
     #region Relay Commands
@@ -155,10 +184,6 @@ public partial class DataSelectorViewModel : ViewModelBase
     private void SortData()
     {
         Data = new ObservableCollection<IDataViewModel>(Data.OrderBy(i => i.Id));
-    }
-    public void SortDataEvent(object? sender, EventArgs args)
-    {
-        SortData();
     }
     #endregion
 }

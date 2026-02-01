@@ -14,7 +14,7 @@
         SelectedIndex = "{Binding SelectedDataIndex}"
         SelectedItem = "{Binding SelectedData}">
       <ListBox.ItemTemplate>
-        <DataTemplate DataType="vm:IDataViewModel"> <!-- Todo: Needs to use the interface... -->
+        <DataTemplate DataType="vm:IDataViewModel">
           <StackPanel Orientation="Horizontal">
             <TextBlock Text="{Binding Id}" />
             <TextBlock Text=": " />
