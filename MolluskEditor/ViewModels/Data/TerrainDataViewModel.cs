@@ -40,6 +40,7 @@ public partial class TerrainDataViewModel : ObservableValidator, IDataViewModel
         _res = terrain.Res.ToString();
         _healPercent = terrain.HealPercent.ToString();
         _movementCost = GetMovementCostCollection(terrain.MovementCost);
+        _tileColor = terrain.TileColor.ToAvaloniaColor();
         WatchMovementCosts();
 
         PropertyChanged += CheckForAnyErrors;
@@ -189,6 +190,8 @@ public partial class TerrainDataViewModel : ObservableValidator, IDataViewModel
             i.PropertyChanged += CheckForAnyErrors;
         }
     }
+    [ObservableProperty]
+    private Color _tileColor;
     #endregion
     public void Register()
     {
