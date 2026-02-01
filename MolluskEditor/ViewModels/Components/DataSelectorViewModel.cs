@@ -158,7 +158,7 @@ public partial class DataSelectorViewModel : ViewModelBase
     {
         try
         {
-            _ = Data[(int)lastIndex - 1];
+            _ = SearchFilteredData[(int)lastIndex - 1];
             SelectedDataIndex = lastIndex - 1;
             return;
         }
@@ -172,7 +172,7 @@ public partial class DataSelectorViewModel : ViewModelBase
     {
         try
         {
-            _ = Data[(int)lastIndex];
+            _ = SearchFilteredData[(int)lastIndex];
             SelectedDataIndex = lastIndex;
             return;
         }
