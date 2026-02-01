@@ -100,8 +100,8 @@ public partial class DataSelectorViewModel : ViewModelBase
     {
         if (IndexChanged == null) {return;}
         IndexChanged.Invoke(this, EventArgs.Empty);
-        if (SelectedData != null)
-            SelectedData.FixFields();
+        //if (SelectedData != null)
+            //SelectedData.FixFields();
     }
     /// <summary>
     /// Event that notifies the parent editor that the selected data
