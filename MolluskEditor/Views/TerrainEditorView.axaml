@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              xmlns:vm="clr-namespace:MolluskEditor.ViewModels"
+             xmlns:colorPicker="clr-namespace:Avalonia.Controls;assembly=Avalonia.Controls.ColorPicker"
              x:DataType="vm:TerrainEditorViewModel"
              x:Class="MolluskEditor.Views.TerrainEditorView">
   <StackPanel Orientation="Horizontal" Margin="5">
@@ -79,6 +80,11 @@
             </ItemsControl>
           </Grid>
         </Border>
+      </StackPanel>
+      <!-- Color Picker -->
+      <StackPanel Margin="5">
+        <Label>Terrain Color</Label>
+        <colorPicker:ColorPicker Color="{Binding SelectedTerrain.TileColor, Delay=500}" />
       </StackPanel>
   </StackPanel>
 </UserControl>

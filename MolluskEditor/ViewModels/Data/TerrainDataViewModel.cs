@@ -192,6 +192,18 @@ public partial class TerrainDataViewModel : ObservableValidator, IDataViewModel
     }
     [ObservableProperty]
     private Color _tileColor;
+    partial void OnTileColorChanged(Color oldValue, Color newValue)
+    {
+        if (TileColor == _terrain.TileColor.ToAvaloniaColor()) { return; }
+        CommandSequence command = new();
+        command.Add(new SetCommand<Color>(SetTileColor,
+         _terrain.TileColor.ToAvaloniaColor().ShallowCopy(), TileColor.ShallowCopy()));
+        command.AddCleanup(_terrainData.OnAnyChange);
+        command.AddCleanup(FixTileColor);
+        _commandStack.IssueCommand(command);
+    }
+    private void SetTileColor(Color value) {_terrain.TileColor = value.ToMonogameColor();}
+    private void FixTileColor() {TileColor = _terrain.TileColor.ToAvaloniaColor();}
     #endregion
     public void Register()
     {

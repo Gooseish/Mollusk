@@ -1,7 +1,7 @@
 using System;
 
 namespace MolluskEditor.Commands;
-
+// Danger! Set command does not function as intended with reference values! Copies must be made!
 public class SetCommand<T> : Command
 {
     private Action<T> _setValue;
