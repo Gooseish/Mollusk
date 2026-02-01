@@ -35,6 +35,8 @@ public partial class TilesetDataViewModel : ObservableValidator, IDataViewModel
         _terrainData = tileset.TerrainData.ToWrappedStringCollection();
         FixImage();
         WatchTerrainData();
+
+        PropertyChanged += CheckForAnyErrors;
     }
     public TilesetDataViewModel() : this(null) { }
 
@@ -129,9 +131,22 @@ public partial class TilesetDataViewModel : ObservableValidator, IDataViewModel
 
     public void NotifyChange()
     {
-        
+        _tilesetData.OnAnyChange();
     }
 
     [ObservableProperty]
     private IBrush _textColor = Brush.Parse("White");
+    private void CheckForAnyErrors(object? sender, EventArgs args)
+    {
+        bool anyErrors = Result();
+        bool Result()
+        {
+            if (GetErrors(nameof(Id)).Any()) return true;
+            if (GetErrors(nameof(Name)).Any()) return true;
+            if (TerrainData.ToIntList() == null) return true;
+            return false;
+        }
+        if (anyErrors) TextColor = Brush.Parse("Yellow");
+        else TextColor = Brush.Parse("White");
+    }
 }
