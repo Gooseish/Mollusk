@@ -4,17 +4,31 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              xmlns:vm="clr-namespace:MolluskEditor.ViewModels"
+             xmlns:paz="using:Avalonia.Controls.PanAndZoom"
              x:DataType="vm:TilesetEditorViewModel"
              x:Class="MolluskEditor.Views.TilesetEditorView">
   <StackPanel Orientation="Horizontal">
+    <!-- Tileset Selector -->
     <ContentControl Content = "{Binding Data}"/>
+    <!-- Tilset Fields -->
     <StackPanel Margin="5">
         <Label>Id</Label>
         <TextBox Text="{Binding SelectedTileset.Id}"></TextBox>
         <Label>Name</Label>
         <TextBox Text="{Binding SelectedTileset.Name}"></TextBox>
     </StackPanel>
-    <Image Source="{Binding SelectedTileset.Image}"/>
+    <!-- Tilemap -->
+    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                  HorizontalScrollBarVisibility="Auto">
+      <paz:ZoomBorder Name="ZoomBorder" Stretch="None" ZoomSpeed="1.2"
+                      Background="SlateBlue" ClipToBounds="True" Focusable="True"
+                      VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                      AutoCalculateMinZoom="True" AutoCalculateMaxZoom="True"
+                      BoundsMode="FillViewport">
+              <Image Source="{Binding SelectedTileset.Image}"/>
+      </paz:ZoomBorder>  
+    </ScrollViewer>
+    <!-- Terrain Selector -->
     <ContentControl Content = "{Binding TerrainData}"/>
   </StackPanel>
 </UserControl>
