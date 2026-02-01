@@ -112,7 +112,10 @@ public partial class TilesetDataViewModel : ObservableValidator, IDataViewModel
     private void WatchTerrainData()
     {
         foreach (ObsVal<string> i in TerrainData)
+        {
             i.PropertyChanged += UpdateTerrainData;
+            i.PropertyChanged += CheckForAnyErrors;
+        }
     }
     #endregion
     public void Register()
@@ -141,8 +144,7 @@ public partial class TilesetDataViewModel : ObservableValidator, IDataViewModel
         bool anyErrors = Result();
         bool Result()
         {
-            if (GetErrors(nameof(Id)).Any()) return true;
-            if (GetErrors(nameof(Name)).Any()) return true;
+            if (GetErrors().Any()) return true;
             if (TerrainData.ToIntList() == null) return true;
             return false;
         }

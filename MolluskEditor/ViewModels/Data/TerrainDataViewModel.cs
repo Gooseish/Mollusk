@@ -184,7 +184,10 @@ public partial class TerrainDataViewModel : ObservableValidator, IDataViewModel
     private void WatchMovementCosts()
     {
         foreach (ObsVal<string> i in MovementCost)
+        {
             i.PropertyChanged += UpdateMovementCost;
+            i.PropertyChanged += CheckForAnyErrors;
+        }
     }
     #endregion
     public void Register()
@@ -220,12 +223,7 @@ public partial class TerrainDataViewModel : ObservableValidator, IDataViewModel
         bool anyErrors = Result();
         bool Result()
         {
-            if (GetErrors(nameof(Id)).Any()) return true;
-            if (GetErrors(nameof(Name)).Any()) return true;
-            if (GetErrors(nameof(Avoid)).Any()) return true;
-            if (GetErrors(nameof(Def)).Any()) return true;
-            if (GetErrors(nameof(Res)).Any()) return true;
-            if (GetErrors(nameof(HealPercent)).Any()) return true;
+            if (GetErrors().Any()) return true;
             if (MovementCost.ToIntList() == null) return true;
             return false;
         }
