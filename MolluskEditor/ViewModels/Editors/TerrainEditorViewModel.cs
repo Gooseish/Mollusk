@@ -38,9 +38,10 @@ public partial class TerrainEditorViewModel : EditorViewModel
     }
     private void OnUndoOrRedo(object? sender, EventArgs args)
     {
-        int? selectedIndex = Data.SelectedDataIndex;
-        Data.Initialize();
-        Data.FixIndexAfterUndo(selectedIndex);
+        //int? selectedIndex = Data.SelectedDataIndex;
+        //Data.Initialize();
+        //Data.FixIndexAfterUndo(selectedIndex);
+        // Need to update every field of the terrain if it's at zero
     }
     private void Subscribe()
     {
