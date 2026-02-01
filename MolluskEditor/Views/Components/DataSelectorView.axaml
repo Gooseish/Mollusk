@@ -8,6 +8,7 @@
              x:Class="MolluskEditor.Views.DataSelectorView">
   <StackPanel>
     <TextBlock Text="All Data"/>
+    <TextBox Watermark="Search..." Text="{Binding SearchText}"/>
     <ListBox Width="120" Height="300"
         ItemsSource="{Binding Data}" 
         SelectedIndex = "{Binding SelectedDataIndex}"

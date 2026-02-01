@@ -1,6 +1,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -27,13 +28,23 @@ public partial class DataSelectorViewModel : ViewModelBase
     /// </summary>
     [ObservableProperty]
     private bool _writeable;
+    /// <summary>
+    /// Function passed in with dependency injection that is responsible
+    /// for looking at the data model and getting a list of matching
+    /// view models.
+    /// </summary>
     private Func<ObservableCollection<IDataViewModel>> _getFromDataModel;
+    /// <summary>
+    /// Collection of all the data models.
+    /// </summary>
     [ObservableProperty]
     private ObservableCollection<IDataViewModel> _data;
     [ObservableProperty]
     private int? _selectedDataIndex;
     [ObservableProperty]
     private IDataViewModel? _selectedData;
+    [ObservableProperty]
+    private string _searchText;
     private CommandStack _commandStack;
 
     // Constructor's getting unwieldy, maybe build with factory model and DI?
@@ -76,6 +87,7 @@ public partial class DataSelectorViewModel : ViewModelBase
     private void AddData()
     {
         var newElement = (IDataViewModel)Activator.CreateInstance(_dataViewModelType);
+        if (newElement == null) { return; }
         // Issue Command
         CommandSequence command = new();
         command.Add(new CustomCommand(newElement.Register, newElement.Unregister)); // Register to the datamodel
