@@ -45,8 +45,8 @@ public partial class TilesetEditorViewModel : EditorViewModel
     }
     private void OnProjectLoaded(object? sender, EventArgs args)
     {
-        Data.Initialize(); // Perhaps abstract this as well
-        TerrainData.Initialize();
+        Data.Initialize(true); // Perhaps abstract this as well
+        TerrainData.Initialize(true);
     }
     private void OnUndoOrRedo(object? sender, EventArgs args)
     {

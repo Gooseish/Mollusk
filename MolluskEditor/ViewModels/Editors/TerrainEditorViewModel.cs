@@ -34,7 +34,7 @@ public partial class TerrainEditorViewModel : EditorViewModel
     }
     private void OnProjectLoaded(object? sender, EventArgs args)
     {
-        Data.Initialize(); // Perhaps abstract this as well
+        Data.Initialize(true); // Perhaps abstract this as well
     }
     private void OnUndoOrRedo(object? sender, EventArgs args)
     {

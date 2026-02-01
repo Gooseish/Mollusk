@@ -54,16 +54,17 @@ public partial class DataSelectorViewModel : ViewModelBase
         _commandStack = commandStack;
         _writeable = writeable;
         Initialize();
-        SearchText = "";
     }
 
-    public void Initialize()
+    public void Initialize(bool resetSearch = false)
     {
         Data = _getFromDataModel.Invoke();
         SortData();
         if (SearchFilteredData.Count() == 0)
             SearchFilteredData = Data;
-        if (Data.Count > 0) { SelectedDataIndex = 0; }
+        if (Data.Count > 0) SelectedDataIndex = 0;
+        if (resetSearch) SearchText = "";
+        DoSearch(SearchText);
     }
     #region Search Box
     [ObservableProperty]
@@ -98,10 +99,8 @@ public partial class DataSelectorViewModel : ViewModelBase
     #region Events
     partial void OnSelectedDataChanged(IDataViewModel? oldValue, IDataViewModel? newValue)
     {
-        if (IndexChanged == null) {return;}
+        if (IndexChanged == null) return;
         IndexChanged.Invoke(this, EventArgs.Empty);
-        //if (SelectedData != null)
-            //SelectedData.FixFields();
     }
     /// <summary>
     /// Event that notifies the parent editor that the selected data
@@ -127,6 +126,7 @@ public partial class DataSelectorViewModel : ViewModelBase
         command.AddCleanup(newElement.NotifyChange); // Notify any readonly selectors that might be listening
         _commandStack.IssueCommand(command);
         // Cleanup
+        SearchText = "";
         SelectedDataIndex = Data.Count - 1; // Fix Index
     }
     [RelayCommand]
@@ -143,6 +143,7 @@ public partial class DataSelectorViewModel : ViewModelBase
         command.AddCleanup(selectedData.NotifyChange); // Notify any readonly selectors that might be listening
         _commandStack.IssueCommand(command);
         // Cleanup
+        DoSearch(SearchText);
         FixIndexAfterDelete(lastIndex); // Fix Index
     }
     #endregion
