@@ -2,6 +2,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
 using CommunityToolkit.Mvvm.ComponentModel;
 using MolluskEditor.Models;
 using MolluskEditor.Wrappers;
@@ -10,7 +11,6 @@ using MolluskEditor.Extensions;
 using MolluskEditor.Validators;
 using MolluskEngine.GameBoard;
 using Avalonia.Media.Imaging;
-using Avalonia.Platform;
 using MolluskEditor.Services;
 using Avalonia.Media;
 
@@ -72,6 +72,8 @@ public partial class TilesetDataViewModel : ObservableValidator, IDataViewModel
     public bool CheckIdAvailable(string idString)
         { return _tilesetData.CheckIdAvailable(idString, _tileset.Id); }
     [ObservableProperty]
+    [NotifyDataErrorInfo][MatchFilename("Tileset image not found", 
+        @"C:/Users/Home/Documents/Monogame_Projects/Mollusk/MolluskEngine/Content/Graphics/Tilesets/")] // Todo: fix hardcoding
     private string _name;
     // Needs validation to make sure image name is correct
     partial void OnNameChanged(string? oldValue, string newValue)

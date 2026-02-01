@@ -12,7 +12,6 @@
     <Folder Include="Factories\" />
     <AvaloniaResource Include="Assets\**" />
     <Folder Include="Services\" />
-    <Folder Include="Validators\" />
     <Folder Include="Views\Components\" />
     <Folder Include="Wrappers\" />
   </ItemGroup>
