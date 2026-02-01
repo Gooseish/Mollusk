@@ -1,10 +1,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Data;
-using System.Diagnostics;
 using System.Linq;
-using System.Security;
-using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MolluskEditor.Commands;
@@ -63,11 +60,10 @@ public partial class DataSelectorViewModel : ViewModelBase
     public void Initialize()
     {
         Data = _getFromDataModel.Invoke();
-        if (Data.Count > 0)
-        {
-            SelectedDataIndex = 0;
-        }
         SortData();
+        if (SearchFilteredData.Count() == 0)
+            SearchFilteredData = Data;
+        if (Data.Count > 0) { SelectedDataIndex = 0; }
     }
     #region Search Box
     [ObservableProperty]
@@ -151,7 +147,7 @@ public partial class DataSelectorViewModel : ViewModelBase
     }
     #endregion
 
-    #region Private Utilities
+    #region Utilities
     /// <summary>
     /// Pick a reasonable valid selected item index
     /// when the number of items in the collection
