@@ -12,6 +12,7 @@ using MolluskEngine.GameBoard;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using MolluskEditor.Services;
+using Avalonia.Media;
 
 namespace MolluskEditor.ViewModels;
 
@@ -131,5 +132,6 @@ public partial class TilesetDataViewModel : ObservableValidator, IDataViewModel
         
     }
 
-    
+    [ObservableProperty]
+    private IBrush _textColor = Brush.Parse("White");
 }

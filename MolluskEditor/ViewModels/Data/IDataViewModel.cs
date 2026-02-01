@@ -1,6 +1,7 @@
 
 
 using System.Collections.ObjectModel;
+using Avalonia.Media;
 
 namespace MolluskEditor.ViewModels;
 
@@ -17,4 +18,5 @@ public interface IDataViewModel
     public bool CheckIdAvailable(string idString);
     public void FixFields();
     public void NotifyChange();
+    public IBrush TextColor {get;set;}
 }

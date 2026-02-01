@@ -10,6 +10,7 @@ using MolluskEditor.Extensions;
 using MolluskEditor.Validators;
 using MolluskEngine.GameBoard;
 using MolluskEngine.Extensions;
+using Avalonia.Media;
 
 namespace MolluskEditor.ViewModels;
 
@@ -40,6 +41,8 @@ public partial class TerrainDataViewModel : ObservableValidator, IDataViewModel
         _healPercent = terrain.HealPercent.ToString();
         _movementCost = GetMovementCostCollection(terrain.MovementCost);
         WatchMovementCosts();
+
+        PropertyChanged += CheckForAnyErrors;
     }
     public TerrainDataViewModel() : this(null) { }
     public static ObservableCollection<IDataViewModel> ReadExisting()
@@ -184,13 +187,13 @@ public partial class TerrainDataViewModel : ObservableValidator, IDataViewModel
             i.PropertyChanged += UpdateMovementCost;
     }
     #endregion
-    public void Unregister()
-    {
-        _terrainData.Data.Remove(_terrain.Id);
-    }
     public void Register()
     {
         _terrainData.Data[_terrain.Id] = _terrain;
+    }
+    public void Unregister()
+    {
+        _terrainData.Data.Remove(_terrain.Id);
     }
     public void FixFields()
     {
@@ -201,8 +204,33 @@ public partial class TerrainDataViewModel : ObservableValidator, IDataViewModel
         FixHealPercent();
         FixMovementCost();
     }
+    #region Events
     public void NotifyChange()
     {
         _terrainData.OnAnyChange();
     }
+    /// <summary>
+    /// Color of the text in a data selector. Turns yellow if 
+    /// there's any errors.
+    /// </summary>
+    [ObservableProperty]
+    private IBrush _textColor = Brush.Parse("White");
+    private void CheckForAnyErrors(object? sender, EventArgs args)
+    {
+        bool anyErrors = Result();
+        bool Result()
+        {
+            if (GetErrors(nameof(Id)).Any()) return true;
+            if (GetErrors(nameof(Name)).Any()) return true;
+            if (GetErrors(nameof(Avoid)).Any()) return true;
+            if (GetErrors(nameof(Def)).Any()) return true;
+            if (GetErrors(nameof(Res)).Any()) return true;
+            if (GetErrors(nameof(HealPercent)).Any()) return true;
+            if (MovementCost.ToIntList() == null) return true;
+            return false;
+        }
+        if (anyErrors) TextColor = Brush.Parse("Yellow");
+        else TextColor = Brush.Parse("White");
+    }
+    #endregion
 }
