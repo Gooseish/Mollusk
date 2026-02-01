@@ -20,14 +20,17 @@ public partial class TilesetEditorViewModel : EditorViewModel
     [ObservableProperty]
     private TerrainDataViewModel? _selectedTerrain;
 
-    public TilesetEditorViewModel(CommandStack commandStack, DataModel<Tileset> dataModel, DataModel<Terrain> terrainDataModel)
+    public TilesetEditorViewModel(CommandStack commandStack, DataModel<Tileset> dataModel,
+        DataModel<Terrain> terrainDataModel)
         : base(commandStack)
     {
         _dataModel = dataModel;
         _terrainDataModel = terrainDataModel;
         EditorName = EditorName.Tilesets;
-        Data = new(typeof(TilesetDataViewModel), TilesetDataViewModel.ReadExisting);
-        TerrainData = new(typeof(TerrainDataViewModel), TerrainDataViewModel.ReadExisting, false);
+        Data = new(typeof(TilesetDataViewModel), TilesetDataViewModel.ReadExisting,
+            commandStack);
+        TerrainData = new(typeof(TerrainDataViewModel), TerrainDataViewModel.ReadExisting, 
+            commandStack, false);
         Subscribe();
     }
 

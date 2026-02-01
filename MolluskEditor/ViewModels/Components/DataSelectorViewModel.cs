@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using MolluskEditor.Commands;
 
 namespace MolluskEditor.ViewModels;
 
@@ -33,12 +34,15 @@ public partial class DataSelectorViewModel : ViewModelBase
     private int? _selectedDataIndex;
     [ObservableProperty]
     private IDataViewModel? _selectedData;
+    private CommandStack _commandStack;
 
     public DataSelectorViewModel(Type dataViewModelType,
-        Func<ObservableCollection<IDataViewModel>> reader, bool writeable = true)
+        Func<ObservableCollection<IDataViewModel>> reader, CommandStack commandStack,
+        bool writeable = true)
     {
         _dataViewModelType = dataViewModelType;
         _getFromDataModel = reader;
+        _commandStack = commandStack;
         _writeable = writeable;
         Initialize();
     }

@@ -22,7 +22,8 @@ public partial class TerrainEditorViewModel : EditorViewModel
     {
         _dataModel = dataModel;
         EditorName = EditorName.Terrain;
-        Data = new(typeof(TerrainDataViewModel), TerrainDataViewModel.ReadExisting);
+        Data = new(typeof(TerrainDataViewModel), TerrainDataViewModel.ReadExisting,
+            commandStack);
         Subscribe();
     }
     
