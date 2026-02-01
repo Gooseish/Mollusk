@@ -31,12 +31,12 @@ public partial class TilesetDataViewModel : ObservableValidator, IDataViewModel
         tileset ??= _tilesetData.New();
         _tileset = tileset;
         _id = tileset.Id.ToString();
-        _name = tileset.Name;
         _terrainData = tileset.TerrainData.ToWrappedStringCollection();
         FixImage();
         WatchTerrainData();
 
         PropertyChanged += CheckForAnyErrors;
+        Name = tileset.Name; // Assign to property to trigger filename check
     }
     public TilesetDataViewModel() : this(null) { }
 
