@@ -11,18 +11,19 @@ namespace MolluskEditor.ViewModels;
 
 public partial class TerrainEditorViewModel : EditorViewModel
 {
-    private CommandStack _commandStack;
-    DataModel<Terrain> _dataModel;
+    
+    private DataModel<Terrain> _dataModel;
     [ObservableProperty]
     private DataSelectorViewModel _data;
     [ObservableProperty]
     private TerrainDataViewModel? _selectedTerrain;
     public TerrainEditorViewModel(CommandStack commandStack, DataModel<Terrain> dataModel)
+        : base(commandStack)
     {
-        _commandStack = commandStack;
         _dataModel = dataModel;
-        EditorName = MolluskEditor.Data.EditorName.Terrain;
-        Data = new(typeof(TerrainDataViewModel), TerrainDataViewModel.ReadExisting);
+        EditorName = EditorName.Terrain;
+        Data = new(typeof(TerrainDataViewModel), TerrainDataViewModel.ReadExisting,
+            commandStack);
         Subscribe();
     }
     
@@ -33,26 +34,27 @@ public partial class TerrainEditorViewModel : EditorViewModel
     }
     private void OnProjectLoaded(object? sender, EventArgs args)
     {
-        Data.Initialize(); // Perhaps abstract this as well
+        Data.Initialize(true); // Perhaps abstract this as well
     }
     private void OnUndoOrRedo(object? sender, EventArgs args)
     {
-        int? selectedIndex = SelectedTerrain == null ? null : int.Parse(SelectedTerrain.Id);
-        Data.Initialize();
-        Data.FixIndexAfterUndo(selectedIndex);
+        //int? selectedIndex = Data.SelectedDataIndex;
+        //Data.Initialize();
+        //Data.FixIndexAfterUndo(selectedIndex);
+        // Need to update every field of the terrain if it's at zero
     }
     private void Subscribe()
     {
         SaveLoadService.ProjectLoaded += OnProjectLoaded;
-        Data.IndexChanged += OnSelectionChanged;
         _dataModel.IdsChanged += Data.SortDataEvent;
         _commandStack.OnUndo += OnUndoOrRedo;
         _commandStack.OnRedo += OnUndoOrRedo;
+        // Garbage Collected
+        Data.IndexChanged += OnSelectionChanged;
     }
     private void Unsubscribe()
     {
         SaveLoadService.ProjectLoaded -= OnProjectLoaded;
-        Data.IndexChanged -= OnSelectionChanged; // This should be taken care of by the garbage collector, so maybe is unnecessary
         _dataModel.IdsChanged -= Data.SortDataEvent;
         _commandStack.OnUndo -= OnUndoOrRedo;
         _commandStack.OnRedo -= OnUndoOrRedo;

@@ -6,7 +6,6 @@ using Avalonia.Markup.Xaml;
 using MolluskEditor.ViewModels;
 using MolluskEditor.Views;
 using System;
-using MolluskEditor.Data;
 using MolluskEditor.Factories;
 using Microsoft.Extensions.DependencyInjection;
 using MolluskEditor.Models;
@@ -36,6 +35,7 @@ public partial class App : Application
             collection.AddSingleton<CommandStack>();
             collection.AddSingleton<MainWindowViewModel>();
             collection.AddTransient<TerrainEditorViewModel>();
+            collection.AddTransient<TilesetEditorViewModel>();
             collection.AddTransient<UnitsEditorViewModel>();
             collection.AddTransient<ChildWindowView>();
             collection.AddTransient<ChildWindowViewModel>();
@@ -52,6 +52,7 @@ public partial class App : Application
             {
                 EditorName.Terrain => x.GetRequiredService<TerrainEditorViewModel>(),
                 EditorName.Units => x.GetRequiredService<UnitsEditorViewModel>(),
+                EditorName.Tilesets  => x.GetRequiredService<TilesetEditorViewModel>(),
                 _ => throw new InvalidOperationException("Editor type not recognized by editor factory.")
             });
             collection.AddSingleton<EditorFactory>();
@@ -70,19 +71,25 @@ public partial class App : Application
 
             var services = collection.BuildServiceProvider();
 
-            // Tell the data view models about the data model singletons and the command stack
-            // This kind of sucks that I have to do it manually...
-            TerrainDataViewModel.InjectDependency(
-                services.GetRequiredService<DataModel<Terrain>>(),
-                services.GetRequiredService<CommandStack>());
+            DataViewModelDependencyInjection(services);
 
             desktop.MainWindow = new MainWindow
             {
                 DataContext = services.GetRequiredService<MainWindowViewModel>()
             };
         }
-
         base.OnFrameworkInitializationCompleted();
+    }
+    private void DataViewModelDependencyInjection(ServiceProvider services)
+    {
+        // Tell the data view models about the data model singletons and the command stack
+        // This kind of sucks that I have to do it manually...
+        TerrainDataViewModel.InjectDependency(
+                services.GetRequiredService<DataModel<Terrain>>(),
+                services.GetRequiredService<CommandStack>());
+            TilesetDataViewModel.InjectDependency(
+                services.GetRequiredService<DataModel<Tileset>>(),
+                services.GetRequiredService<CommandStack>());
     }
 
     private void DisableAvaloniaDataAnnotationValidation()

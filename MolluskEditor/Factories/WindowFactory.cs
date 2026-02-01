@@ -1,5 +1,4 @@
 using System;
-using MolluskEditor.Data;
 using MolluskEditor.ViewModels;
 using MolluskEditor.Views;
 

@@ -1,12 +1,17 @@
 using System;
 using CommunityToolkit.Mvvm.ComponentModel;
-using MolluskEditor.Data;
+using MolluskEditor.Commands;
 
 namespace MolluskEditor.ViewModels;
 
-public partial class EditorViewModel : ViewModelBase
+public abstract partial class EditorViewModel : ViewModelBase
 {
+    protected CommandStack _commandStack;
+    public EditorViewModel(CommandStack commandStack)
+    {
+        _commandStack = commandStack;
+    }
     [ObservableProperty]
     private EditorName _editorName;
-    public virtual void Dispose(){}
+    public abstract void Dispose();
 }

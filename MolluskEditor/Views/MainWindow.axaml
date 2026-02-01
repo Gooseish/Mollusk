@@ -45,6 +45,9 @@
             <Button Command="{Binding GoToTerrainCommand}"
                     Content="Terrain"
                     IsVisible="{Binding TerrainTabVisible}"/>
+            <Button Command="{Binding GoToTilesetsCommand}"
+                    Content="Tilesets"
+                    IsVisible="{Binding TilesetsTabVisible}"/>
         </StackPanel>
         <ContentControl Content = "{Binding CurrentEditor}"/>
     </StackPanel>

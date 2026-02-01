@@ -1,8 +1,8 @@
-namespace MolluskEditor.Data;
+namespace MolluskEditor.ViewModels;
 
 public enum EditorName // Unnecessary?
 {
     Units,
     Terrain,
-    //Tilesets,
+    Tilesets,
 }

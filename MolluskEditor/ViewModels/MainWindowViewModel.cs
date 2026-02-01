@@ -4,7 +4,6 @@ using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MolluskEditor.Commands;
-using MolluskEditor.Data;
 using MolluskEditor.Factories;
 using MolluskEditor.Services;
 using MolluskEngine.Extensions;
@@ -66,6 +65,7 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         UnitsTabVisible = VisibleEditorTabs.Contains(EditorName.Units);
         TerrainTabVisible = VisibleEditorTabs.Contains(EditorName.Terrain);
+        TilesetsTabVisible = VisibleEditorTabs.Contains(EditorName.Tilesets);
     }
     private void ChildWindowClosed(object? sender, EventArgs args)
     {
@@ -78,6 +78,7 @@ public partial class MainWindowViewModel : ViewModelBase
     [RelayCommand]
     private void GoToUnits()
     {
+        if (CurrentEditor?.EditorName == EditorName.Units) {return;}
         try { CurrentEditor.Dispose(); } catch {}
         CurrentEditor = _editorFactory.GetEditorViewModel(EditorName.Units);
     }
@@ -86,9 +87,19 @@ public partial class MainWindowViewModel : ViewModelBase
     [RelayCommand]
     private void GoToTerrain()
     {
+        if (CurrentEditor?.EditorName == EditorName.Terrain) {return;}
         try { CurrentEditor.Dispose(); } catch {}
         CurrentEditor = _editorFactory.GetEditorViewModel(EditorName.Terrain);
     }
     [ObservableProperty]
     private bool _terrainTabVisible = true;
+    [RelayCommand]
+    private void GoToTilesets()
+    {
+        if (CurrentEditor?.EditorName == EditorName.Tilesets) {return;}
+        try { CurrentEditor.Dispose(); } catch {}
+        CurrentEditor = _editorFactory.GetEditorViewModel(EditorName.Tilesets);
+    }
+    [ObservableProperty]
+    private bool _tilesetsTabVisible = true;
 }

@@ -8,12 +8,18 @@
              x:Class="MolluskEditor.Views.DataSelectorView">
   <StackPanel>
     <TextBlock Text="All Data"/>
+    <TextBox Watermark="Search..." Text="{Binding SearchText}">
+      <TextBox.KeyBindings>
+        <KeyBinding Gesture="Enter" 
+                    Command="{Binding SnapToSearchResultCommand}"/>
+      </TextBox.KeyBindings>
+    </TextBox>
     <ListBox Width="120" Height="300"
-        ItemsSource="{Binding Data}" 
+        ItemsSource="{Binding SearchFilteredData}" 
         SelectedIndex = "{Binding SelectedDataIndex}"
         SelectedItem = "{Binding SelectedData}">
       <ListBox.ItemTemplate>
-        <DataTemplate DataType="vm:IDataViewModel"> <!-- Todo: Needs to use the interface... -->
+        <DataTemplate DataType="vm:IDataViewModel">
           <StackPanel Orientation="Horizontal">
             <TextBlock Text="{Binding Id}" />
             <TextBlock Text=": " />
@@ -22,7 +28,7 @@
         </DataTemplate>
       </ListBox.ItemTemplate>
     </ListBox>
-    <Button Command="{Binding AddDataCommand}">New</Button>
-    <Button Command="{Binding RemoveDataCommand}">Delete</Button>
+    <Button Command="{Binding AddDataCommand}" IsVisible = "{Binding Writeable}">New</Button>
+    <Button Command="{Binding RemoveDataCommand}" IsVisible = "{Binding Writeable}">Delete</Button>
   </StackPanel>
 </UserControl>
