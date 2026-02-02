@@ -5,7 +5,6 @@ using System.Linq;
 using System.IO;
 using CommunityToolkit.Mvvm.ComponentModel;
 using MolluskEditor.Models;
-using MolluskEditor.Wrappers;
 using MolluskEditor.Commands;
 using MolluskEditor.Extensions;
 using MolluskEditor.Validators;
@@ -31,7 +30,7 @@ public partial class TilesetDataViewModel : ObservableValidator, IDataViewModel
         tileset ??= _tilesetData.New();
         _tileset = tileset;
         _id = tileset.Id.ToString();
-        _terrainData = tileset.TerrainData.ToWrappedStringCollection();
+        _terrainData = tileset.TerrainData.ToTerrainTileViewModel();
         FixImage();
         WatchTerrainData();
 
@@ -93,27 +92,29 @@ public partial class TilesetDataViewModel : ObservableValidator, IDataViewModel
     private void FixImage()
     {
         string full_path = SaveLoadService.CONTENTROOT + SaveLoadService.TILESETIMAGES + _tileset.Name + ".png";
-        bool file_exists = System.IO.File.Exists(full_path);
+        bool file_exists = File.Exists(full_path);
         if (file_exists)
             Image = new Bitmap(full_path);
     }
     [ObservableProperty]
-    private ObservableCollection<ObsVal<string>> _terrainData;
+    private ObservableCollection<TerrainTileViewModel> _terrainData;
     private void UpdateTerrainData(object? sender, EventArgs args)
     {
         List<int>? parsedTerrainData = TerrainData.ToIntList();
         if (parsedTerrainData == null) { return; }
         if (parsedTerrainData == (List<int>)[.. _tileset.TerrainData])
             { return; }
-        SetCommand<int[]> command = new(SetTerrainData,
-            _tileset.TerrainData, parsedTerrainData.ToArray());
+        CommandSequence command = new();
+        command.Add(new SetCommand<int[]>(SetTerrainData,
+            _tileset.TerrainData, parsedTerrainData.ToArray()));
+        command.AddCleanup(FixTerrainData);
         _commandStack.IssueCommand(command);
     }
     private void SetTerrainData(int[] value) {_tileset.TerrainData = value;}
-    private void FixTerrainData() {TerrainData = _tileset.TerrainData.ToWrappedStringCollection();}
+    private void FixTerrainData() {TerrainData = _tileset.TerrainData.ToTerrainTileViewModel();}
     private void WatchTerrainData()
     {
-        foreach (ObsVal<string> i in TerrainData)
+        foreach (TerrainTileViewModel i in TerrainData)
         {
             i.PropertyChanged += UpdateTerrainData;
             i.PropertyChanged += CheckForAnyErrors;

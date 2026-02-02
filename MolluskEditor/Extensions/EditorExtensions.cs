@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
+using MolluskEditor.ViewModels;
 using MolluskEditor.Wrappers;
 
 namespace MolluskEditor.Extensions;
@@ -23,6 +24,25 @@ public static class EditorExtensions
                 return null;
             result.Add(intValue);
         }
+        return result;
+    }
+    public static List<int>? ToIntList(this ObservableCollection<TerrainTileViewModel> source)
+    {
+        List<int> result = [];
+        foreach (TerrainTileViewModel element in source)
+        {
+            if (element.Id == null) return null;
+            result.Add((int)element.Id);
+        }
+        return result;
+    }
+    public static ObservableCollection<TerrainTileViewModel> ToTerrainTileViewModel(
+        this int[] source)
+    {
+        ObservableCollection<TerrainTileViewModel> result = [];
+        List<int> sourceList = [.. source];
+        foreach(int id in sourceList)
+            result.Add(new TerrainTileViewModel(id));
         return result;
     }
     public static ObservableCollection<ObsVal<string>> ToWrappedStringCollection(
@@ -43,6 +63,7 @@ public static class EditorExtensions
             result.Add(new ObsVal<string>(i.ToString()));
         return result;
     }
+    
 
     public static Bitmap BitmapFromColor(int width, int height, Color color)
     {
