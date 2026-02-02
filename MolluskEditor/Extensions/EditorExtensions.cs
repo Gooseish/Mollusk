@@ -2,6 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.InteropServices;
+using Avalonia.Media;
+using Avalonia.Media.Imaging;
+using Avalonia.Platform;
 using MolluskEditor.Wrappers;
 
 namespace MolluskEditor.Extensions;
@@ -38,5 +42,31 @@ public static class EditorExtensions
         foreach(int i in sourceList)
             result.Add(new ObsVal<string>(i.ToString()));
         return result;
+    }
+
+    public static Bitmap BitmapFromColor(int width, int height, Color color)
+    {
+        var pixelFormat = PixelFormat.Bgra8888;
+        var bytesPerPixel = 4; // Bgra8888 uses 4 bytes
+        var stride = width * bytesPerPixel;
+        var buffer = new byte[height * stride];
+        for (int i = 0; i < buffer.Length; i += bytesPerPixel)
+        {
+            buffer[i    ] = color.B;
+            buffer[i + 1] = color.G;
+            buffer[i + 2] = color.R;
+            buffer[i + 3] = color.A;
+        }
+
+        var bitmap = new WriteableBitmap(
+            new Avalonia.PixelSize(width, height),
+            new Avalonia.Vector(96, 96), // Standard DPI?
+            pixelFormat,
+            AlphaFormat.Premul);
+        
+        using (var frameBuffer = bitmap.Lock()) 
+            { Marshal.Copy(buffer, 0, frameBuffer.Address, buffer.Length); } 
+
+        return bitmap;
     }
 }

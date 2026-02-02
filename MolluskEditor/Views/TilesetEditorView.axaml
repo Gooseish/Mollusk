@@ -27,7 +27,10 @@
                         VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
                         AutoCalculateMinZoom="True" AutoCalculateMaxZoom="True"
                         BoundsMode="FillViewport">
-          <Image Source="{Binding SelectedTileset.Image}"/>
+          <Grid>
+            <Image Source="{Binding SelectedTileset.Image}"/>
+            
+          </Grid>
         </paz:ZoomBorder>  
       </ScrollViewer>
       </StackPanel>
