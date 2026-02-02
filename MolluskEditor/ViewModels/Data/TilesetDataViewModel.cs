@@ -2,16 +2,16 @@ using System;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
 using CommunityToolkit.Mvvm.ComponentModel;
 using MolluskEditor.Models;
-using MolluskEditor.Wrappers;
 using MolluskEditor.Commands;
 using MolluskEditor.Extensions;
 using MolluskEditor.Validators;
 using MolluskEngine.GameBoard;
 using Avalonia.Media.Imaging;
-using Avalonia.Platform;
 using MolluskEditor.Services;
+using Avalonia.Media;
 
 namespace MolluskEditor.ViewModels;
 
@@ -30,10 +30,12 @@ public partial class TilesetDataViewModel : ObservableValidator, IDataViewModel
         tileset ??= _tilesetData.New();
         _tileset = tileset;
         _id = tileset.Id.ToString();
-        _name = tileset.Name;
-        _terrainData = tileset.TerrainData.ToWrappedStringCollection();
+        _terrainData = tileset.TerrainData.ToTerrainTileViewModel();
         FixImage();
         WatchTerrainData();
+
+        PropertyChanged += CheckForAnyErrors;
+        Name = tileset.Name; // Assign to property to trigger filename check
     }
     public TilesetDataViewModel() : this(null) { }
 
@@ -69,6 +71,8 @@ public partial class TilesetDataViewModel : ObservableValidator, IDataViewModel
     public bool CheckIdAvailable(string idString)
         { return _tilesetData.CheckIdAvailable(idString, _tileset.Id); }
     [ObservableProperty]
+    [NotifyDataErrorInfo][MatchFilename("Tileset image not found", 
+        @"C:/Users/Home/Documents/Monogame_Projects/Mollusk/MolluskEngine/Content/Graphics/Tilesets/")] // Todo: fix hardcoding
     private string _name;
     // Needs validation to make sure image name is correct
     partial void OnNameChanged(string? oldValue, string newValue)
@@ -88,28 +92,33 @@ public partial class TilesetDataViewModel : ObservableValidator, IDataViewModel
     private void FixImage()
     {
         string full_path = SaveLoadService.CONTENTROOT + SaveLoadService.TILESETIMAGES + _tileset.Name + ".png";
-        bool file_exists = System.IO.File.Exists(full_path);
+        bool file_exists = File.Exists(full_path);
         if (file_exists)
             Image = new Bitmap(full_path);
     }
     [ObservableProperty]
-    private ObservableCollection<ObsVal<string>> _terrainData;
+    private ObservableCollection<TerrainTileViewModel> _terrainData;
     private void UpdateTerrainData(object? sender, EventArgs args)
     {
         List<int>? parsedTerrainData = TerrainData.ToIntList();
         if (parsedTerrainData == null) { return; }
         if (parsedTerrainData == (List<int>)[.. _tileset.TerrainData])
             { return; }
-        SetCommand<int[]> command = new(SetTerrainData,
-            _tileset.TerrainData, parsedTerrainData.ToArray());
+        CommandSequence command = new();
+        command.Add(new SetCommand<int[]>(SetTerrainData,
+            _tileset.TerrainData, parsedTerrainData.ToArray()));
+        command.AddCleanup(FixTerrainData);
         _commandStack.IssueCommand(command);
     }
     private void SetTerrainData(int[] value) {_tileset.TerrainData = value;}
-    private void FixTerrainData() {TerrainData = _tileset.TerrainData.ToWrappedStringCollection();}
+    private void FixTerrainData() {TerrainData = _tileset.TerrainData.ToTerrainTileViewModel();}
     private void WatchTerrainData()
     {
-        foreach (ObsVal<string> i in TerrainData)
+        foreach (TerrainTileViewModel i in TerrainData)
+        {
             i.PropertyChanged += UpdateTerrainData;
+            i.PropertyChanged += CheckForAnyErrors;
+        }
     }
     #endregion
     public void Register()
@@ -128,8 +137,21 @@ public partial class TilesetDataViewModel : ObservableValidator, IDataViewModel
 
     public void NotifyChange()
     {
-        
+        _tilesetData.OnAnyChange();
     }
 
-    
+    [ObservableProperty]
+    private IBrush _textColor = Brush.Parse("White");
+    private void CheckForAnyErrors(object? sender, EventArgs args)
+    {
+        bool anyErrors = Result();
+        bool Result()
+        {
+            if (GetErrors().Any()) return true;
+            if (TerrainData.ToIntList() == null) return true;
+            return false;
+        }
+        if (anyErrors) TextColor = Brush.Parse("Yellow");
+        else TextColor = Brush.Parse("White");
+    }
 }

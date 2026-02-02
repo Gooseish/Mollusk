@@ -1,4 +1,5 @@
 using System;
+using Microsoft.Xna.Framework;
 using MolluskEngine.Data;
 using MolluskEngine.Extensions;
 
@@ -19,6 +20,7 @@ public class Terrain : IDataType
     /// type of the unit
     /// </summary>
     public int[,] MovementCost {get;set;}
+    public Color TileColor {get;set;}
     public Terrain()
     {
         Id = -1;
@@ -28,6 +30,7 @@ public class Terrain : IDataType
         Res = 0;
         HealPercent = 0;
         MovementCost = DefaultMoveCost();
+        TileColor = Color.White;
     }
     private static int[,] DefaultMoveCost()
     {

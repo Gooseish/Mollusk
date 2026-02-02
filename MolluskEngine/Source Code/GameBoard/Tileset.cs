@@ -14,6 +14,6 @@ public class Tileset : IDataType
     {
         Id = -1;
         Name = "New Tileset";
-        TerrainData = new int[1]; // Todo: fix?
+        TerrainData = new int[1024]; // Todo: fix?
     }
 }

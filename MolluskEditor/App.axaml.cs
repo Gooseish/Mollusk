@@ -87,10 +87,12 @@ public partial class App : Application
         TerrainDataViewModel.InjectDependency(
                 services.GetRequiredService<DataModel<Terrain>>(),
                 services.GetRequiredService<CommandStack>());
-            TilesetDataViewModel.InjectDependency(
-                services.GetRequiredService<DataModel<Tileset>>(),
-                services.GetRequiredService<CommandStack>());
-    }
+        TilesetDataViewModel.InjectDependency(
+            services.GetRequiredService<DataModel<Tileset>>(),
+            services.GetRequiredService<CommandStack>());
+        TerrainTileViewModel.InjectDependency(
+            services.GetRequiredService<DataModel<Terrain>>());
+}
 
     private void DisableAvaloniaDataAnnotationValidation()
     {

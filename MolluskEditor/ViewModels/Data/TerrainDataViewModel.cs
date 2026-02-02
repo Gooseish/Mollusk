@@ -10,6 +10,7 @@ using MolluskEditor.Extensions;
 using MolluskEditor.Validators;
 using MolluskEngine.GameBoard;
 using MolluskEngine.Extensions;
+using Avalonia.Media;
 
 namespace MolluskEditor.ViewModels;
 
@@ -39,7 +40,10 @@ public partial class TerrainDataViewModel : ObservableValidator, IDataViewModel
         _res = terrain.Res.ToString();
         _healPercent = terrain.HealPercent.ToString();
         _movementCost = GetMovementCostCollection(terrain.MovementCost);
+        _tileColor = terrain.TileColor.ToAvaloniaColor();
         WatchMovementCosts();
+
+        PropertyChanged += CheckForAnyErrors;
     }
     public TerrainDataViewModel() : this(null) { }
     public static ObservableCollection<IDataViewModel> ReadExisting()
@@ -181,16 +185,33 @@ public partial class TerrainDataViewModel : ObservableValidator, IDataViewModel
     private void WatchMovementCosts()
     {
         foreach (ObsVal<string> i in MovementCost)
+        {
             i.PropertyChanged += UpdateMovementCost;
+            i.PropertyChanged += CheckForAnyErrors;
+        }
     }
-    #endregion
-    public void Unregister()
+    [ObservableProperty]
+    private Color _tileColor;
+    partial void OnTileColorChanged(Color oldValue, Color newValue)
     {
-        _terrainData.Data.Remove(_terrain.Id);
+        if (TileColor == _terrain.TileColor.ToAvaloniaColor()) { return; }
+        CommandSequence command = new();
+        command.Add(new SetCommand<Color>(SetTileColor,
+         _terrain.TileColor.ToAvaloniaColor().ShallowCopy(), TileColor.ShallowCopy()));
+        command.AddCleanup(_terrainData.OnAnyChange);
+        command.AddCleanup(FixTileColor);
+        _commandStack.IssueCommand(command);
     }
+    private void SetTileColor(Color value) {_terrain.TileColor = value.ToMonogameColor();}
+    private void FixTileColor() {TileColor = _terrain.TileColor.ToAvaloniaColor();}
+    #endregion
     public void Register()
     {
         _terrainData.Data[_terrain.Id] = _terrain;
+    }
+    public void Unregister()
+    {
+        _terrainData.Data.Remove(_terrain.Id);
     }
     public void FixFields()
     {
@@ -201,8 +222,28 @@ public partial class TerrainDataViewModel : ObservableValidator, IDataViewModel
         FixHealPercent();
         FixMovementCost();
     }
+    #region Events
     public void NotifyChange()
     {
         _terrainData.OnAnyChange();
     }
+    /// <summary>
+    /// Color of the text in a data selector. Turns yellow if 
+    /// there's any errors.
+    /// </summary>
+    [ObservableProperty]
+    private IBrush _textColor = Brush.Parse("White");
+    private void CheckForAnyErrors(object? sender, EventArgs args)
+    {
+        bool anyErrors = Result();
+        bool Result()
+        {
+            if (GetErrors().Any()) return true;
+            if (MovementCost.ToIntList() == null) return true;
+            return false;
+        }
+        if (anyErrors) TextColor = Brush.Parse("Yellow");
+        else TextColor = Brush.Parse("White");
+    }
+    #endregion
 }

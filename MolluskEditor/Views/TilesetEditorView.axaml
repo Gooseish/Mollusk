@@ -4,17 +4,57 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              xmlns:vm="clr-namespace:MolluskEditor.ViewModels"
+             xmlns:paz="using:Avalonia.Controls.PanAndZoom"
              x:DataType="vm:TilesetEditorViewModel"
              x:Class="MolluskEditor.Views.TilesetEditorView">
   <StackPanel Orientation="Horizontal">
+    <!-- Tileset Selector -->
     <ContentControl Content = "{Binding Data}"/>
+    <!-- Main Editor -->
     <StackPanel Margin="5">
+      <!-- Terrain Fields -->
+      <StackPanel Orientation="Horizontal" Margin="5">
         <Label>Id</Label>
         <TextBox Text="{Binding SelectedTileset.Id}"></TextBox>
         <Label>Name</Label>
         <TextBox Text="{Binding SelectedTileset.Name}"></TextBox>
-    </StackPanel>
-    <Image Source="{Binding SelectedTileset.Image}"/>
+      </StackPanel>
+      <!-- Tilemap -->
+      <ScrollViewer VerticalScrollBarVisibility="Auto"
+                    HorizontalScrollBarVisibility="Auto">
+        <paz:ZoomBorder Name="ZoomBorder" Stretch="None" ZoomSpeed="1.2"
+                        Background="SlateBlue" ClipToBounds="True" Focusable="True"
+                        VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                        AutoCalculateMinZoom="True" AutoCalculateMaxZoom="True"
+                        BoundsMode="FillViewport">
+          <Grid>
+            <!-- Tilemap Image -->
+            <Image Source="{Binding SelectedTileset.Image}"/>
+            <!-- Terrain Tile Overlay -->
+            <ItemsControl ItemsSource="{Binding SelectedTileset.TerrainData}">
+              <!-- Grid Format -->
+              <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                  <UniformGrid Rows="32" Columns="32" 
+                    ColumnSpacing="0" RowSpacing = "0" />
+                </ItemsPanelTemplate>
+              </ItemsControl.ItemsPanel>
+              <!-- Entry Format -->
+              <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                  <Grid>
+                  <Image Source="{Binding Image}" Opacity="0.5"/>
+                  <TextBlock Text="{Binding Id}" FontSize="10"/>
+                  </Grid>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            
+          </Grid>
+        </paz:ZoomBorder>  
+      </ScrollViewer>
+      </StackPanel>
+    <!-- Terrain Selector -->
     <ContentControl Content = "{Binding TerrainData}"/>
   </StackPanel>
 </UserControl>
