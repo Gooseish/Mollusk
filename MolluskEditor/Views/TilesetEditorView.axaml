@@ -28,7 +28,27 @@
                         AutoCalculateMinZoom="True" AutoCalculateMaxZoom="True"
                         BoundsMode="FillViewport">
           <Grid>
+            <!-- Tilemap Image -->
             <Image Source="{Binding SelectedTileset.Image}"/>
+            <!-- Terrain Tile Overlay -->
+            <ItemsControl ItemsSource="{Binding SelectedTileset.TerrainData}">
+              <!-- Grid Format -->
+              <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                  <UniformGrid Rows="32" Columns="32" 
+                    ColumnSpacing="0" RowSpacing = "0" />
+                </ItemsPanelTemplate>
+              </ItemsControl.ItemsPanel>
+              <!-- Entry Format -->
+              <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                  <Grid>
+                  <Image Source="{Binding Image}" Opacity="0.5"/>
+                  <TextBlock Text="{Binding Id}" FontSize="10"/>
+                  </Grid>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
             
           </Grid>
         </paz:ZoomBorder>  
