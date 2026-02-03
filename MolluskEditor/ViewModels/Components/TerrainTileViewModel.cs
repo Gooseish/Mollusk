@@ -40,7 +40,7 @@ public partial class TerrainTileViewModel : ViewModelBase
     private void RegenerateImage()
     {
         Image = EditorExtensions.BitmapFromColor(
-            Config.tileWidth, Config.tileHeight, GetColor());
+            1, 1, GetColor());
     }
     [RelayCommand]
     private void AssignTerrain(string? idString)
