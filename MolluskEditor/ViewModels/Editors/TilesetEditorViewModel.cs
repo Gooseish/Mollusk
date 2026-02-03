@@ -4,6 +4,10 @@ using MolluskEditor.Commands;
 using MolluskEditor.Models;
 using MolluskEngine.GameBoard;
 using MolluskEditor.Services;
+using System.Collections.Generic;
+using Avalonia.Media.Imaging;
+using Avalonia.Media;
+using MolluskEditor.Extensions;
 
 namespace MolluskEditor.ViewModels;
 
