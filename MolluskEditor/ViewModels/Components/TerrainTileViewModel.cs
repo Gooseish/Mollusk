@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using MolluskEditor.Extensions;
 using MolluskEditor.Models;
 using MolluskEngine;
@@ -35,6 +37,11 @@ public partial class TerrainTileViewModel : ViewModelBase
     {
         Image = EditorExtensions.BitmapFromColor(
             Config.tileWidth, Config.tileHeight, GetColor());
+    }
+    [RelayCommand]
+    private void AssignTerrain(int? id)
+    {
+        Id = id;
     }
 }
 

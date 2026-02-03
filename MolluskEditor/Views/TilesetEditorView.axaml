@@ -44,12 +44,14 @@
                 <DataTemplate>
                   <Grid>
                   <Image Source="{Binding Image}" Opacity="0.5"/>
+                  <Button Width="16" Height="16" Background="Transparent"
+                          Command="{Binding AssignTerrainCommand}" 
+                          CommandParameter="{Binding $parent[ItemsControl].((vm:TilesetEditorViewModel)DataContext).SelectedTerrain.Id}"/>
                   <TextBlock Text="{Binding Id}" FontSize="10"/>
                   </Grid>
                 </DataTemplate>
               </ItemsControl.ItemTemplate>
-            </ItemsControl>
-            
+            </ItemsControl> 
           </Grid>
         </paz:ZoomBorder>  
       </ScrollViewer>
