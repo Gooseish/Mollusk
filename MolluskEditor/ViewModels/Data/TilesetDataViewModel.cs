@@ -18,17 +18,6 @@ namespace MolluskEditor.ViewModels;
 public partial class TilesetDataViewModel : ObservableValidator, IDataViewModel
 {
     #region Bitmaps
-    public void GenerateTerrainTileImages()
-    {
-        TerrainTileImages = [];
-        foreach (Terrain terrain in _terrainDataModel.Data.Values)
-        {
-            Bitmap image = EditorExtensions.BitmapFromColor(
-                1, 1, terrain.TileColor.ToAvaloniaColor());
-            TerrainTileImages[terrain.Id] = image;
-        }
-    }
-    public static Dictionary<int, Bitmap>? TerrainTileImages;
     #endregion
     private static CommandStack _commandStack;
     private static DataModel<Tileset> _tilesetData;
@@ -43,8 +32,6 @@ public partial class TilesetDataViewModel : ObservableValidator, IDataViewModel
     private Tileset _tileset;
     public TilesetDataViewModel(Tileset? tileset)
     {
-        GenerateTerrainTileImages();
-
         tileset ??= _tilesetData.New();
         _tileset = tileset;
         _id = tileset.Id.ToString();

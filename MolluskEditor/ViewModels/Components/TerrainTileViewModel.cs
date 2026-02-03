@@ -1,40 +1,45 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using MolluskEditor.Extensions;
+using MolluskEditor.Models;
+using MolluskEngine.GameBoard;
 
 namespace MolluskEditor.ViewModels;
 
 public partial class TerrainTileViewModel : ViewModelBase
 {
+    private static DataModel<Terrain> _terrainData;
+    public static void InjectDependency(DataModel<Terrain> terrainData)
+    {
+        _terrainData = terrainData;
+    }
     [ObservableProperty]
     private int? _id;
     partial void OnIdChanged(int? oldValue, int? newValue)
     {
-        ReferenceImage();
+        Brush.Color = GetColor();
     }
+    //[ObservableProperty]
+    //private Bitmap? _image;
     [ObservableProperty]
-    private Bitmap? _image;
+    private SolidColorBrush _brush = new SolidColorBrush();
     public TerrainTileViewModel(int id)
     {
         _id = id;
-        ReferenceImage();
+        Brush.Color = GetColor();
     }
-    private void ReferenceImage()
-    {
-        if (Id == null) { Image = null; return; }
-        try { Image = TilesetDataViewModel.TerrainTileImages[(int)Id]; }
-        catch { Image = null; return; }
-    }
-    /*
+    
     private Color GetColor()
     {
         if (Id == null) return Microsoft.Xna.Framework.Color.Transparent.ToAvaloniaColor(); // lol
         return _terrainData.Data[(int)Id].TileColor.ToAvaloniaColor();
     } 
-    
+    /*
     private void RegenerateImage()
     {
         Image = EditorExtensions.BitmapFromColor(

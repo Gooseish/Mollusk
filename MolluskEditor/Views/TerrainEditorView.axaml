@@ -13,17 +13,17 @@
       <!-- Terrain Fields -->
       <StackPanel Margin="5">
         <Label>Id</Label>
-        <TextBox Text="{Binding SelectedTerrain.Id}"></TextBox>
+        <TextBox Text="{Binding SelectedTerrain?.Id}"></TextBox>
         <Label>Name</Label>
-        <TextBox Text="{Binding SelectedTerrain.Name}"></TextBox>
+        <TextBox Text="{Binding SelectedTerrain?.Name}"></TextBox>
         <Label>Avoid</Label>
-        <TextBox Text="{Binding SelectedTerrain.Avoid}"></TextBox>
+        <TextBox Text="{Binding SelectedTerrain?.Avoid}"></TextBox>
         <Label>Def</Label>
-        <TextBox Text="{Binding SelectedTerrain.Def}"></TextBox>
+        <TextBox Text="{Binding SelectedTerrain?.Def}"></TextBox>
         <Label>Res</Label>
-        <TextBox Text="{Binding SelectedTerrain.Res}"></TextBox>
+        <TextBox Text="{Binding SelectedTerrain?.Res}"></TextBox>
         <Label>HealPercent</Label>
-        <TextBox Text="{Binding SelectedTerrain.HealPercent}"></TextBox>
+        <TextBox Text="{Binding SelectedTerrain?.HealPercent}"></TextBox>
       </StackPanel>
       <!-- Movement Costs -->
       <StackPanel Margin="5">
@@ -31,7 +31,7 @@
         <Border BorderBrush="Gray" BorderThickness="1" Padding="5">
           <Grid ColumnDefinitions="Auto, Auto" RowDefinitions="Auto, Auto">
             <!-- Movement Cost Table -->
-            <ItemsControl ItemsSource="{Binding SelectedTerrain.MovementCost}" Grid.Row="1" Grid.Column="1">
+            <ItemsControl ItemsSource="{Binding SelectedTerrain?.MovementCost}" Grid.Row="1" Grid.Column="1">
               <!-- Grid Format -->
               <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -84,7 +84,7 @@
       <!-- Color Picker -->
       <StackPanel Margin="5">
         <Label>Terrain Color</Label>
-        <colorPicker:ColorPicker Color="{Binding SelectedTerrain.TileColor, Delay=500}" />
+        <colorPicker:ColorPicker Color="{Binding SelectedTerrain?.TileColor, Delay=500}" />
       </StackPanel>
   </StackPanel>
 </UserControl>
