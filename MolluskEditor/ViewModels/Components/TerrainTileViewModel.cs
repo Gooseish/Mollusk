@@ -21,6 +21,10 @@ public partial class TerrainTileViewModel : ViewModelBase
     }
     [ObservableProperty]
     private int? _id;
+    partial void OnIdChanged(int? oldValue, int? newValue)
+    {
+        RegenerateImage();
+    }
     [ObservableProperty]
     private Bitmap _image;
     public TerrainTileViewModel(int id)
@@ -39,8 +43,10 @@ public partial class TerrainTileViewModel : ViewModelBase
             Config.tileWidth, Config.tileHeight, GetColor());
     }
     [RelayCommand]
-    private void AssignTerrain(int? id)
+    private void AssignTerrain(string? idString)
     {
+        if (!int.TryParse(idString, out int id))
+            return;
         Id = id;
     }
 }
