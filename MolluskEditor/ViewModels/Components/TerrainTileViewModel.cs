@@ -20,6 +20,7 @@ public partial class TerrainTileViewModel : ViewModelBase
     }
     [ObservableProperty]
     private int? _id;
+    public int Index;
     partial void OnIdChanged(int? oldValue, int? newValue)
     {
         Brush.Color = GetColor();
@@ -28,9 +29,10 @@ public partial class TerrainTileViewModel : ViewModelBase
     //private Bitmap? _image;
     [ObservableProperty]
     private SolidColorBrush _brush = new SolidColorBrush();
-    public TerrainTileViewModel(int id)
+    public TerrainTileViewModel(int id, int index)
     {
         _id = id;
+        Index = index;
         Brush.Color = GetColor();
     }
     

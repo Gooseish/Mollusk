@@ -12,6 +12,7 @@ using MolluskEngine.GameBoard;
 using Avalonia.Media.Imaging;
 using MolluskEditor.Services;
 using Avalonia.Media;
+using System.Runtime.CompilerServices;
 
 namespace MolluskEditor.ViewModels;
 
@@ -105,15 +106,19 @@ public partial class TilesetDataViewModel : ObservableValidator, IDataViewModel
     private ObservableCollection<TerrainTileViewModel> _terrainData;
     private void UpdateTerrainData(object? sender, EventArgs args)
     {
-        List<int>? parsedTerrainData = TerrainData.ToIntList();
-        if (parsedTerrainData == null) { return; }
-        if (parsedTerrainData == (List<int>)[.. _tileset.TerrainData])
-            { return; }
+        /*
         CommandSequence command = new();
         command.Add(new SetCommand<int[]>(SetTerrainData,
             _tileset.TerrainData, parsedTerrainData.ToArray()));
         command.AddCleanup(FixTerrainData);
         _commandStack.IssueCommand(command);
+        */
+        if (sender == null 
+            || sender is not TerrainTileViewModel terrainTile)
+            return;
+        int n = terrainTile.Index;
+        if (TerrainData[n].Id == null) { return; }
+        _tileset.TerrainData[n] = (int)TerrainData[n].Id;
     }
     private void SetTerrainData(int[] value) {_tileset.TerrainData = value;}
     private void FixTerrainData() {TerrainData = _tileset.TerrainData.ToTerrainTileViewModel();}

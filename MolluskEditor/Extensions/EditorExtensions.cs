@@ -41,8 +41,8 @@ public static class EditorExtensions
     {
         ObservableCollection<TerrainTileViewModel> result = [];
         List<int> sourceList = [.. source];
-        foreach(int id in sourceList)
-            result.Add(new TerrainTileViewModel(id));
+        for(int n = 0; n < sourceList.Count; n++)
+            result.Add(new TerrainTileViewModel(sourceList[n], n));
         return result;
     }
     public static ObservableCollection<ObsVal<string>> ToWrappedStringCollection(
