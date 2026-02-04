@@ -48,7 +48,7 @@
                   <TextBlock Text="{Binding Id}" FontSize="10"/>
                   <Button Width="16" Height="16" Background="Transparent"
                           Command="{Binding AssignTerrainCommand}" 
-                          CommandParameter="{Binding #TilesetEditor.DataContext.SelectedTerrain?.Id}"/>
+                          CommandParameter="{Binding #TilesetEditor.DataContext?.SelectedTerrain?.Id}"/>
                   </Grid>
                 </DataTemplate>
               </ItemsControl.ItemTemplate>
