@@ -17,6 +17,8 @@ public partial class TerrainEditorViewModel : EditorViewModel
     private DataSelectorViewModel _data;
     [ObservableProperty]
     private TerrainDataViewModel? _selectedTerrain;
+    [ObservableProperty]
+    private bool _terrainIsSelected;
     public TerrainEditorViewModel(CommandStack commandStack, DataModel<Terrain> dataModel)
         : base(commandStack)
     {
@@ -31,6 +33,7 @@ public partial class TerrainEditorViewModel : EditorViewModel
     private void OnSelectionChanged(object? sender, EventArgs args)
     {
         SelectedTerrain = (TerrainDataViewModel?)Data.SelectedData;
+        TerrainIsSelected = SelectedTerrain != null;
     }
     private void OnProjectLoaded(object? sender, EventArgs args)
     {

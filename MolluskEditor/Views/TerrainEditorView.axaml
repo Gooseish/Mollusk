@@ -84,7 +84,8 @@
       <!-- Color Picker -->
       <StackPanel Margin="5">
         <Label>Terrain Color</Label>
-        <colorPicker:ColorPicker Color="{Binding SelectedTerrain?.TileColor, Delay=500}" />
+        <colorPicker:ColorPicker  IsVisible="{Binding TerrainIsSelected}"
+            Color="{Binding SelectedTerrain?.TileColor, Delay=500}"/>
       </StackPanel>
   </StackPanel>
 </UserControl>
