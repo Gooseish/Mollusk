@@ -16,9 +16,9 @@
       <!-- Terrain Fields -->
       <StackPanel Orientation="Horizontal" Margin="5">
         <Label>Id</Label>
-        <TextBox Text="{Binding SelectedTileset.Id}"></TextBox>
+        <TextBox Text="{Binding SelectedTileset?.Id}"></TextBox>
         <Label>Name</Label>
-        <TextBox Text="{Binding SelectedTileset.Name}"></TextBox>
+        <TextBox Text="{Binding SelectedTileset?.Name}"></TextBox>
       </StackPanel>
       <!-- Tilemap -->
       <ScrollViewer VerticalScrollBarVisibility="Auto"
@@ -30,9 +30,9 @@
                         BoundsMode="FillViewport">
           <Grid>
             <!-- Tilemap Image -->
-            <Image Source="{Binding SelectedTileset.Image}"/>
+            <Image Source="{Binding SelectedTileset?.Image}"/>
             <!-- Terrain Tile Overlay -->
-            <ItemsControl ItemsSource="{Binding SelectedTileset.TerrainData}">
+            <ItemsControl ItemsSource="{Binding SelectedTileset?.TerrainData}">
               <!-- Grid Format -->
               <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
