@@ -37,6 +37,7 @@ public partial class App : Application
             collection.AddTransient<TerrainEditorViewModel>();
             collection.AddTransient<TilesetEditorViewModel>();
             collection.AddTransient<UnitsEditorViewModel>();
+            collection.AddTransient<MapsEditorViewModel>();
             collection.AddTransient<ChildWindowView>();
             collection.AddTransient<ChildWindowViewModel>();
 
@@ -53,6 +54,7 @@ public partial class App : Application
                 EditorName.Terrain => x.GetRequiredService<TerrainEditorViewModel>(),
                 EditorName.Units => x.GetRequiredService<UnitsEditorViewModel>(),
                 EditorName.Tilesets  => x.GetRequiredService<TilesetEditorViewModel>(),
+                EditorName.Maps => x.GetRequiredService<MapsEditorViewModel>(),
                 _ => throw new InvalidOperationException("Editor type not recognized by editor factory.")
             });
             collection.AddSingleton<EditorFactory>();
