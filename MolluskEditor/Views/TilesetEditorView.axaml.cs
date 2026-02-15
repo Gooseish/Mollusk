@@ -22,7 +22,6 @@ public partial class TilesetEditorView : UserControl
         _startPoint = e.GetPosition(DrawingCanvas);
         // Do stuff
     }
-
     private void OnPointerMoved(object? sender, PointerEventArgs e)
     {
         if (_isDrawing)
@@ -30,7 +29,6 @@ public partial class TilesetEditorView : UserControl
             // Do stuff
         }
     }
-
     private void OnPointerReleased(object? sender, PointerReleasedEventArgs e)
     {
         _isDrawing = false;
