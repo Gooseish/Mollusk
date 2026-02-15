@@ -37,7 +37,12 @@ public partial class TilesetEditorViewModel : EditorViewModel
 
     public void PaintTilemap(Point cursorPosition)
     {
-        
+        if (SelectedTerrain == null) {return;}
+        SelectedTileset?.PaintTilemap(cursorPosition, SelectedTerrain.Id);
+    }
+    public void FinishPainting()
+    {
+        SelectedTileset?.FinishPainting();
     }
 
     #region Event Handling

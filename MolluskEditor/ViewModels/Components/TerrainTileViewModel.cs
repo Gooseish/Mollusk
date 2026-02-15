@@ -41,8 +41,7 @@ public partial class TerrainTileViewModel : ViewModelBase
         if (Id == null) return Microsoft.Xna.Framework.Color.Transparent.ToAvaloniaColor(); // lol
         return _terrainData.Data[(int)Id].TileColor.ToAvaloniaColor();
     } 
-    [RelayCommand]
-    private void AssignTerrain(string? idString)
+    public void AssignTerrain(string? idString)
     {
         if (!int.TryParse(idString, out int id))
             return;

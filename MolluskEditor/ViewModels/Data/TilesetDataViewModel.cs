@@ -1,6 +1,5 @@
 using System;
 using System.Collections.ObjectModel;
-using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -12,7 +11,8 @@ using MolluskEngine.GameBoard;
 using Avalonia.Media.Imaging;
 using MolluskEditor.Services;
 using Avalonia.Media;
-using System.Runtime.CompilerServices;
+using Avalonia;
+using MolluskEngine;
 
 namespace MolluskEditor.ViewModels;
 
@@ -52,6 +52,36 @@ public partial class TilesetDataViewModel : ObservableValidator, IDataViewModel
             data.Add(new TilesetDataViewModel(tileset));
         return data;
     }
+    #region Tilemap Painting
+    public void PaintTilemap(Point cursorPosition, string selectedTerrain)
+    {
+        if (Image == null)
+            return;
+        // Probably only update these on image changes
+        int tilemapWidth = Image.PixelSize.Width / Config.tileWidth; 
+        int tilemapHeight = Image.PixelSize.Height / Config.tileHeight;
+
+        int cursorX = (int)(cursorPosition.X / Config.tileWidth);
+        int cursorY = (int)(cursorPosition.Y / Config.tileHeight);
+
+        // Return if cursor outside bounds
+        if (cursorX < 0 || cursorX >= tilemapWidth)  {return;}
+        if (cursorY < 0 || cursorY >= tilemapHeight) {return;}
+
+        // Get terrain tile
+        int currentTileIndex = cursorY * tilemapWidth + cursorX;
+        TerrainTileViewModel currentTile = TerrainData[currentTileIndex];
+
+        // Assign the terrain
+        currentTile.AssignTerrain(selectedTerrain);
+    }
+    public void FinishPainting()
+    {
+        if (Image == null)
+            return;
+    }
+    #endregion
+
     #region Boilerplate Properties
     [ObservableProperty]
     [NotifyDataErrorInfo][ParseAsInt][DontOverrideId]
