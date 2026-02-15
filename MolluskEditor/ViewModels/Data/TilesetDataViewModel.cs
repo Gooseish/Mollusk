@@ -56,28 +56,36 @@ public partial class TilesetDataViewModel : ObservableValidator, IDataViewModel
         return data;
     }
     #region Tilemap Painting
-    public void PaintTilemap(Point cursorPosition, string selectedTerrain)
+    private TerrainTileViewModel? pickTileWithCursor(Point cursorPosition)
     {
-        if (Image == null) {return;}
-        if (_tilemapWidth == null) {return;}
-        if (_tilemapHeight == null) {return;}
-
+        if (Image == null) {return null;}
+        if (_tilemapWidth == null) {return null;}
+        if (_tilemapHeight == null) {return null;}
         // Get cursor positions in map coordinates
         int cursorX = (int)(cursorPosition.X / Config.tileWidth);
         int cursorY = (int)(cursorPosition.Y / Config.tileHeight);
-
         // Return if cursor outside bounds
-        if (cursorX < 0 || cursorX >= _tilemapWidth)  {return;}
-        if (cursorY < 0 || cursorY >= _tilemapHeight) {return;}
-
-        // Get terrain tile and assign terrain
-        TerrainData.Index2D(cursorX, cursorY, (int)_tilemapWidth)
-            .AssignTerrain(selectedTerrain);
+        if (cursorX < 0 || cursorX >= _tilemapWidth)  {return null;}
+        if (cursorY < 0 || cursorY >= _tilemapHeight) {return null;}
+        // Index with map coordinates
+        return TerrainData.IndexAs2D(cursorX, cursorY, (int)_tilemapWidth);
+    }
+    public void PaintTilemap(Point cursorPosition, string selectedTerrain)
+    {
+        TerrainTileViewModel? selectedTile = pickTileWithCursor(cursorPosition);
+        if (selectedTile == null) {return;}
+        selectedTile.AssignTerrain(selectedTerrain);
     }
     public void FinishPainting()
     {
         if (Image == null)
             return;
+    }
+    public int? SampleTilemap(Point cursorPosition)
+    {
+        TerrainTileViewModel? selectedTile = pickTileWithCursor(cursorPosition);
+        if (selectedTile == null) {return null;}
+        return selectedTile.Id;
     }
     #endregion
 

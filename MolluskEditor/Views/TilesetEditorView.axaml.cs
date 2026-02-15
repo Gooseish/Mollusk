@@ -8,7 +8,6 @@ namespace MolluskEditor.Views;
 
 public partial class TilesetEditorView : UserControl
 {
-    private Point _startPoint;
     private bool _isDrawing;
     public TilesetEditorView()
     {
@@ -29,13 +28,14 @@ public partial class TilesetEditorView : UserControl
     {
         // Terrain painter
         _isDrawing = true;
-        _startPoint = e.GetPosition(DrawingCanvas);
         if (DataContext is TilesetEditorViewModel tilesetEditorViewModel)
             tilesetEditorViewModel.PaintTilemap(e.GetPosition(DrawingCanvas));
     }
     private void OnRightMouseButtonPressed(PointerPressedEventArgs e)
     {
         // Terrain picker
+        if (DataContext is TilesetEditorViewModel tilesetEditorViewModel)
+            tilesetEditorViewModel.SampleTilemap(e.GetPosition(DrawingCanvas));
     }
     private void OnPointerMoved(object? sender, PointerEventArgs e)
     {

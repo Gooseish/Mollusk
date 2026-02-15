@@ -44,6 +44,13 @@ public partial class TilesetEditorViewModel : EditorViewModel
     {
         SelectedTileset?.FinishPainting();
     }
+    public void SampleTilemap(Point cursorPosition)
+    {
+        if (SelectedTerrain == null) {return;}
+        int? sampledTerrainId = SelectedTileset?.SampleTilemap(cursorPosition);
+        if (sampledTerrainId == null) {return;}
+        TerrainData.SelectData((int)sampledTerrainId);
+    }
 
     #region Event Handling
     private void OnSelectionChanged(object? sender, EventArgs args)

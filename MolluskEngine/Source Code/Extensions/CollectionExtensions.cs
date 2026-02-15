@@ -33,7 +33,7 @@ public static class CollectionExtensions
 
         return flattened;
     }
-    public static T Index2D<T>(this IEnumerable<T> source, int x, int y, int columns)
+    public static T IndexAs2D<T>(this IEnumerable<T> source, int x, int y, int columns)
     {
         int index = x + y * columns;
         return source.ElementAt(index);

@@ -190,4 +190,13 @@ public partial class DataSelectorViewModel : ViewModelBase
         Data = new ObservableCollection<IDataViewModel>(Data.OrderBy(i => i.Id));
     }
     #endregion
+    #region External Controls
+    public void SelectData(int id)
+    {
+        foreach (IDataViewModel dataViewModel in Data)
+            if (int.TryParse(dataViewModel.Id, out int currentId))
+                if (currentId == id)
+                    SelectedData = dataViewModel;
+    }
+    #endregion
 }
