@@ -13,7 +13,6 @@ using MolluskEditor.Services;
 using MolluskEngine.GameBoard;
 using MolluskEditor.Commands;
 
-
 namespace MolluskEditor;
 
 public partial class App : Application

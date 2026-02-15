@@ -30,7 +30,7 @@
                         BoundsMode="FillViewport">
           <Grid>
             <!-- Tilemap Image -->
-            <Image Source="{Binding SelectedTileset?.Image}"/>
+            <Image Source="{Binding SelectedTileset?.Image}" Name="DrawingCanvas"/>
             <!-- Terrain Tile Overlay -->
             <ItemsControl ItemsSource="{Binding SelectedTileset?.TerrainData}">
               <!-- Grid Format -->
