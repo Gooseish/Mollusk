@@ -13,6 +13,7 @@ using MolluskEditor.Services;
 using Avalonia.Media;
 using Avalonia;
 using MolluskEngine;
+using MolluskEngine.Extensions;
 
 namespace MolluskEditor.ViewModels;
 
@@ -31,6 +32,8 @@ public partial class TilesetDataViewModel : ObservableValidator, IDataViewModel
         _commandStack = commandStack;
     }
     private Tileset _tileset;
+    private int? _tilemapWidth; 
+    private int? _tilemapHeight;
     public TilesetDataViewModel(Tileset? tileset)
     {
         tileset ??= _tilesetData.New();
@@ -55,25 +58,21 @@ public partial class TilesetDataViewModel : ObservableValidator, IDataViewModel
     #region Tilemap Painting
     public void PaintTilemap(Point cursorPosition, string selectedTerrain)
     {
-        if (Image == null)
-            return;
-        // Probably only update these on image changes
-        int tilemapWidth = Image.PixelSize.Width / Config.tileWidth; 
-        int tilemapHeight = Image.PixelSize.Height / Config.tileHeight;
+        if (Image == null) {return;}
+        if (_tilemapWidth == null) {return;}
+        if (_tilemapHeight == null) {return;}
 
+        // Get cursor positions in map coordinates
         int cursorX = (int)(cursorPosition.X / Config.tileWidth);
         int cursorY = (int)(cursorPosition.Y / Config.tileHeight);
 
         // Return if cursor outside bounds
-        if (cursorX < 0 || cursorX >= tilemapWidth)  {return;}
-        if (cursorY < 0 || cursorY >= tilemapHeight) {return;}
+        if (cursorX < 0 || cursorX >= _tilemapWidth)  {return;}
+        if (cursorY < 0 || cursorY >= _tilemapHeight) {return;}
 
-        // Get terrain tile
-        int currentTileIndex = cursorY * tilemapWidth + cursorX;
-        TerrainTileViewModel currentTile = TerrainData[currentTileIndex];
-
-        // Assign the terrain
-        currentTile.AssignTerrain(selectedTerrain);
+        // Get terrain tile and assign terrain
+        TerrainData.Index2D(cursorX, cursorY, (int)_tilemapWidth)
+            .AssignTerrain(selectedTerrain);
     }
     public void FinishPainting()
     {
@@ -128,10 +127,12 @@ public partial class TilesetDataViewModel : ObservableValidator, IDataViewModel
     private void FixImage()
     {
         string full_path = SaveLoadService.CONTENTROOT + SaveLoadService.TILESETIMAGES + _tileset.Name + ".png";
-        bool file_exists = File.Exists(full_path);
-        if (file_exists)
-            Image = new Bitmap(full_path);
+        if (!File.Exists(full_path)) {return;}
+        Image = new Bitmap(full_path);
+        _tilemapWidth = Image.PixelSize.Width / Config.tileWidth; 
+        _tilemapHeight = Image.PixelSize.Height / Config.tileHeight;
     }
+    
     [ObservableProperty]
     private ObservableCollection<TerrainTileViewModel> _terrainData;
     private void UpdateTerrainData(object? sender, EventArgs args)

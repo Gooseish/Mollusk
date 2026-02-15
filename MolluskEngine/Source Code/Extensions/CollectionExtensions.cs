@@ -33,6 +33,11 @@ public static class CollectionExtensions
 
         return flattened;
     }
+    public static T Index2D<T>(this IEnumerable<T> source, int x, int y, int columns)
+    {
+        int index = x + y * columns;
+        return source.ElementAt(index);
+    }
     public static ObservableCollection<T> ToObservableCollection<T>(this IEnumerable<T> source)
     {
         ObservableCollection<T> result = [];
