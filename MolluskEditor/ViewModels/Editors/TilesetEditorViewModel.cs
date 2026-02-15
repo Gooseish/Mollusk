@@ -40,6 +40,10 @@ public partial class TilesetEditorViewModel : EditorViewModel
         if (SelectedTerrain == null) {return;}
         SelectedTileset?.PaintTilemap(cursorPosition, SelectedTerrain.Id);
     }
+    public void BeginPainting()
+    {
+        SelectedTileset?.BeginPainting();
+    }
     public void FinishPainting()
     {
         SelectedTileset?.FinishPainting();

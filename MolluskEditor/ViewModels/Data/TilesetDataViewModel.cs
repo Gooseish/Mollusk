@@ -76,10 +76,17 @@ public partial class TilesetDataViewModel : ObservableValidator, IDataViewModel
         if (selectedTile == null) {return;}
         selectedTile.AssignTerrain(selectedTerrain);
     }
+    private CommandSequence? _paintCommands;
+    public void BeginPainting()
+    {
+        if (Image == null) {return;}
+        _paintCommands = new CommandSequence();
+    }
     public void FinishPainting()
     {
-        if (Image == null)
-            return;
+        if (Image == null) {return;}
+        if (_paintCommands == null) {return;}
+        _commandStack.IssueCommand(_paintCommands);
     }
     public int? SampleTilemap(Point cursorPosition)
     {
@@ -157,9 +164,12 @@ public partial class TilesetDataViewModel : ObservableValidator, IDataViewModel
             return;
         int n = terrainTile.Index;
         if (TerrainData[n].Id == null) { return; }
-        _tileset.TerrainData[n] = (int)TerrainData[n].Id;
+        if (TerrainData[n].Id == _tileset.TerrainData[n]) {return;}
+        SetInCollectionCommand<int> command = new(
+            SetTerrainData, n, _tileset.TerrainData[n], (int)TerrainData[n].Id);
+        _paintCommands?.Add(command);
     }
-    private void SetTerrainData(int[] value) {_tileset.TerrainData = value;}
+    private void SetTerrainData(int n, int value) {_tileset.TerrainData[n] = value;}
     private void FixTerrainData() {TerrainData = _tileset.TerrainData.ToTerrainTileViewModel();}
     private void WatchTerrainData()
     {

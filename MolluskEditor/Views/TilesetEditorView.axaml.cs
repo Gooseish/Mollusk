@@ -29,7 +29,10 @@ public partial class TilesetEditorView : UserControl
         // Terrain painter
         _isDrawing = true;
         if (DataContext is TilesetEditorViewModel tilesetEditorViewModel)
+        {
+            tilesetEditorViewModel.BeginPainting();
             tilesetEditorViewModel.PaintTilemap(e.GetPosition(DrawingCanvas));
+        }
     }
     private void OnRightMouseButtonPressed(PointerPressedEventArgs e)
     {
