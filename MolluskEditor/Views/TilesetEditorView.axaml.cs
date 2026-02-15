@@ -2,6 +2,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
+using MolluskEditor.ViewModels;
 
 namespace MolluskEditor.Views;
 
@@ -20,18 +21,19 @@ public partial class TilesetEditorView : UserControl
     {
         _isDrawing = true;
         _startPoint = e.GetPosition(DrawingCanvas);
-        // Do stuff
+        if (DataContext is TilesetEditorViewModel tilesetEditorViewModel)
+            tilesetEditorViewModel.PaintTilemap(e.GetPosition(DrawingCanvas));
     }
     private void OnPointerMoved(object? sender, PointerEventArgs e)
     {
-        if (_isDrawing)
-        {
-            // Do stuff
-        }
+        if (!_isDrawing){ return; }
+        if (DataContext is TilesetEditorViewModel tilesetEditorViewModel)
+            tilesetEditorViewModel.PaintTilemap(e.GetPosition(DrawingCanvas));
     }
     private void OnPointerReleased(object? sender, PointerReleasedEventArgs e)
     {
         _isDrawing = false;
-        // Do stuff
+        if (DataContext is TilesetEditorViewModel tilesetEditorViewModel)
+            tilesetEditorViewModel.FinishPainting();
     }
 }

@@ -4,10 +4,7 @@ using MolluskEditor.Commands;
 using MolluskEditor.Models;
 using MolluskEngine.GameBoard;
 using MolluskEditor.Services;
-using System.Collections.Generic;
-using Avalonia.Media.Imaging;
-using Avalonia.Media;
-using MolluskEditor.Extensions;
+using Avalonia;
 
 namespace MolluskEditor.ViewModels;
 
@@ -36,6 +33,11 @@ public partial class TilesetEditorViewModel : EditorViewModel
         TerrainData = new(typeof(TerrainDataViewModel), TerrainDataViewModel.ReadExisting, 
             commandStack, false);
         Subscribe();
+    }
+
+    public void PaintTilemap(Point cursorPosition)
+    {
+        
     }
 
     #region Event Handling
