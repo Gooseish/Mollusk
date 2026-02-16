@@ -1,10 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using Avalonia.Media;
-using Avalonia.Media.Imaging;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 using MolluskEditor.Extensions;
 using MolluskEditor.Models;
 using MolluskEngine.GameBoard;
@@ -14,6 +10,7 @@ namespace MolluskEditor.ViewModels;
 public partial class TerrainTileViewModel : ViewModelBase
 {
     private static DataModel<Terrain> _terrainData;
+    private static Color _defaultColor = Colors.Transparent;
     public static void InjectDependency(DataModel<Terrain> terrainData)
     {
         _terrainData = terrainData;
@@ -38,7 +35,8 @@ public partial class TerrainTileViewModel : ViewModelBase
     
     private Color GetColor()
     {
-        if (Id == null) return Microsoft.Xna.Framework.Color.Transparent.ToAvaloniaColor(); // lol
+        if (Id == null) return _defaultColor;
+        if (!_terrainData.Data.ContainsKey((int)Id)) return _defaultColor;
         return _terrainData.Data[(int)Id].TileColor.ToAvaloniaColor();
     } 
     public void AssignTerrain(string? idString)
