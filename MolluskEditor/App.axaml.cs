@@ -13,7 +13,6 @@ using MolluskEditor.Services;
 using MolluskEngine.GameBoard;
 using MolluskEditor.Commands;
 
-
 namespace MolluskEditor;
 
 public partial class App : Application
@@ -37,6 +36,7 @@ public partial class App : Application
             collection.AddTransient<TerrainEditorViewModel>();
             collection.AddTransient<TilesetEditorViewModel>();
             collection.AddTransient<UnitsEditorViewModel>();
+            collection.AddTransient<MapsEditorViewModel>();
             collection.AddTransient<ChildWindowView>();
             collection.AddTransient<ChildWindowViewModel>();
 
@@ -53,6 +53,7 @@ public partial class App : Application
                 EditorName.Terrain => x.GetRequiredService<TerrainEditorViewModel>(),
                 EditorName.Units => x.GetRequiredService<UnitsEditorViewModel>(),
                 EditorName.Tilesets  => x.GetRequiredService<TilesetEditorViewModel>(),
+                EditorName.Maps => x.GetRequiredService<MapsEditorViewModel>(),
                 _ => throw new InvalidOperationException("Editor type not recognized by editor factory.")
             });
             collection.AddSingleton<EditorFactory>();
@@ -89,9 +90,11 @@ public partial class App : Application
                 services.GetRequiredService<CommandStack>());
         TilesetDataViewModel.InjectDependency(
             services.GetRequiredService<DataModel<Tileset>>(),
+            services.GetRequiredService<DataModel<Terrain>>(),
             services.GetRequiredService<CommandStack>());
         TerrainTileViewModel.InjectDependency(
-            services.GetRequiredService<DataModel<Terrain>>());
+            services.GetRequiredService<DataModel<Terrain>>()
+        );
 }
 
     private void DisableAvaloniaDataAnnotationValidation()

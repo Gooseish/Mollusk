@@ -1,6 +1,5 @@
 using System;
 using System.Collections.ObjectModel;
-using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -12,19 +11,29 @@ using MolluskEngine.GameBoard;
 using Avalonia.Media.Imaging;
 using MolluskEditor.Services;
 using Avalonia.Media;
+using Avalonia;
+using MolluskEngine;
+using MolluskEngine.Extensions;
 
 namespace MolluskEditor.ViewModels;
 
 public partial class TilesetDataViewModel : ObservableValidator, IDataViewModel
 {
+    #region Bitmaps
+    #endregion
     private static CommandStack _commandStack;
     private static DataModel<Tileset> _tilesetData;
-    public static void InjectDependency(DataModel<Tileset> tilesetData, CommandStack commandStack)
+    private static DataModel<Terrain> _terrainDataModel;
+    public static void InjectDependency(DataModel<Tileset> tilesetData, 
+        DataModel<Terrain> terrainData, CommandStack commandStack)
     {
         _tilesetData = tilesetData;
+        _terrainDataModel = terrainData;
         _commandStack = commandStack;
     }
     private Tileset _tileset;
+    private int? _tilemapWidth; 
+    private int? _tilemapHeight;
     public TilesetDataViewModel(Tileset? tileset)
     {
         tileset ??= _tilesetData.New();
@@ -46,15 +55,56 @@ public partial class TilesetDataViewModel : ObservableValidator, IDataViewModel
             data.Add(new TilesetDataViewModel(tileset));
         return data;
     }
+    #region Tilemap Painting
+    private TerrainTileViewModel? pickTileWithCursor(Point cursorPosition)
+    {
+        if (Image == null) {return null;}
+        if (_tilemapWidth == null) {return null;}
+        if (_tilemapHeight == null) {return null;}
+        // Get cursor positions in map coordinates
+        int cursorX = (int)(cursorPosition.X / Config.tileWidth);
+        int cursorY = (int)(cursorPosition.Y / Config.tileHeight);
+        // Return if cursor outside bounds
+        if (cursorX < 0 || cursorX >= _tilemapWidth)  {return null;}
+        if (cursorY < 0 || cursorY >= _tilemapHeight) {return null;}
+        // Index with map coordinates
+        return TerrainData.IndexAs2D(cursorX, cursorY, (int)_tilemapWidth);
+    }
+    public void PaintTilemap(Point cursorPosition, string selectedTerrain)
+    {
+        TerrainTileViewModel? selectedTile = pickTileWithCursor(cursorPosition);
+        if (selectedTile == null) return;
+        selectedTile.AssignTerrain(selectedTerrain);
+    }
+    private CommandSequence? _paintCommands;
+    public void BeginPainting()
+    {
+        if (Image == null) return;
+        _paintCommands = new CommandSequence();
+    }
+    public void FinishPainting()
+    {
+        if (Image == null) return;
+        if (_paintCommands == null) return;
+        _commandStack.IssueCommand(_paintCommands);
+    }
+    public int? SampleTilemap(Point cursorPosition)
+    {
+        TerrainTileViewModel? selectedTile = pickTileWithCursor(cursorPosition);
+        if (selectedTile == null) {return null;}
+        return selectedTile.Id;
+    }
+    #endregion
+
     #region Boilerplate Properties
     [ObservableProperty]
     [NotifyDataErrorInfo][ParseAsInt][DontOverrideId]
     private string _id;
     partial void OnIdChanged(string? oldValue, string newValue)
     {
-        if (GetErrors(nameof(Id)).Any()) { return; }
+        if (GetErrors(nameof(Id)).Any()) return;
         int id = int.Parse(Id);
-        if (id == _tileset.Id) { return; }
+        if (id == _tileset.Id) return;
         CommandSequence command = new();
         command.Add(new MoveInDictCommand(ChangeDictKey, _tileset.Id, id));
         command.Add(new SetCommand<int>(SetId, _tileset.Id, id));
@@ -77,7 +127,7 @@ public partial class TilesetDataViewModel : ObservableValidator, IDataViewModel
     // Needs validation to make sure image name is correct
     partial void OnNameChanged(string? oldValue, string newValue)
     {
-        if (Name == _tileset.Name) {return;}
+        if (Name == _tileset.Name) return;
         CommandSequence command = new();
         command.Add(new SetCommand<string>(SetName, _tileset.Name, Name));
         command.AddCleanup(FixImage);
@@ -92,25 +142,34 @@ public partial class TilesetDataViewModel : ObservableValidator, IDataViewModel
     private void FixImage()
     {
         string full_path = SaveLoadService.CONTENTROOT + SaveLoadService.TILESETIMAGES + _tileset.Name + ".png";
-        bool file_exists = File.Exists(full_path);
-        if (file_exists)
-            Image = new Bitmap(full_path);
+        if (!File.Exists(full_path)) return;
+        Image = new Bitmap(full_path);
+        _tilemapWidth = Image.PixelSize.Width / Config.tileWidth; 
+        _tilemapHeight = Image.PixelSize.Height / Config.tileHeight;
     }
+    
     [ObservableProperty]
     private ObservableCollection<TerrainTileViewModel> _terrainData;
     private void UpdateTerrainData(object? sender, EventArgs args)
     {
-        List<int>? parsedTerrainData = TerrainData.ToIntList();
-        if (parsedTerrainData == null) { return; }
-        if (parsedTerrainData == (List<int>)[.. _tileset.TerrainData])
-            { return; }
+        /*
         CommandSequence command = new();
         command.Add(new SetCommand<int[]>(SetTerrainData,
             _tileset.TerrainData, parsedTerrainData.ToArray()));
         command.AddCleanup(FixTerrainData);
         _commandStack.IssueCommand(command);
+        */
+        if (sender == null 
+            || sender is not TerrainTileViewModel terrainTile)
+            return;
+        int n = terrainTile.Index;
+        if (TerrainData[n].Id == null) return;
+        if (TerrainData[n].Id == _tileset.TerrainData[n]) return;
+        SetInCollectionCommand<int> command = new(
+            SetTerrainData, n, _tileset.TerrainData[n], (int)TerrainData[n].Id);
+        _paintCommands?.Add(command);
     }
-    private void SetTerrainData(int[] value) {_tileset.TerrainData = value;}
+    private void SetTerrainData(int n, int value) {_tileset.TerrainData[n] = value;}
     private void FixTerrainData() {TerrainData = _tileset.TerrainData.ToTerrainTileViewModel();}
     private void WatchTerrainData()
     {

@@ -48,6 +48,9 @@
             <Button Command="{Binding GoToTilesetsCommand}"
                     Content="Tilesets"
                     IsVisible="{Binding TilesetsTabVisible}"/>
+            <Button Command="{Binding GoToMapsCommand}"
+                    Content="Maps"
+                    IsVisible="{Binding MapsTabVisible}"/>
         </StackPanel>
         <ContentControl Content = "{Binding CurrentEditor}"/>
     </StackPanel>

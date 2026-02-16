@@ -118,7 +118,7 @@ public partial class DataSelectorViewModel : ViewModelBase
     private void AddData()
     {
         var newElement = (IDataViewModel)Activator.CreateInstance(_dataViewModelType);
-        if (newElement == null) { return; }
+        if (newElement == null) return;
         // Issue Command
         CommandSequence command = new();
         command.Add(new CustomCommand(newElement.Register, newElement.Unregister)); // Register to the datamodel
@@ -188,6 +188,15 @@ public partial class DataSelectorViewModel : ViewModelBase
     private void SortData()
     {
         Data = new ObservableCollection<IDataViewModel>(Data.OrderBy(i => i.Id));
+    }
+    #endregion
+    #region External Controls
+    public void SelectData(int id)
+    {
+        foreach (IDataViewModel dataViewModel in Data)
+            if (int.TryParse(dataViewModel.Id, out int currentId))
+                if (currentId == id)
+                    SelectedData = dataViewModel;
     }
     #endregion
 }

@@ -6,7 +6,8 @@
              xmlns:vm="clr-namespace:MolluskEditor.ViewModels"
              xmlns:paz="using:Avalonia.Controls.PanAndZoom"
              x:DataType="vm:TilesetEditorViewModel"
-             x:Class="MolluskEditor.Views.TilesetEditorView">
+             x:Class="MolluskEditor.Views.TilesetEditorView"
+             x:Name="TilesetEditor">
   <StackPanel Orientation="Horizontal">
     <!-- Tileset Selector -->
     <ContentControl Content = "{Binding Data}"/>
@@ -15,9 +16,10 @@
       <!-- Terrain Fields -->
       <StackPanel Orientation="Horizontal" Margin="5">
         <Label>Id</Label>
-        <TextBox Text="{Binding SelectedTileset.Id}"></TextBox>
+        <TextBox Text="{Binding SelectedTileset?.Id}"></TextBox>
         <Label>Name</Label>
-        <TextBox Text="{Binding SelectedTileset.Name}"></TextBox>
+        <TextBox Text="{Binding SelectedTileset?.Name}"></TextBox>
+        <CheckBox Margin="5" IsChecked="{Binding ShowTerrainIds}">Show terrain IDs</CheckBox>
       </StackPanel>
       <!-- Tilemap -->
       <ScrollViewer VerticalScrollBarVisibility="Auto"
@@ -29,9 +31,9 @@
                         BoundsMode="FillViewport">
           <Grid>
             <!-- Tilemap Image -->
-            <Image Source="{Binding SelectedTileset.Image}"/>
+            <Image Source="{Binding SelectedTileset?.Image}" Name="DrawingCanvas"/>
             <!-- Terrain Tile Overlay -->
-            <ItemsControl ItemsSource="{Binding SelectedTileset.TerrainData}">
+            <ItemsControl ItemsSource="{Binding SelectedTileset?.TerrainData}">
               <!-- Grid Format -->
               <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -43,13 +45,13 @@
               <ItemsControl.ItemTemplate>
                 <DataTemplate>
                   <Grid>
-                  <Image Source="{Binding Image}" Opacity="0.5"/>
-                  <TextBlock Text="{Binding Id}" FontSize="10"/>
+                  <Rectangle Fill="{Binding Brush}" Opacity="0.5"/>
+                  <TextBlock Text="{Binding Id}" FontSize="7" 
+                    IsVisible="{Binding #TilesetEditor.DataContext.ShowTerrainIds}"/>
                   </Grid>
                 </DataTemplate>
               </ItemsControl.ItemTemplate>
-            </ItemsControl>
-            
+            </ItemsControl> 
           </Grid>
         </paz:ZoomBorder>  
       </ScrollViewer>

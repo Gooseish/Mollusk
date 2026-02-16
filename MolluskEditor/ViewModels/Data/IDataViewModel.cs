@@ -12,6 +12,10 @@ public interface IDataViewModel
     /// the corresponding item in the DataModel as well.
     /// </summary>
     public void Unregister();
+    /// <summary>
+    /// Register a DataViewModel with the corresponding
+    /// DataModel.
+    /// </summary>
     public void Register();
     public string Id {get;set;}
     public string Name {get;set;}

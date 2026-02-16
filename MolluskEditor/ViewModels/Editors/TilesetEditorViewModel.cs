@@ -4,6 +4,7 @@ using MolluskEditor.Commands;
 using MolluskEditor.Models;
 using MolluskEngine.GameBoard;
 using MolluskEditor.Services;
+using Avalonia;
 
 namespace MolluskEditor.ViewModels;
 
@@ -19,6 +20,8 @@ public partial class TilesetEditorViewModel : EditorViewModel
     private DataSelectorViewModel _terrainData;
     [ObservableProperty]
     private TerrainDataViewModel? _selectedTerrain;
+    [ObservableProperty]
+    private bool _showTerrainIds;
 
     public TilesetEditorViewModel(CommandStack commandStack, DataModel<Tileset> dataModel,
         DataModel<Terrain> terrainDataModel)
@@ -32,6 +35,27 @@ public partial class TilesetEditorViewModel : EditorViewModel
         TerrainData = new(typeof(TerrainDataViewModel), TerrainDataViewModel.ReadExisting, 
             commandStack, false);
         Subscribe();
+    }
+
+    public void PaintTilemap(Point cursorPosition)
+    {
+        if (SelectedTerrain == null) return;
+        SelectedTileset?.PaintTilemap(cursorPosition, SelectedTerrain.Id);
+    }
+    public void BeginPainting()
+    {
+        SelectedTileset?.BeginPainting();
+    }
+    public void FinishPainting()
+    {
+        SelectedTileset?.FinishPainting();
+    }
+    public void SampleTilemap(Point cursorPosition)
+    {
+        if (SelectedTerrain == null) return;
+        int? sampledTerrainId = SelectedTileset?.SampleTilemap(cursorPosition);
+        if (sampledTerrainId == null) return;
+        TerrainData.SelectData((int)sampledTerrainId);
     }
 
     #region Event Handling
