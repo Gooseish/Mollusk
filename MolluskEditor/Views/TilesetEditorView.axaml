@@ -47,7 +47,7 @@
                   <Grid>
                   <Rectangle Fill="{Binding Brush}" Opacity="0.5"/>
                   <TextBlock Text="{Binding Id}" FontSize="7" 
-                    IsVisible="{Binding #TilesetEditor.DataContext.ShowTerrainIds}"/>
+                    IsVisible="{Binding #TilesetEditor.DataContext?.ShowTerrainIds, TargetNullValue='false'}"/>
                   </Grid>
                 </DataTemplate>
               </ItemsControl.ItemTemplate>
