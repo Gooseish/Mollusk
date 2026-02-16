@@ -16,13 +16,12 @@ public partial class MapDataViewModel : ObservableValidator, IDataViewModel
         _mapData = mapData;
         _commandStack = commandStack;
     }
+    private GameMap _map;
     #region Boilerplate Properties
     [ObservableProperty]
     private string _id;
     public bool CheckIdAvailable(string idString)
-    {
-        throw new NotImplementedException();
-    }
+        { return _mapData.CheckIdAvailable(idString, _map.Id); }
     [ObservableProperty]
     private string _name;
     #endregion

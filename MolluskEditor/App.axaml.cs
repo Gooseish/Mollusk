@@ -91,7 +91,6 @@ public partial class App : Application
                 services.GetRequiredService<CommandStack>());
         TilesetDataViewModel.InjectDependency(
             services.GetRequiredService<DataModel<Tileset>>(),
-            services.GetRequiredService<DataModel<Terrain>>(),
             services.GetRequiredService<CommandStack>());
         MapDataViewModel.InjectDependency(
             services.GetRequiredService<DataModel<GameMap>>(),
@@ -107,7 +106,7 @@ public partial class App : Application
         var dataValidationPluginsToRemove =
             BindingPlugins.DataValidators.OfType<DataAnnotationsValidationPlugin>().ToArray();
 
-        // remove each entry found
+        // Remove each entry found
         foreach (var plugin in dataValidationPluginsToRemove)
         {
             BindingPlugins.DataValidators.Remove(plugin);
