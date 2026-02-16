@@ -42,7 +42,7 @@ public partial class TilesetEditorView : UserControl
     }
     private void OnPointerMoved(object? sender, PointerEventArgs e)
     {
-        if (!_isDrawing){ return; }
+        if (!_isDrawing) return;
         if (!e.GetCurrentPoint(sender as Control).Properties.IsLeftButtonPressed)
             return;
         // Terrain painter

@@ -37,7 +37,7 @@ public partial class TilesetEditorViewModel : EditorViewModel
 
     public void PaintTilemap(Point cursorPosition)
     {
-        if (SelectedTerrain == null) {return;}
+        if (SelectedTerrain == null) return;
         SelectedTileset?.PaintTilemap(cursorPosition, SelectedTerrain.Id);
     }
     public void BeginPainting()
@@ -50,9 +50,9 @@ public partial class TilesetEditorViewModel : EditorViewModel
     }
     public void SampleTilemap(Point cursorPosition)
     {
-        if (SelectedTerrain == null) {return;}
+        if (SelectedTerrain == null) return;
         int? sampledTerrainId = SelectedTileset?.SampleTilemap(cursorPosition);
-        if (sampledTerrainId == null) {return;}
+        if (sampledTerrainId == null) return;
         TerrainData.SelectData((int)sampledTerrainId);
     }
 

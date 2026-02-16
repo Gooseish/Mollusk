@@ -59,9 +59,9 @@ public partial class TerrainDataViewModel : ObservableValidator, IDataViewModel
     private string _id;
     partial void OnIdChanged(string? oldValue, string newValue)
     {
-        if (GetErrors(nameof(Id)).Any()) { return; }
+        if (GetErrors(nameof(Id)).Any()) return;
         int id = int.Parse(Id);
-        if (id == _terrain.Id) { return; }
+        if (id == _terrain.Id) return;
         CommandSequence command = new();
         command.Add(new MoveInDictCommand(ChangeDictKey, _terrain.Id, id));
         command.Add(new SetCommand<int>(SetId, _terrain.Id, id));
@@ -96,9 +96,9 @@ public partial class TerrainDataViewModel : ObservableValidator, IDataViewModel
     private string _avoid;
     partial void OnAvoidChanged(string? oldValue, string newValue)
     {
-        if (GetErrors(nameof(Avoid)).Any()) { return; }
+        if (GetErrors(nameof(Avoid)).Any()) return;
         int avoid = int.Parse(Avoid);
-        if (avoid == _terrain.Avoid) { return; }
+        if (avoid == _terrain.Avoid) return;
         CommandSequence command = new();
         command.Add(new SetCommand<int>(SetAvo, _terrain.Avoid, avoid));
         command.AddCleanup(_terrainData.OnAnyChange);
@@ -112,9 +112,9 @@ public partial class TerrainDataViewModel : ObservableValidator, IDataViewModel
     private string _def;
     partial void OnDefChanged(string? oldValue, string newValue)
     {
-        if (GetErrors(nameof(Def)).Any()) { return; }
+        if (GetErrors(nameof(Def)).Any()) return;
         int def = int.Parse(Def);
-        if (def == _terrain.Def) { return; }
+        if (def == _terrain.Def) return;
         CommandSequence command = new();
         command.Add(new SetCommand<int>(SetDef, _terrain.Def, def));
         command.AddCleanup(_terrainData.OnAnyChange);
@@ -128,9 +128,9 @@ public partial class TerrainDataViewModel : ObservableValidator, IDataViewModel
     private string _res;
     partial void OnResChanged(string? oldValue, string newValue)
     {
-        if (GetErrors(nameof(Res)).Any()) { return; }
+        if (GetErrors(nameof(Res)).Any()) return;
         int res = int.Parse(Res);
-        if (res == _terrain.Res) { return; }
+        if (res == _terrain.Res) return;
         CommandSequence command = new();
         command.Add(new SetCommand<int>(SetRes, _terrain.Res, res));
         command.AddCleanup(_terrainData.OnAnyChange);
@@ -144,9 +144,9 @@ public partial class TerrainDataViewModel : ObservableValidator, IDataViewModel
     private string _healPercent;
     partial void OnHealPercentChanged(string? oldValue, string newValue)
     {
-        if (GetErrors(nameof(HealPercent)).Any()) { return; }
+        if (GetErrors(nameof(HealPercent)).Any()) return;
         int healPercent = int.Parse(HealPercent);
-        if (healPercent == _terrain.HealPercent) { return; }
+        if (healPercent == _terrain.HealPercent) return;
         CommandSequence command = new();
         command.Add(new SetCommand<int>(SetHealPercent, _terrain.HealPercent, healPercent));
         command.AddCleanup(_terrainData.OnAnyChange);
@@ -160,9 +160,9 @@ public partial class TerrainDataViewModel : ObservableValidator, IDataViewModel
     private void UpdateMovementCost(object? sender, EventArgs eventArgs)
     {
         List<int>? parsedMovementCost = MovementCost.ToIntList();
-        if (parsedMovementCost == null) { return; }
+        if (parsedMovementCost == null) return;
         if (parsedMovementCost == (List<int>)[.. _terrain.MovementCost]) 
-            { return; }
+            return;
         CommandSequence command = new();
         command.Add(new SetCommand<int[,]>(SetMovementCost, 
             _terrain.MovementCost, GetMovementCostArray(parsedMovementCost)));
@@ -194,7 +194,7 @@ public partial class TerrainDataViewModel : ObservableValidator, IDataViewModel
     private Color _tileColor;
     partial void OnTileColorChanged(Color oldValue, Color newValue)
     {
-        if (TileColor == _terrain.TileColor.ToAvaloniaColor()) { return; }
+        if (TileColor == _terrain.TileColor.ToAvaloniaColor()) return;
         CommandSequence command = new();
         command.Add(new SetCommand<Color>(SetTileColor,
          _terrain.TileColor.ToAvaloniaColor().ShallowCopy(), TileColor.ShallowCopy()));

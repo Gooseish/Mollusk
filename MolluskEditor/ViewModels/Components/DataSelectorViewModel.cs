@@ -118,7 +118,7 @@ public partial class DataSelectorViewModel : ViewModelBase
     private void AddData()
     {
         var newElement = (IDataViewModel)Activator.CreateInstance(_dataViewModelType);
-        if (newElement == null) { return; }
+        if (newElement == null) return;
         // Issue Command
         CommandSequence command = new();
         command.Add(new CustomCommand(newElement.Register, newElement.Unregister)); // Register to the datamodel

@@ -79,7 +79,7 @@ public partial class MainWindowViewModel : ViewModelBase
     [RelayCommand]
     private void GoToUnits()
     {
-        if (CurrentEditor?.EditorName == EditorName.Units) {return;}
+        if (CurrentEditor?.EditorName == EditorName.Units) return;
         try { CurrentEditor.Dispose(); } catch {}
         CurrentEditor = _editorFactory.GetEditorViewModel(EditorName.Units);
     }
@@ -88,7 +88,7 @@ public partial class MainWindowViewModel : ViewModelBase
     [RelayCommand]
     private void GoToTerrain()
     {
-        if (CurrentEditor?.EditorName == EditorName.Terrain) {return;}
+        if (CurrentEditor?.EditorName == EditorName.Terrain) return;
         try { CurrentEditor.Dispose(); } catch {}
         CurrentEditor = _editorFactory.GetEditorViewModel(EditorName.Terrain);
     }
@@ -97,7 +97,7 @@ public partial class MainWindowViewModel : ViewModelBase
     [RelayCommand]
     private void GoToTilesets()
     {
-        if (CurrentEditor?.EditorName == EditorName.Tilesets) {return;}
+        if (CurrentEditor?.EditorName == EditorName.Tilesets) return;
         try { CurrentEditor.Dispose(); } catch {}
         CurrentEditor = _editorFactory.GetEditorViewModel(EditorName.Tilesets);
     }
@@ -106,7 +106,7 @@ public partial class MainWindowViewModel : ViewModelBase
     [RelayCommand]
     private void GoToMaps()
     {
-        if (CurrentEditor?.EditorName == EditorName.Maps) {return;}
+        if (CurrentEditor?.EditorName == EditorName.Maps) return;
         try { CurrentEditor.Dispose(); } catch {}
         CurrentEditor = _editorFactory.GetEditorViewModel(EditorName.Maps);
     }

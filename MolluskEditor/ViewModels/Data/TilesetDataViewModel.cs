@@ -73,19 +73,19 @@ public partial class TilesetDataViewModel : ObservableValidator, IDataViewModel
     public void PaintTilemap(Point cursorPosition, string selectedTerrain)
     {
         TerrainTileViewModel? selectedTile = pickTileWithCursor(cursorPosition);
-        if (selectedTile == null) {return;}
+        if (selectedTile == null) return;
         selectedTile.AssignTerrain(selectedTerrain);
     }
     private CommandSequence? _paintCommands;
     public void BeginPainting()
     {
-        if (Image == null) {return;}
+        if (Image == null) return;
         _paintCommands = new CommandSequence();
     }
     public void FinishPainting()
     {
-        if (Image == null) {return;}
-        if (_paintCommands == null) {return;}
+        if (Image == null) return;
+        if (_paintCommands == null) return;
         _commandStack.IssueCommand(_paintCommands);
     }
     public int? SampleTilemap(Point cursorPosition)
@@ -102,9 +102,9 @@ public partial class TilesetDataViewModel : ObservableValidator, IDataViewModel
     private string _id;
     partial void OnIdChanged(string? oldValue, string newValue)
     {
-        if (GetErrors(nameof(Id)).Any()) { return; }
+        if (GetErrors(nameof(Id)).Any()) return;
         int id = int.Parse(Id);
-        if (id == _tileset.Id) { return; }
+        if (id == _tileset.Id) return;
         CommandSequence command = new();
         command.Add(new MoveInDictCommand(ChangeDictKey, _tileset.Id, id));
         command.Add(new SetCommand<int>(SetId, _tileset.Id, id));
@@ -127,7 +127,7 @@ public partial class TilesetDataViewModel : ObservableValidator, IDataViewModel
     // Needs validation to make sure image name is correct
     partial void OnNameChanged(string? oldValue, string newValue)
     {
-        if (Name == _tileset.Name) {return;}
+        if (Name == _tileset.Name) return;
         CommandSequence command = new();
         command.Add(new SetCommand<string>(SetName, _tileset.Name, Name));
         command.AddCleanup(FixImage);
@@ -142,7 +142,7 @@ public partial class TilesetDataViewModel : ObservableValidator, IDataViewModel
     private void FixImage()
     {
         string full_path = SaveLoadService.CONTENTROOT + SaveLoadService.TILESETIMAGES + _tileset.Name + ".png";
-        if (!File.Exists(full_path)) {return;}
+        if (!File.Exists(full_path)) return;
         Image = new Bitmap(full_path);
         _tilemapWidth = Image.PixelSize.Width / Config.tileWidth; 
         _tilemapHeight = Image.PixelSize.Height / Config.tileHeight;
@@ -163,8 +163,8 @@ public partial class TilesetDataViewModel : ObservableValidator, IDataViewModel
             || sender is not TerrainTileViewModel terrainTile)
             return;
         int n = terrainTile.Index;
-        if (TerrainData[n].Id == null) { return; }
-        if (TerrainData[n].Id == _tileset.TerrainData[n]) {return;}
+        if (TerrainData[n].Id == null) return;
+        if (TerrainData[n].Id == _tileset.TerrainData[n]) return;
         SetInCollectionCommand<int> command = new(
             SetTerrainData, n, _tileset.TerrainData[n], (int)TerrainData[n].Id);
         _paintCommands?.Add(command);
