@@ -137,6 +137,7 @@ public partial class TilesetDataViewModel : ObservableValidator, IDataViewModel
     {
         _tileset.Name = value;
     }
+    private void FixName() {Name = _tileset.Name;}
     [ObservableProperty]
     private Bitmap? _image;
     private void FixImage()
@@ -192,6 +193,7 @@ public partial class TilesetDataViewModel : ObservableValidator, IDataViewModel
     {
         FixId();
         FixTerrainData();
+        FixName();
     }
 
     public void NotifyChange()
