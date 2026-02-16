@@ -46,6 +46,7 @@ public partial class App : Application
             // Data Models
             collection.AddSingleton<DataModel<Terrain>>();
             collection.AddSingleton<DataModel<Tileset>>();
+            collection.AddSingleton<DataModel<GameMap>>();
 
             // Editor Factory
             collection.AddSingleton<Func<EditorName, EditorViewModel>>(x => name => name switch
@@ -91,6 +92,9 @@ public partial class App : Application
         TilesetDataViewModel.InjectDependency(
             services.GetRequiredService<DataModel<Tileset>>(),
             services.GetRequiredService<DataModel<Terrain>>(),
+            services.GetRequiredService<CommandStack>());
+        MapDataViewModel.InjectDependency(
+            services.GetRequiredService<DataModel<GameMap>>(),
             services.GetRequiredService<CommandStack>());
         TerrainTileViewModel.InjectDependency(
             services.GetRequiredService<DataModel<Terrain>>()

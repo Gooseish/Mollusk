@@ -35,7 +35,7 @@ public partial class TerrainTileViewModel : ViewModelBase
         if (Id == null) return _defaultColor;
         if (!_terrainData.Data.ContainsKey((int)Id)) return _defaultColor;
         return _terrainData.Data[(int)Id].TileColor.ToAvaloniaColor();
-    } 
+    }
     public void RefreshColor()
     {
         Brush.Color = GetColor();
