@@ -22,8 +22,6 @@ public partial class TerrainTileViewModel : ViewModelBase
     {
         Brush.Color = GetColor();
     }
-    //[ObservableProperty]
-    //private Bitmap? _image;
     [ObservableProperty]
     private SolidColorBrush _brush = new SolidColorBrush();
     public TerrainTileViewModel(int id, int index)
@@ -32,13 +30,16 @@ public partial class TerrainTileViewModel : ViewModelBase
         Index = index;
         Brush.Color = GetColor();
     }
-    
     private Color GetColor()
     {
         if (Id == null) return _defaultColor;
         if (!_terrainData.Data.ContainsKey((int)Id)) return _defaultColor;
         return _terrainData.Data[(int)Id].TileColor.ToAvaloniaColor();
     } 
+    public void RefreshColor()
+    {
+        Brush.Color = GetColor();
+    }
     public void AssignTerrain(string? idString)
     {
         if (!int.TryParse(idString, out int id))

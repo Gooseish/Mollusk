@@ -5,6 +5,7 @@ using MolluskEditor.Models;
 using MolluskEngine.GameBoard;
 using MolluskEditor.Services;
 using Avalonia;
+using System.Data.Common;
 
 namespace MolluskEditor.ViewModels;
 
@@ -83,6 +84,12 @@ public partial class TilesetEditorViewModel : EditorViewModel
         int? selectedIndex = SelectedTerrain == null ? null : int.Parse(SelectedTerrain.Id);
         TerrainData.Initialize();
         TerrainData.FixIndexAfterUndo(selectedIndex);
+        RefreshTileColors();
+    }
+    private void RefreshTileColors()
+    {
+        foreach (IDataViewModel tileset in Data.Data)
+            ((TilesetDataViewModel)tileset).RefreshColors();
     }
     private void Subscribe()
     {

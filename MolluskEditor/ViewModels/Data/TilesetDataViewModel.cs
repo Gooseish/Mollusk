@@ -180,6 +180,11 @@ public partial class TilesetDataViewModel : ObservableValidator, IDataViewModel
             i.PropertyChanged += CheckForAnyErrors;
         }
     }
+    public void RefreshColors()
+    {
+        foreach (TerrainTileViewModel tile in TerrainData)
+            tile.RefreshColor();
+    }
     #endregion
     public void Register()
     {
