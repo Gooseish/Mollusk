@@ -20,6 +20,8 @@ public partial class TilesetEditorViewModel : EditorViewModel
     private DataSelectorViewModel _terrainData;
     [ObservableProperty]
     private TerrainDataViewModel? _selectedTerrain;
+    [ObservableProperty]
+    private bool _showTerrainIds;
 
     public TilesetEditorViewModel(CommandStack commandStack, DataModel<Tileset> dataModel,
         DataModel<Terrain> terrainDataModel)

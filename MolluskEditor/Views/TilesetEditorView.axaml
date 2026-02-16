@@ -19,6 +19,7 @@
         <TextBox Text="{Binding SelectedTileset?.Id}"></TextBox>
         <Label>Name</Label>
         <TextBox Text="{Binding SelectedTileset?.Name}"></TextBox>
+        <CheckBox Margin="5" IsChecked="{Binding ShowTerrainIds}">Show terrain IDs</CheckBox>
       </StackPanel>
       <!-- Tilemap -->
       <ScrollViewer VerticalScrollBarVisibility="Auto"
@@ -45,7 +46,8 @@
                 <DataTemplate>
                   <Grid>
                   <Rectangle Fill="{Binding Brush}" Opacity="0.5"/>
-                  <TextBlock Text="{Binding Id}" FontSize="7"/>
+                  <TextBlock Text="{Binding Id}" FontSize="7" 
+                    IsVisible="{Binding #TilesetEditor.DataContext.ShowTerrainIds}"/>
                   </Grid>
                 </DataTemplate>
               </ItemsControl.ItemTemplate>
