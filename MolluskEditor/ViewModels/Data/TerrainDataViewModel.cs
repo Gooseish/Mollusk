@@ -18,21 +18,19 @@ public partial class TerrainDataViewModel : ObservableValidator, IDataViewModel
 {
     private static CommandStack _commandStack;
     private static DataModel<Terrain> _terrainData;
-    public static void InjectDependency(DataModel<Terrain> terrainData, CommandStack commandStack)
+    public static void InjectDependency(
+        DataModel<Terrain> terrainData, CommandStack commandStack)
     {
         _terrainData = terrainData;
         _commandStack = commandStack;
     }
     private Terrain _terrain;
-    /// <summary>
-    /// Create a new TerrainDataViewModel by creating a new
-    /// terrain instance and registering it in the dictionary
-    /// of all terrain data.
-    /// </summary>
+
     public TerrainDataViewModel(Terrain? terrain)
     {
         terrain ??= _terrainData.New();
         _terrain = terrain;
+        // Just call FixFields()?
         _id = terrain.Id.ToString();
         _name = terrain.Name;
         _avoid = terrain.Avoid.ToString();
@@ -216,11 +214,13 @@ public partial class TerrainDataViewModel : ObservableValidator, IDataViewModel
     public void FixFields()
     {
         FixId();
+        FixName();
         FixAvoid();
         FixDef();
         FixRes();
         FixHealPercent();
         FixMovementCost();
+        FixTileColor();
     }
     #region Events
     public void NotifyChange()

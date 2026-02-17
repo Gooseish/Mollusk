@@ -1,4 +1,5 @@
 using System;
+using System.Collections.ObjectModel;
 using Avalonia.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 using MolluskEditor.Commands;
@@ -11,12 +12,20 @@ public partial class MapDataViewModel : ObservableValidator, IDataViewModel
 {
     private static CommandStack _commandStack;
     private static DataModel<GameMap> _mapData;
-    public static void InjectDependency(DataModel<GameMap> mapData, CommandStack commandStack)
+    public static void InjectDependency(
+        DataModel<GameMap> mapData, CommandStack commandStack)
     {
         _mapData = mapData;
         _commandStack = commandStack;
     }
     private GameMap _map;
+
+    public MapDataViewModel(GameMap? map)
+    {
+        map ??= _mapData.New();
+        _map = map;
+        
+    }
     #region Boilerplate Properties
     [ObservableProperty]
     private string _id;
@@ -24,6 +33,15 @@ public partial class MapDataViewModel : ObservableValidator, IDataViewModel
         { return _mapData.CheckIdAvailable(idString, _map.Id); }
     [ObservableProperty]
     private string _name;
+    [ObservableProperty]
+    private string _tileset;
+    [ObservableProperty]
+    private string _height;
+    [ObservableProperty]
+    private string _width;
+    //[ObservableProperty]
+    //private ObservableCollection<MapTileViewModel> _tileData;
+
     #endregion
     public void Register()
     {

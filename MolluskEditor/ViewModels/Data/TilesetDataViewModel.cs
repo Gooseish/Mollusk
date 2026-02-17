@@ -23,8 +23,8 @@ public partial class TilesetDataViewModel : ObservableValidator, IDataViewModel
     #endregion
     private static CommandStack _commandStack;
     private static DataModel<Tileset> _tilesetData;
-    public static void InjectDependency(DataModel<Tileset> tilesetData, 
-        DataModel<Terrain> terrainData, CommandStack commandStack)
+    public static void InjectDependency(
+        DataModel<Tileset> tilesetData, CommandStack commandStack)
     {
         _tilesetData = tilesetData;
         _commandStack = commandStack;
