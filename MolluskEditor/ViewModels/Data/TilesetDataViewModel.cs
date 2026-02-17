@@ -204,9 +204,7 @@ public partial class TilesetDataViewModel : ObservableValidator, IDataViewModel
     }
 
     public void NotifyChange()
-    {
-        _tilesetData.OnAnyChange();
-    }
+        { _tilesetData.OnAnyChange(); }
 
     [ObservableProperty]
     private IBrush _textColor = Brush.Parse("White");

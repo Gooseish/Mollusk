@@ -4,6 +4,7 @@ using Avalonia.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 using MolluskEditor.Commands;
 using MolluskEditor.Models;
+using MolluskEngine.Extensions;
 using MolluskEngine.GameBoard;
 
 namespace MolluskEditor.ViewModels;
@@ -24,43 +25,63 @@ public partial class MapDataViewModel : ObservableValidator, IDataViewModel
     {
         map ??= _mapData.New();
         _map = map;
-        
+        FixFields();
+        // todo: watch map tile data
+        PropertyChanged += CheckForAnyErrors;
+        CheckForAnyErrors(null, EventArgs.Empty);
+    }
+    public MapDataViewModel() : this(null) { }
+    public void FixFields()
+    {
+        FixId();
+        FixName();
+        FixHeight();
+        FixWidth();
+        FixTileset();
+        FixTileData();
+    }
+    public static ObservableCollection<IDataViewModel> ReadExisting()
+    {
+        ObservableCollection<IDataViewModel> data = [];
+        foreach (GameMap map in _mapData.Data.Values)
+            data.Add(new MapDataViewModel(map));
+        return data;
     }
     #region Boilerplate Properties
     [ObservableProperty]
     private string _id;
     public bool CheckIdAvailable(string idString)
         { return _mapData.CheckIdAvailable(idString, _map.Id); }
+    private void FixId() {Id = _map.Id.ToString();}
     [ObservableProperty]
     private string _name;
+    private void FixName() {Name = _map.Name;}
     [ObservableProperty]
     private string _tileset;
+    private void FixTileset() {Tileset = _map.Tileset.ToString();}
     [ObservableProperty]
     private string _height;
+    private void FixHeight() {Height = _map.Height.ToString();}
     [ObservableProperty]
     private string _width;
+    private void FixWidth() {Width = _map.Width.ToString();}
     //[ObservableProperty]
     //private ObservableCollection<MapTileViewModel> _tileData;
+    private void FixTileData() {/* Todo */}
 
     #endregion
     public void Register()
     {
-        throw new NotImplementedException();
+        _mapData.Data[_map.Id] = _map;
     }
     public void Unregister()
     {
-        throw new NotImplementedException();
-    }
-    public void FixFields()
-    {
-        throw new NotImplementedException();
+        _mapData.Data.Remove(_map.Id);
     }
 
     #region Events   
     public void NotifyChange()
-    {
-        throw new NotImplementedException();
-    }
+        { _mapData.OnAnyChange(); }
     /// <summary>
     /// Color of the text in a data selector. Turns yellow if 
     /// there's any errors.
