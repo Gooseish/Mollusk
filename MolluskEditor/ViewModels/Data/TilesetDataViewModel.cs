@@ -85,6 +85,7 @@ public partial class TilesetDataViewModel : ObservableValidator, IDataViewModel
     {
         if (Image == null) return;
         if (_paintCommands == null) return;
+        _paintCommands.AddCleanup(FixTerrainData);
         _commandStack.IssueCommand(_paintCommands);
     }
     public int? SampleTilemap(Point cursorPosition)
@@ -108,6 +109,7 @@ public partial class TilesetDataViewModel : ObservableValidator, IDataViewModel
         command.Add(new MoveInDictCommand(ChangeDictKey, _tileset.Id, id));
         command.Add(new SetCommand<int>(SetId, _tileset.Id, id));
         command.AddCleanup(_tilesetData.OnIdsChanged);
+        command.AddCleanup(FixId);
         _commandStack.IssueCommand(command);
     }
     private void SetId(int value) {_tileset.Id = value;}
@@ -129,6 +131,7 @@ public partial class TilesetDataViewModel : ObservableValidator, IDataViewModel
         if (Name == _tileset.Name) return;
         CommandSequence command = new();
         command.Add(new SetCommand<string>(SetName, _tileset.Name, Name));
+        command.AddCleanup(FixName);
         command.AddCleanup(FixImage);
         _commandStack.IssueCommand(command);
     }
