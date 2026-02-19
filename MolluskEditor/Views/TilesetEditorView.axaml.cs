@@ -52,7 +52,9 @@ public partial class TilesetEditorView : UserControl
     private void OnPointerReleased(object? sender, PointerReleasedEventArgs e)
     {
         _isDrawing = false;
+        var properties = e.GetCurrentPoint(this).Properties;
         if (DataContext is TilesetEditorViewModel tilesetEditorViewModel)
-            tilesetEditorViewModel.FinishPainting();
+            if (properties.IsLeftButtonPressed == false && e.InitialPressMouseButton == MouseButton.Left)
+                tilesetEditorViewModel.FinishPainting();
     }
 }
