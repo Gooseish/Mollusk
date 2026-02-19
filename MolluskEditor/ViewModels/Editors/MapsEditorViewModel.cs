@@ -9,6 +9,8 @@ namespace MolluskEditor.ViewModels;
 
 public partial class MapsEditorViewModel : EditorViewModel
 {
+    // Todo: "Use png as map" option
+    // Todo: "Export as png" option
     private DataModel<GameMap> _dataModel;
     private DataModel<Tileset> _tilesetDataModel;
     [ObservableProperty]
