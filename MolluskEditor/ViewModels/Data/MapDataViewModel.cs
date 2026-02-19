@@ -6,7 +6,6 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using MolluskEditor.Commands;
 using MolluskEditor.Extensions;
 using MolluskEditor.Models;
-using MolluskEngine.Extensions;
 using MolluskEngine.GameBoard;
 
 namespace MolluskEditor.ViewModels;
@@ -70,7 +69,7 @@ public partial class MapDataViewModel : ObservableValidator, IDataViewModel
     {
         
     }
-    private void FixTileData() {/* Todo */}
+    private void FixTileData() {TileData = _map.TileData.ToMapTileViewModel();}
     private void WatchTileData()
     {
         foreach (MapTileViewModel i in TileData)

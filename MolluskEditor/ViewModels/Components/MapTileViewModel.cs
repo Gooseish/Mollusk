@@ -7,8 +7,10 @@ using MolluskEngine.GameBoard;
 
 namespace MolluskEditor.ViewModels;
 
-public class MapTileViewModel : ViewModelBase
+public partial class MapTileViewModel : ViewModelBase
 {
+    [ObservableProperty]
+    private int? _id;
     public MapTileViewModel(int id, int index)
     {
         
