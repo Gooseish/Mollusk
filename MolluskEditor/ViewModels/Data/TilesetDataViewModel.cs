@@ -87,6 +87,7 @@ public partial class TilesetDataViewModel : ObservableValidator, IDataViewModel
         if (_paintCommands == null) return;
         _paintCommands.AddCleanup(FixTerrainData);
         _commandStack.IssueCommand(_paintCommands);
+        _paintCommands = null;
     }
     public int? SampleTilemap(Point cursorPosition)
     {

@@ -30,7 +30,7 @@ public partial class MapDataViewModel : ObservableValidator, IDataViewModel
         _name = _map.Name;
         _height = _map.Height.ToString();
         _width = _map.Width.ToString();
-        _tileData = _map.TileData.ToMapTileViewModel();
+        //_tileData = _map.TileData.ToMapTileViewModel();
 
         WatchTileData();
         PropertyChanged += CheckForAnyErrors;
@@ -65,7 +65,7 @@ public partial class MapDataViewModel : ObservableValidator, IDataViewModel
     {
         
     }
-    private void FixTileData() {TileData = _map.TileData.ToMapTileViewModel();}
+    //private void FixTileData() {TileData = _map.TileData.ToMapTileViewModel();}
     private void WatchTileData()
     {
         foreach (MapTileViewModel i in TileData)
@@ -90,7 +90,7 @@ public partial class MapDataViewModel : ObservableValidator, IDataViewModel
         FixName();
         FixHeight();
         FixWidth();
-        FixTileData();
+        //FixTileData();
     }
     #region Events
     public void NotifyChange()
