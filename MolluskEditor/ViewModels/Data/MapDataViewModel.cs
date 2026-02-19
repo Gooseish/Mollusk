@@ -1,8 +1,10 @@
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using Avalonia.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 using MolluskEditor.Commands;
+using MolluskEditor.Extensions;
 using MolluskEditor.Models;
 using MolluskEngine.Extensions;
 using MolluskEngine.GameBoard;
@@ -25,21 +27,18 @@ public partial class MapDataViewModel : ObservableValidator, IDataViewModel
     {
         map ??= _mapData.New();
         _map = map;
-        FixFields();
-        // todo: watch map tile data
+        _id = _map.Id.ToString();
+        _name = _map.Name;
+        _height = _map.Height.ToString();
+        _width = _map.Width.ToString();
+        _tileset = _map.Tileset.ToString();
+        _tileData = _map.TileData.ToMapTileViewModel();
+
+        WatchTileData();
         PropertyChanged += CheckForAnyErrors;
         CheckForAnyErrors(null, EventArgs.Empty);
     }
     public MapDataViewModel() : this(null) { }
-    public void FixFields()
-    {
-        FixId();
-        FixName();
-        FixHeight();
-        FixWidth();
-        FixTileset();
-        FixTileData();
-    }
     public static ObservableCollection<IDataViewModel> ReadExisting()
     {
         ObservableCollection<IDataViewModel> data = [];
@@ -65,9 +64,21 @@ public partial class MapDataViewModel : ObservableValidator, IDataViewModel
     [ObservableProperty]
     private string _width;
     private void FixWidth() {Width = _map.Width.ToString();}
-    //[ObservableProperty]
-    //private ObservableCollection<MapTileViewModel> _tileData;
+    [ObservableProperty]
+    private ObservableCollection<MapTileViewModel> _tileData;
+    private void UpdateTileData(object? sender, EventArgs args)
+    {
+        
+    }
     private void FixTileData() {/* Todo */}
+    private void WatchTileData()
+    {
+        foreach (MapTileViewModel i in TileData)
+        {
+            i.PropertyChanged += UpdateTileData;
+            i.PropertyChanged += CheckForAnyErrors;
+        }
+    }
 
     #endregion
     public void Register()
@@ -78,8 +89,16 @@ public partial class MapDataViewModel : ObservableValidator, IDataViewModel
     {
         _mapData.Data.Remove(_map.Id);
     }
-
-    #region Events   
+    public void FixFields()
+    {
+        FixId();
+        FixName();
+        FixHeight();
+        FixWidth();
+        FixTileset();
+        FixTileData();
+    }
+    #region Events
     public void NotifyChange()
         { _mapData.OnAnyChange(); }
     /// <summary>
@@ -88,14 +107,13 @@ public partial class MapDataViewModel : ObservableValidator, IDataViewModel
     /// </summary>
     [ObservableProperty]
     private IBrush _textColor = Brush.Parse("White");
-
     private void CheckForAnyErrors(object? sender, EventArgs args)
     {
         bool anyErrors = Result();
         bool Result()
         {
-            //if (GetErrors().Any()) return true;
-            //if (MovementCost.ToIntList() == null) return true;
+            if (GetErrors().Any()) return true;
+            if (TileData.ToIntList() == null) return true;
             return false;
         }
         if (anyErrors) TextColor = Brush.Parse("Yellow");

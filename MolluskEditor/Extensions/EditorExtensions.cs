@@ -36,6 +36,16 @@ public static class EditorExtensions
         }
         return result;
     }
+    public static List<int>? ToIntList(this ObservableCollection<MapTileViewModel> source)
+    {
+        List<int> result = [];
+        foreach (MapTileViewModel element in source)
+        {
+            if (element.Id == null) return null;
+            result.Add((int)element.Id);
+        }
+        return result;
+    }
     public static ObservableCollection<TerrainTileViewModel> ToTerrainTileViewModel(
         this int[] source)
     {
@@ -43,6 +53,15 @@ public static class EditorExtensions
         List<int> sourceList = [.. source];
         for(int n = 0; n < sourceList.Count; n++)
             result.Add(new TerrainTileViewModel(sourceList[n], n));
+        return result;
+    }
+    public static ObservableCollection<MapTileViewModel> ToMapTileViewModel(
+        this int[,] source)
+    {
+        ObservableCollection<MapTileViewModel> result = [];
+        List<int> sourceList = [.. source];
+        for(int n = 0; n < sourceList.Count; n++)
+            result.Add(new MapTileViewModel(sourceList[n], n));
         return result;
     }
     public static ObservableCollection<ObsVal<string>> ToWrappedStringCollection(

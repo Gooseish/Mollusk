@@ -25,5 +25,6 @@ public class GameMap : IDataType
         Tileset = -1;
         Height = 10;
         Width = 15;
+        TileData = new int[Width, Height];
     }
 }
