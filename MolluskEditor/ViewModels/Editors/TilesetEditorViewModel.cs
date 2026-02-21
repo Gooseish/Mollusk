@@ -24,8 +24,8 @@ public partial class TilesetEditorViewModel : EditorViewModel
     [ObservableProperty]
     private bool _showTerrainIds;
 
-    public TilesetEditorViewModel(CommandStack commandStack, DataModel<Tileset> dataModel,
-        DataModel<Terrain> terrainDataModel)
+    public TilesetEditorViewModel(CommandStack commandStack,
+        DataModel<Tileset> dataModel, DataModel<Terrain> terrainDataModel)
         : base(commandStack)
     {
         _dataModel = dataModel;
@@ -59,7 +59,7 @@ public partial class TilesetEditorViewModel : EditorViewModel
         TerrainData.SelectData((int)sampledTerrainId);
     }
 
-    #region Event Handling
+    #region Events
     private void OnSelectionChanged(object? sender, EventArgs args)
     {
         SelectedTileset = (TilesetDataViewModel?)Data.SelectedData;
