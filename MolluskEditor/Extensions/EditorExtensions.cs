@@ -36,13 +36,13 @@ public static class EditorExtensions
         }
         return result;
     }
-    public static List<int>? ToIntList(this ObservableCollection<MapTileViewModel> source)
+    public static List<(int TilesetId, int TileId)>? ToIntList(this ObservableCollection<MapTileViewModel> source)
     {
-        List<int> result = [];
+        List<(int TilesetId, int TileId)> result = [];
         foreach (MapTileViewModel element in source)
         {
             if (element.Id == null) return null;
-            result.Add((int)element.Id);
+            result.Add((ValueTuple<int, int>)element.Id);
         }
         return result;
     }
@@ -56,12 +56,12 @@ public static class EditorExtensions
         return result;
     }
     public static ObservableCollection<MapTileViewModel> ToMapTileViewModel(
-        this int[,] source)
+        this (int TilesetId, int TileId)[,] source)
     {
         ObservableCollection<MapTileViewModel> result = [];
-        List<int> sourceList = [.. source];
+        List<(int TilesetId, int TileId)> sourceList = [.. source];
         for(int n = 0; n < sourceList.Count; n++)
-            result.Add(new MapTileViewModel(sourceList[n], n));
+            result.Add(new MapTileViewModel(sourceList[n].TilesetId, sourceList[n].TileId, n));
         return result;
     }
     public static ObservableCollection<ObsVal<string>> ToWrappedStringCollection(
@@ -83,7 +83,6 @@ public static class EditorExtensions
         return result;
     }
     
-
     public static Bitmap BitmapFromColor(int width, int height, Color color)
     {
         var pixelFormat = PixelFormat.Bgra8888;

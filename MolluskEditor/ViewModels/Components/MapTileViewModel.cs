@@ -10,8 +10,19 @@ namespace MolluskEditor.ViewModels;
 public partial class MapTileViewModel : ViewModelBase
 {
     [ObservableProperty]
-    private int? _id;
-    public MapTileViewModel(int id, int index)
+    private int? _tilesetId;
+    [ObservableProperty]
+    private int? _tileId;
+    public (int TilesetId, int TileId)? Id 
+    {
+        get 
+        {
+            if (TilesetId == null || TileId == null)
+                return null;
+            return ((int)TilesetId, (int)TileId);
+        }
+    }
+    public MapTileViewModel(int tilesetId, int tileId, int index)
     {
         
     }
