@@ -38,10 +38,9 @@
                 <!-- Grid Format -->
                 <ItemsControl.ItemsPanel>
                   <ItemsPanelTemplate>
-                    <UniformGrid Rows="{Binding SelectedTileset?.TilemapHeight}" Columns="{Binding SelectedTileset?.TilemapWidth}" 
-                      ColumnSpacing="0" RowSpacing="0" 
-                      Width="399"
-                      Height="399"/>
+                    <UniformGrid Rows="{Binding SelectedTileset?.TilemapHeight}" Columns="{Binding SelectedTileset?.TilemapWidth}"
+                      Width="{Binding CanvasSize}" Height= "{Binding CanvasSize}"
+                      UseLayoutRounding="False"/>
                   </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
                 <!-- Entry Format -->
