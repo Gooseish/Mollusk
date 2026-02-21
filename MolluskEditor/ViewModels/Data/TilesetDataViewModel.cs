@@ -64,16 +64,16 @@ public partial class TilesetDataViewModel : ObservableValidator, IDataViewModel
     private TerrainTileViewModel? pickTileWithCursor(Point cursorPosition)
     {
         if (Image == null) {return null;}
-        if (_tilemapWidth == null) {return null;}
-        if (_tilemapHeight == null) {return null;}
+        if (TilemapWidth == null) {return null;}
+        if (TilemapHeight == null) {return null;}
         // Get cursor positions in map coordinates
         int cursorX = (int)(cursorPosition.X / Config.tileWidth);
         int cursorY = (int)(cursorPosition.Y / Config.tileHeight);
         // Return if cursor outside bounds
-        if (cursorX < 0 || cursorX >= _tilemapWidth)  {return null;}
-        if (cursorY < 0 || cursorY >= _tilemapHeight) {return null;}
+        if (cursorX < 0 || cursorX >= TilemapWidth)  {return null;}
+        if (cursorY < 0 || cursorY >= TilemapHeight) {return null;}
         // Index with map coordinates
-        return TerrainData.IndexAs2D(cursorX, cursorY, (int)_tilemapWidth);
+        return TerrainData.IndexAs2D(cursorX, cursorY, (int)TilemapWidth);
     }
     public void PaintTilemap(Point cursorPosition, string selectedTerrain)
     {

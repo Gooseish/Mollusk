@@ -12,7 +12,7 @@
     <!-- Map Selector -->
     <ContentControl Content = "{Binding Data}"/>
     <!-- Tilemap -->
-    <Border Width="500" Height="500">
+    <Border Width="{Binding CanvasSize}" Height="{Binding CanvasSize}">
       <ScrollViewer VerticalScrollBarVisibility="Auto"
                     HorizontalScrollBarVisibility="Auto">
         <paz:ZoomBorder Name="MapZoomBorder" Stretch="None" ZoomSpeed="1.2"
@@ -46,7 +46,7 @@
     <!-- Tileset Selector -->
     <ContentControl Content = "{Binding TilesetData}"/>
     <!-- Tile Selector -->
-    <Border Width="300" Height= "300">
+    <Border Width="{Binding TilesetCanvasSize}" Height= "{Binding TilesetCanvasSize}">
       <ScrollViewer VerticalScrollBarVisibility="Auto"
                     HorizontalScrollBarVisibility="Auto">
         <paz:ZoomBorder Name="TilesetZoomBorder" Stretch="None" ZoomSpeed="1.2"

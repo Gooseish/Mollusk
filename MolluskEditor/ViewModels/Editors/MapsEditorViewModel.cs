@@ -11,6 +11,10 @@ namespace MolluskEditor.ViewModels;
 
 public partial class MapsEditorViewModel : EditorViewModel
 {
+    [ObservableProperty]
+    public static int _canvasSize = 500;
+    [ObservableProperty]
+    public static int _tilesetCanvasSize = 300;
     // Todo: "Use png as map" option
     // Todo: "Export as png" option
     private DataModel<GameMap> _dataModel;
