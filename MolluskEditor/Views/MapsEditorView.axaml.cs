@@ -31,6 +31,7 @@ public partial class MapsEditorView : UserControl
             // Tile painter
             //mapsEditorView.BeginPainting();
             //mapsEditorView.PaintTilemap(e.GetPosition(DrawingCanvas));
+
             // Tile picker
             mapsEditorView.PickTile(e.GetPosition(TilePicker));
         }

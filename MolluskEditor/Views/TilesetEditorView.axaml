@@ -37,8 +37,8 @@
               <!-- Grid Format -->
               <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                  <UniformGrid Rows="32" Columns="32" 
-                    ColumnSpacing="0" RowSpacing = "0" />
+                  <UniformGrid Rows="{Binding SelectedTileset?.TilemapHeight}" Columns="{Binding SelectedTileset?.TilemapWidth}" 
+                    ColumnSpacing="0" RowSpacing = "0"/>
                 </ItemsPanelTemplate>
               </ItemsControl.ItemsPanel>
               <!-- Entry Format -->

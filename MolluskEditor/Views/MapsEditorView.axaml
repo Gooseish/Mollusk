@@ -11,12 +11,43 @@
   <StackPanel Orientation="Horizontal">
     <!-- Map Selector -->
     <ContentControl Content = "{Binding Data}"/>
+    <!-- Tilemap -->
+      <ScrollViewer VerticalScrollBarVisibility="Auto"
+                    HorizontalScrollBarVisibility="Auto">
+        <paz:ZoomBorder Name="MapZoomBorder" Stretch="None" ZoomSpeed="1.2"
+                        Background="SlateBlue" ClipToBounds="True" Focusable="True"
+                        VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                        AutoCalculateMinZoom="True" AutoCalculateMaxZoom="True"
+                        BoundsMode="FillViewport">
+          <Grid>
+            <Canvas Width="240" Height="160" Background="LightGray"/>
+            <!-- Terrain Tile Overlay -->
+            <ItemsControl ItemsSource="{Binding SelectedMap?.TileData}" Name="DrawingCanvas">
+              <!-- Grid Format -->
+              <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                  <UniformGrid Rows="{Binding SelectedMap?.Height}" Columns="{Binding SelectedMap?.Width}" 
+                    ColumnSpacing="0" RowSpacing = "0" />
+                </ItemsPanelTemplate>
+              </ItemsControl.ItemsPanel>
+              <!-- Entry Format -->
+              <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                  <Grid>
+                    <Label>0</Label>
+                  </Grid>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl> 
+          </Grid>
+        </paz:ZoomBorder>  
+      </ScrollViewer>
     <!-- Tileset Selector -->
     <ContentControl Content = "{Binding TilesetData}"/>
     <!-- Tile Selector -->
     <ScrollViewer VerticalScrollBarVisibility="Auto"
                   HorizontalScrollBarVisibility="Auto">
-      <paz:ZoomBorder Name="ZoomBorder" Stretch="None" ZoomSpeed="1.2"
+      <paz:ZoomBorder Name="TilesetZoomBorder" Stretch="None" ZoomSpeed="1.2"
                       Background="SlateBlue" ClipToBounds="True" Focusable="True"
                       VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
                       AutoCalculateMinZoom="True" AutoCalculateMaxZoom="True"

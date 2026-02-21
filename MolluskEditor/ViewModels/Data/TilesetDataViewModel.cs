@@ -30,7 +30,9 @@ public partial class TilesetDataViewModel : ObservableValidator, IDataViewModel
         _commandStack = commandStack;
     }
     private Tileset _tileset;
+    [ObservableProperty]
     private int? _tilemapWidth;
+    [ObservableProperty]
     private int? _tilemapHeight;
     public TilesetDataViewModel(Tileset? tileset)
     {
