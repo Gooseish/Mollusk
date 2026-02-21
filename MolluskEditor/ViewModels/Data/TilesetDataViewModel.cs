@@ -94,6 +94,12 @@ public partial class TilesetDataViewModel : ObservableValidator, IDataViewModel
         if (selectedTile == null) {return null;}
         return selectedTile.Id;
     }
+    public int? PickTileIndex(Point cursorPosition)
+    {
+        TerrainTileViewModel? selectedTile = pickTileWithCursor(cursorPosition);
+        if (selectedTile == null) return null;
+        return TerrainData.IndexOf(selectedTile);
+    }
     #endregion
 
     #region Boilerplate Properties
@@ -155,13 +161,6 @@ public partial class TilesetDataViewModel : ObservableValidator, IDataViewModel
     private ObservableCollection<TerrainTileViewModel> _terrainData;
     private void UpdateTerrainData(object? sender, EventArgs args)
     {
-        /*
-        CommandSequence command = new();
-        command.Add(new SetCommand<int[]>(SetTerrainData,
-            _tileset.TerrainData, parsedTerrainData.ToArray()));
-        command.AddCleanup(FixTerrainData);
-        _commandStack.IssueCommand(command);
-        */
         if (sender == null 
             || sender is not TerrainTileViewModel terrainTile)
             return;

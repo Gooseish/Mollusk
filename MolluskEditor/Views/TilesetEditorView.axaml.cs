@@ -15,7 +15,6 @@ public partial class TilesetEditorView : UserControl
         PointerPressed += OnPointerPressed;
         PointerMoved += OnPointerMoved;
         PointerReleased += OnPointerReleased;
-        
     }
     private void OnPointerPressed(object? sender, PointerPressedEventArgs e)
     {

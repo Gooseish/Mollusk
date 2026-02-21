@@ -1,4 +1,5 @@
 using System;
+using Avalonia;
 using Avalonia.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 using MolluskEditor.Commands;
@@ -23,7 +24,7 @@ public partial class MapsEditorViewModel : EditorViewModel
     [ObservableProperty]
     private TilesetDataViewModel? _selectedTileset;
     [ObservableProperty]
-    private (int TilesetId, int TileId) _selectedTile;
+    private (int TilesetId, int TileId)? _selectedTile;
     public MapsEditorViewModel(CommandStack commandStack,
         DataModel<GameMap> dataModel, DataModel<Tileset> tilesetDataModel)
         : base(commandStack)
@@ -37,6 +38,16 @@ public partial class MapsEditorViewModel : EditorViewModel
             commandStack, false);
         Subscribe();
     }
+
+    #region Tile Picker
+    public void PickTile(Point point)
+    {
+        if (SelectedTileset == null) return;
+        int? tileId = SelectedTileset.PickTileIndex(point);
+        if (tileId == null) return;
+        SelectedTile = (int.Parse(SelectedTileset.Id), (int)tileId);   
+    }
+    #endregion
 
     #region Events
     private void OnSelectionChanged(object? sender, EventArgs args)

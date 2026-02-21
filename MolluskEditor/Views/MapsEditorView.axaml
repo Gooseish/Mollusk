@@ -23,7 +23,7 @@
                       BoundsMode="FillViewport">
         <Grid>
           <!-- Tilemap Image -->
-          <Image Source="{Binding SelectedTileset?.Image}" Name="DrawingCanvas"/>
+          <Image Source="{Binding SelectedTileset?.Image}" Name="TilePicker"/>
         </Grid>
       </paz:ZoomBorder>  
     </ScrollViewer>
