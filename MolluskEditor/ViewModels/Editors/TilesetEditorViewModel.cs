@@ -6,11 +6,14 @@ using MolluskEngine.GameBoard;
 using MolluskEditor.Services;
 using Avalonia;
 using System.Data.Common;
+using Avalonia.Controls;
 
 namespace MolluskEditor.ViewModels;
 
 public partial class TilesetEditorViewModel : EditorViewModel
 {
+    [ObservableProperty]
+    public static int _canvasSize = 400;
     private DataModel<Tileset> _dataModel;
     private DataModel<Terrain> _terrainDataModel;
     [ObservableProperty]
@@ -41,7 +44,9 @@ public partial class TilesetEditorViewModel : EditorViewModel
     public void PaintTilemap(Point cursorPosition)
     {
         if (SelectedTerrain == null) return;
-        SelectedTileset?.PaintTilemap(cursorPosition, SelectedTerrain.Id);
+        Point? mapPosition = SelectedTileset?.CursorToTilemapPosition(cursorPosition, CanvasSize);
+        if (mapPosition == null) return;
+        SelectedTileset?.PaintTilemap((Point)mapPosition, SelectedTerrain.Id);
     }
     public void BeginPainting()
     {
@@ -54,7 +59,9 @@ public partial class TilesetEditorViewModel : EditorViewModel
     public void SampleTilemap(Point cursorPosition)
     {
         if (SelectedTerrain == null) return;
-        int? sampledTerrainId = SelectedTileset?.SampleTilemap(cursorPosition);
+        Point? mapPosition = SelectedTileset?.CursorToTilemapPosition(cursorPosition, CanvasSize);
+        if (mapPosition == null) return;
+        int? sampledTerrainId = SelectedTileset?.SampleTilemap((Point)mapPosition);
         if (sampledTerrainId == null) return;
         TerrainData.SelectData((int)sampledTerrainId);
     }

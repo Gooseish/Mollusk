@@ -22,39 +22,43 @@
         <CheckBox Margin="5" IsChecked="{Binding ShowTerrainIds}">Show terrain IDs</CheckBox>
       </StackPanel>
       <!-- Tilemap -->
-      <ScrollViewer VerticalScrollBarVisibility="Auto"
-                    HorizontalScrollBarVisibility="Auto">
-        <paz:ZoomBorder Name="ZoomBorder" Stretch="None" ZoomSpeed="1.2"
-                        Background="SlateBlue" ClipToBounds="True" Focusable="True"
-                        VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
-                        AutoCalculateMinZoom="True" AutoCalculateMaxZoom="True"
-                        BoundsMode="FillViewport">
-          <Grid>
-            <!-- Tilemap Image -->
-            <Image Source="{Binding SelectedTileset?.Image}" Name="DrawingCanvas"/>
-            <!-- Terrain Tile Overlay -->
-            <ItemsControl ItemsSource="{Binding SelectedTileset?.TerrainData}">
-              <!-- Grid Format -->
-              <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                  <UniformGrid Rows="{Binding SelectedTileset?.TilemapHeight}" Columns="{Binding SelectedTileset?.TilemapWidth}" 
-                    ColumnSpacing="0" RowSpacing = "0"/>
-                </ItemsPanelTemplate>
-              </ItemsControl.ItemsPanel>
-              <!-- Entry Format -->
-              <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                  <Grid>
-                  <Rectangle Fill="{Binding Brush}" Opacity="0.5"/>
-                  <TextBlock Text="{Binding Id}" FontSize="7" 
-                    IsVisible="{Binding #TilesetEditor.DataContext?.ShowTerrainIds, TargetNullValue='false'}"/>
-                  </Grid>
-                </DataTemplate>
-              </ItemsControl.ItemTemplate>
-            </ItemsControl> 
-          </Grid>
-        </paz:ZoomBorder>  
-      </ScrollViewer>
+      <Border Width="{Binding CanvasSize}" Height= "{Binding CanvasSize}">
+        <ScrollViewer VerticalScrollBarVisibility="Auto"
+                      HorizontalScrollBarVisibility="Auto">
+          <paz:ZoomBorder Name="ZoomBorder" Stretch="None" ZoomSpeed="1.2"
+                          Background="SlateBlue" ClipToBounds="True" Focusable="True"
+                          VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                          AutoCalculateMinZoom="True" AutoCalculateMaxZoom="True"
+                          BoundsMode="FillViewport">
+            <Grid>
+              <!-- Tilemap Image -->
+              <Image Source="{Binding SelectedTileset?.Image}" Name="DrawingCanvas"/>
+              <!-- Terrain Tile Overlay -->
+              <ItemsControl ItemsSource="{Binding SelectedTileset?.TerrainData}">
+                <!-- Grid Format -->
+                <ItemsControl.ItemsPanel>
+                  <ItemsPanelTemplate>
+                    <UniformGrid Rows="{Binding SelectedTileset?.TilemapHeight}" Columns="{Binding SelectedTileset?.TilemapWidth}" 
+                      ColumnSpacing="0" RowSpacing="0" 
+                      Width="399"
+                      Height="399"/>
+                  </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <!-- Entry Format -->
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate>
+                    <Grid>
+                    <Rectangle Fill="{Binding Brush}" Opacity="0.5"/>
+                    <TextBlock Text="{Binding Id}" FontSize="7" 
+                      IsVisible="{Binding #TilesetEditor.DataContext?.ShowTerrainIds, TargetNullValue='false'}"/>
+                    </Grid>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl> 
+            </Grid>
+          </paz:ZoomBorder>  
+        </ScrollViewer>
+      </Border>
     </StackPanel>
     <!-- Terrain Selector -->
     <ContentControl Content = "{Binding TerrainData}"/>

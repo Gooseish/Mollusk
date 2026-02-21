@@ -33,7 +33,11 @@ public partial class TilesetDataViewModel : ObservableValidator, IDataViewModel
     [ObservableProperty]
     private int? _tilemapWidth;
     [ObservableProperty]
+    private int? _tilemapPixelWidth;
+    [ObservableProperty]
     private int? _tilemapHeight;
+    [ObservableProperty]
+    private int? _tilemapPixelHeight;
     public TilesetDataViewModel(Tileset? tileset)
     {
         tileset ??= _tilesetData.New();
@@ -89,6 +93,15 @@ public partial class TilesetDataViewModel : ObservableValidator, IDataViewModel
         if (_paintCommands == null) return;
         //_paintCommands.AddCleanup(FixTerrainData);
         _commandStack.IssueCommand(_paintCommands);
+    }
+    public Point? CursorToTilemapPosition(Point cursorPosition, int canvasSize)
+    {
+        if (TilemapPixelHeight == null || TilemapPixelWidth == null)
+            return null;
+        Point mapPosition = new Point(
+            cursorPosition.X * (double)TilemapPixelWidth  / canvasSize, 
+            cursorPosition.Y * (double)TilemapPixelHeight / canvasSize);
+        return mapPosition;
     }
     public int? SampleTilemap(Point cursorPosition)
     {
@@ -155,8 +168,10 @@ public partial class TilesetDataViewModel : ObservableValidator, IDataViewModel
         string full_path = SaveLoadService.CONTENTROOT + SaveLoadService.TILESETIMAGES + _tileset.Name + ".png";
         if (!File.Exists(full_path)) return;
         Image = new Bitmap(full_path);
-        _tilemapWidth = Image.PixelSize.Width / Config.tileWidth; 
-        _tilemapHeight = Image.PixelSize.Height / Config.tileHeight;
+        _tilemapPixelWidth = Image.PixelSize.Width; 
+        _tilemapWidth = TilemapPixelWidth / Config.tileWidth; 
+        _tilemapPixelHeight = Image.PixelSize.Height;
+        _tilemapHeight = TilemapPixelHeight / Config.tileHeight;
     }
     
     [ObservableProperty]
