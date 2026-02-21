@@ -44,10 +44,12 @@ public partial class MapsEditorViewModel : EditorViewModel
     }
 
     #region Tile Picker
-    public void PickTile(Point point)
+    public void PickTile(Point cursorPosition)
     {
         if (SelectedTileset == null) return;
-        int? tileId = SelectedTileset.PickTileIndex(point);
+        Point? mapPosition = SelectedTileset?.CursorToTilemapPosition(cursorPosition, TilesetCanvasSize);
+        if (mapPosition == null) return;
+        int? tileId = SelectedTileset.PickTileIndex((Point)mapPosition);
         if (tileId == null) return;
         SelectedTile = (int.Parse(SelectedTileset.Id), (int)tileId);   
     }
