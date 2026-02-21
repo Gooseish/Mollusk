@@ -9,7 +9,23 @@
              x:Class="MolluskEditor.Views.MapsEditorView"
              x:Name= "MapsEditor">
   <StackPanel Orientation="Horizontal">
-    <!-- Tileset Selector -->
+    <!-- Map Selector -->
     <ContentControl Content = "{Binding Data}"/>
+    <!-- Tileset Selector -->
+    <ContentControl Content = "{Binding TilesetData}"/>
+    <!-- Tile Selector -->
+    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                  HorizontalScrollBarVisibility="Auto">
+      <paz:ZoomBorder Name="ZoomBorder" Stretch="None" ZoomSpeed="1.2"
+                      Background="SlateBlue" ClipToBounds="True" Focusable="True"
+                      VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                      AutoCalculateMinZoom="True" AutoCalculateMaxZoom="True"
+                      BoundsMode="FillViewport">
+        <Grid>
+          <!-- Tilemap Image -->
+          <Image Source="{Binding SelectedTileset?.Image}" Name="DrawingCanvas"/>
+        </Grid>
+      </paz:ZoomBorder>  
+    </ScrollViewer>
   </StackPanel>
 </UserControl>

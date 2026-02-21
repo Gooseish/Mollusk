@@ -34,7 +34,7 @@ public partial class MapsEditorViewModel : EditorViewModel
         Data = new(typeof(MapDataViewModel), MapDataViewModel.ReadExisting,
             commandStack);
         TilesetData = new (typeof(TilesetDataViewModel), TilesetDataViewModel.ReadExisting,
-            commandStack);
+            commandStack, false);
         Subscribe();
     }
 
@@ -45,7 +45,7 @@ public partial class MapsEditorViewModel : EditorViewModel
     }
     private void OnSelectedTilesetChanged(object? sender, EventArgs args)
     {
-        SelectedTileset = (TilesetDataViewModel?)Data.SelectedData;
+        SelectedTileset = (TilesetDataViewModel?)TilesetData.SelectedData;
     }
     private void OnProjectLoaded(object? sender, EventArgs args)
     {
