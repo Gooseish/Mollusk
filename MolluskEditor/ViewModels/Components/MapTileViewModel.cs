@@ -41,11 +41,11 @@ public partial class MapTileViewModel : ViewModelBase
         _tileId = tileId;
         Index = index;
     }
-    public void AssignTile((int TilesetId, int TileId) id, int tilesetWidth)
+    public void AssignTile((int TilesetId, int TileId) id)
     {
         TilesetId = id.TilesetId;   
         TileId = id.TileId;
-        RefreshBrush(tilesetWidth);
+        RefreshBrush();
     }
     public RelativeRect GetSourceRect(int tilesetWidth)
     {
@@ -54,9 +54,10 @@ public partial class MapTileViewModel : ViewModelBase
         Rect result = new Rect(X, Y, Config.tileWidth, Config.tileHeight);
         return new RelativeRect(result, RelativeUnit.Absolute);
     }
-    public void RefreshBrush(int tilesetWidth)
+    public void RefreshBrush()
     {
         Bitmap image = _images[TilesetId.Value];
+        int tilesetWidth = image.PixelSize.Width / Config.tileWidth;
         Brush = new ImageBrush(image)
         { 
             SourceRect = GetSourceRect(tilesetWidth),
