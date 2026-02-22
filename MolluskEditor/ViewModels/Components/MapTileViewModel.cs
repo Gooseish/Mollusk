@@ -58,6 +58,10 @@ public partial class MapTileViewModel : ViewModelBase
     {
         Bitmap image = _images[TilesetId.Value];
         Brush = new ImageBrush(image)
-            { SourceRect = GetSourceRect(tilesetWidth) };
+        { 
+            SourceRect = GetSourceRect(tilesetWidth),
+            DestinationRect = new RelativeRect(
+                0, 0, Config.tileWidth, Config.tileHeight, RelativeUnit.Absolute),
+        };
     }
 }

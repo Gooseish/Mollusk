@@ -17,7 +17,6 @@
                     HorizontalScrollBarVisibility="Auto">
         <paz:ZoomBorder Name="MapZoomBorder" Stretch="None" ZoomSpeed="1.2"
                         Background="SlateBlue" ClipToBounds="True" Focusable="True"
-                        VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
                         AutoCalculateMinZoom="True" AutoCalculateMaxZoom="True"
                         BoundsMode="FillViewport">
           <Grid>
@@ -35,7 +34,7 @@
                 <DataTemplate>
                   <Grid>
                     <Rectangle Fill="{Binding Brush}"
-                      VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                      Stretch="None"
                       RenderOptions.BitmapInterpolationMode="None"
                       UseLayoutRounding="False"/>
                     <TextBlock Text="{Binding TileId}" FontSize="7"/>
@@ -60,7 +59,8 @@
                         BoundsMode="FillViewport">
           <Grid>
             <!-- Tilemap Image -->
-            <Image Source="{Binding SelectedTileset?.Image}" Name="TilePicker"/>
+            <Image Source="{Binding SelectedTileset?.Image}" Name="TilePicker"
+              RenderOptions.BitmapInterpolationMode="None"/>
           </Grid>
         </paz:ZoomBorder>  
       </ScrollViewer>
