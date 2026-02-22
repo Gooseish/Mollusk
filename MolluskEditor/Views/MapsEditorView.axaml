@@ -34,6 +34,8 @@
               <ItemsControl.ItemTemplate>
                 <DataTemplate>
                   <Grid>
+                    <Rectangle Fill="{Binding Brush}"
+                      VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
                     <TextBlock Text="{Binding TileId}" FontSize="7"/>
                   </Grid>
                 </DataTemplate>
