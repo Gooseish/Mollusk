@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
@@ -13,6 +14,11 @@ namespace MolluskEditor.ViewModels;
 
 public partial class MapTileViewModel : ViewModelBase
 {
+    private static Dictionary<int, Bitmap> _images;
+    public static void InjectDependency(Dictionary<int, Bitmap> images)
+    {
+        _images = images;
+    }
     [ObservableProperty]
     private int? _tilesetId;
     [ObservableProperty]
@@ -35,10 +41,11 @@ public partial class MapTileViewModel : ViewModelBase
         _tileId = tileId;
         Index = index;
     }
-    public void AssignTile((int TilesetId, int TileId) id)
+    public void AssignTile((int TilesetId, int TileId) id, int tilesetWidth)
     {
         TilesetId = id.TilesetId;   
         TileId = id.TileId;
+        RefreshBrush(tilesetWidth);
     }
     public RelativeRect GetSourceRect(int tilesetWidth)
     {
@@ -47,8 +54,9 @@ public partial class MapTileViewModel : ViewModelBase
         Rect result = new Rect(X, Y, Config.tileWidth, Config.tileHeight);
         return new RelativeRect(result, RelativeUnit.Absolute);
     }
-    public void RefreshBrush(Bitmap image, int tilesetWidth)
+    public void RefreshBrush(int tilesetWidth)
     {
+        Bitmap image = _images[TilesetId.Value];
         Brush = new ImageBrush(image)
             { SourceRect = GetSourceRect(tilesetWidth) };
     }

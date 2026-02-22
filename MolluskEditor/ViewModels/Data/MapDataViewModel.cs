@@ -65,7 +65,7 @@ public partial class MapDataViewModel : ObservableValidator, IDataViewModel
     {
         MapTileViewModel? selectedTile = pickTileWithCursor(cursorPosition);
         if (selectedTile == null) return;
-        selectedTile.AssignTile(id);
+        selectedTile.AssignTile(id, _map.Width);
     }
     private CommandSequence? _paintCommands;
     public void BeginPainting()
@@ -97,12 +97,12 @@ public partial class MapDataViewModel : ObservableValidator, IDataViewModel
         return TileData.IndexOf(selectedTile);
     }
     #region Tilemap Brushes
-    public void RefreshTilemapBrushes(Dictionary<int, Bitmap> images)
+    public void RefreshTilemapBrushes()
     {
         foreach (MapTileViewModel mapTile in TileData)
         {
             if (mapTile.TilesetId == null) continue;
-            mapTile.RefreshBrush(images[mapTile.TilesetId.Value], _map.Width);
+            mapTile.RefreshBrush(_map.Width);
         }
     }
     #endregion

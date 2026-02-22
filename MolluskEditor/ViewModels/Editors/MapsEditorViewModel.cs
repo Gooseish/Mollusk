@@ -102,7 +102,8 @@ public partial class MapsEditorViewModel : EditorViewModel
             if (!File.Exists(full_path)) continue;
             _tilesetImages[tilesetData.Id] = new Bitmap(full_path);
         }
-        SelectedMap?.RefreshTilemapBrushes(_tilesetImages);
+        MapTileViewModel.InjectDependency(_tilesetImages);
+        SelectedMap?.RefreshTilemapBrushes();
     }
     #endregion
     #region Events
