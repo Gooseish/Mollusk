@@ -102,12 +102,14 @@ public partial class MapsEditorViewModel : EditorViewModel
             if (!File.Exists(full_path)) continue;
             _tilesetImages[tilesetData.Id] = new Bitmap(full_path);
         }
+        SelectedMap?.RefreshTilemapBrushes(_tilesetImages);
     }
     #endregion
     #region Events
     private void OnSelectionChanged(object? sender, EventArgs args)
     {
         SelectedMap = (MapDataViewModel?)Data.SelectedData;
+        RefreshTilesetImages();
     }
     private void OnSelectedTilesetChanged(object? sender, EventArgs args)
     {

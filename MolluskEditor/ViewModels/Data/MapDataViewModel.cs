@@ -1,8 +1,10 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Avalonia;
 using Avalonia.Media;
+using Avalonia.Media.Imaging;
 using CommunityToolkit.Mvvm.ComponentModel;
 using MolluskEditor.Commands;
 using MolluskEditor.Extensions;
@@ -94,6 +96,16 @@ public partial class MapDataViewModel : ObservableValidator, IDataViewModel
         if (selectedTile == null) return null;
         return TileData.IndexOf(selectedTile);
     }
+    #region Tilemap Brushes
+    public void RefreshTilemapBrushes(Dictionary<int, Bitmap> images)
+    {
+        foreach (MapTileViewModel mapTile in TileData)
+        {
+            if (mapTile.TilesetId == null) continue;
+            mapTile.RefreshBrush(images[mapTile.TilesetId.Value], _map.Width);
+        }
+    }
+    #endregion
     #endregion
     #region Boilerplate Properties
     [ObservableProperty]
@@ -125,7 +137,6 @@ public partial class MapDataViewModel : ObservableValidator, IDataViewModel
             i.PropertyChanged += CheckForAnyErrors;
         }
     }
-
     #endregion
     public void Register()
     {

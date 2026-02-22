@@ -34,7 +34,7 @@
               <ItemsControl.ItemTemplate>
                 <DataTemplate>
                   <Grid>
-                    <Label>0</Label>
+                    <TextBlock Text="{Binding TileId}" FontSize="7"/>
                   </Grid>
                 </DataTemplate>
               </ItemsControl.ItemTemplate>

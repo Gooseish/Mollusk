@@ -1,8 +1,12 @@
 using System;
+using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Media;
+using Avalonia.Media.Imaging;
 using CommunityToolkit.Mvvm.ComponentModel;
 using MolluskEditor.Extensions;
 using MolluskEditor.Models;
+using MolluskEngine;
 using MolluskEngine.GameBoard;
 
 namespace MolluskEditor.ViewModels;
@@ -13,6 +17,8 @@ public partial class MapTileViewModel : ViewModelBase
     private int? _tilesetId;
     [ObservableProperty]
     private int? _tileId;
+    [ObservableProperty]
+    private ImageBrush _brush;
     public int Index;
     public (int TilesetId, int TileId)? Id 
     {
@@ -33,5 +39,17 @@ public partial class MapTileViewModel : ViewModelBase
     {
         TilesetId = id.TilesetId;   
         TileId = id.TileId;
+    }
+    public RelativeRect GetSourceRect(int tilesetWidth)
+    {
+        int X = (int)_tileId % tilesetWidth;
+        int Y = (int)_tileId / tilesetWidth;
+        Rect result = new Rect(X, Y, Config.tileWidth, Config.tileHeight);
+        return new RelativeRect(result, RelativeUnit.Absolute);
+    }
+    public void RefreshBrush(Bitmap image, int tilesetWidth)
+    {
+        Brush = new ImageBrush(image)
+            { SourceRect = GetSourceRect(tilesetWidth) };
     }
 }
