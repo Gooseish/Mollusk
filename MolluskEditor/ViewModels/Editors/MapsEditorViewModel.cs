@@ -1,6 +1,9 @@
 using System;
+using System.Collections.Generic;
+using System.IO;
 using Avalonia;
 using Avalonia.Media;
+using Avalonia.Media.Imaging;
 using CommunityToolkit.Mvvm.ComponentModel;
 using MolluskEditor.Commands;
 using MolluskEditor.Models;
@@ -40,6 +43,7 @@ public partial class MapsEditorViewModel : EditorViewModel
         TilesetData = new(typeof(TilesetDataViewModel), TilesetDataViewModel.ReadExisting,
             commandStack, false);
         Subscribe();
+        RefreshTilesetImages();
     }
     #endregion
     #region Tile Picker
@@ -85,6 +89,21 @@ public partial class MapsEditorViewModel : EditorViewModel
         SelectedTile = sampledTileId;
     }
     #endregion
+    #region Tilemap Rendering
+    private Dictionary<int, Bitmap> _tilesetImages;
+    private void RefreshTilesetImages()
+    {
+        _tilesetImages = [];
+        foreach (Tileset tilesetData in _tilesetDataModel.Data.Values)
+        {
+            string full_path = SaveLoadService.CONTENTROOT 
+                             + SaveLoadService.TILESETIMAGES 
+                             + tilesetData.Name + ".png";
+            if (!File.Exists(full_path)) continue;
+            _tilesetImages[tilesetData.Id] = new Bitmap(full_path);
+        }
+    }
+    #endregion
     #region Events
     private void OnSelectionChanged(object? sender, EventArgs args)
     {
@@ -110,6 +129,7 @@ public partial class MapsEditorViewModel : EditorViewModel
         int? selectedIndex = SelectedTileset == null ? null : int.Parse(SelectedTileset.Id);
         TilesetData.Initialize();
         TilesetData.FixIndexAfterUndo(selectedIndex);
+        RefreshTilesetImages();
     }
     private void Subscribe()
     {
