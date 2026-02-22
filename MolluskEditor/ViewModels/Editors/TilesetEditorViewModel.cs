@@ -40,7 +40,7 @@ public partial class TilesetEditorViewModel : EditorViewModel
             commandStack, false);
         Subscribe();
     }
-
+    #region Tilemap Painting
     public void PaintTilemap(Point cursorPosition)
     {
         if (SelectedTerrain == null) return;
@@ -58,13 +58,13 @@ public partial class TilesetEditorViewModel : EditorViewModel
     }
     public void SampleTilemap(Point cursorPosition)
     {
-        if (SelectedTerrain == null) return;
         Point? mapPosition = SelectedTileset?.CursorToTilemapPosition(cursorPosition, CanvasSize);
         if (mapPosition == null) return;
         int? sampledTerrainId = SelectedTileset?.SampleTilemap((Point)mapPosition);
         if (sampledTerrainId == null) return;
         TerrainData.SelectData((int)sampledTerrainId);
     }
+    #endregion
 
     #region Events
     private void OnSelectionChanged(object? sender, EventArgs args)

@@ -1,11 +1,14 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Avalonia;
 using Avalonia.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 using MolluskEditor.Commands;
 using MolluskEditor.Extensions;
 using MolluskEditor.Models;
+using MolluskEngine;
+using MolluskEngine.Extensions;
 using MolluskEngine.GameBoard;
 
 namespace MolluskEditor.ViewModels;
@@ -44,6 +47,54 @@ public partial class MapDataViewModel : ObservableValidator, IDataViewModel
             data.Add(new MapDataViewModel(map));
         return data;
     }
+    #region Tilemap Painting
+    private MapTileViewModel? pickTileWithCursor(Point cursorPosition)
+    {
+        // Get cursor positions in map coordinates
+        int cursorX = (int)(cursorPosition.X / Config.tileWidth);
+        int cursorY = (int)(cursorPosition.Y / Config.tileHeight);
+        // Return if cursor outside bounds
+        if (cursorX < 0 || cursorX >= _map.Width)  {return null;}
+        if (cursorY < 0 || cursorY >= _map.Height) {return null;}
+        // Index with map coordinates
+        return TileData.IndexAs2D(cursorX, cursorY, _map.Width);
+    }
+    public void PaintTilemap(Point cursorPosition, (int TilesetId, int TileId) id)
+    {
+        MapTileViewModel? selectedTile = pickTileWithCursor(cursorPosition);
+        if (selectedTile == null) return;
+        selectedTile.AssignTile(id);
+    }
+    private CommandSequence? _paintCommands;
+    public void BeginPainting()
+    {
+        _paintCommands = new CommandSequence();
+    }
+    public void FinishPainting()
+    {
+        if (_paintCommands == null) return;
+        _commandStack.IssueCommand(_paintCommands);
+    }
+    public Point? CursorToTilemapPosition(Point cursorPosition, int canvasSize)
+    {
+        Point mapPosition = new Point(
+            cursorPosition.X * _map.Width  * Config.tileWidth  / canvasSize, 
+            cursorPosition.Y * _map.Height * Config.tileHeight / canvasSize);
+        return mapPosition;
+    }
+    public (int TilesetId, int TileId)? SampleTilemap(Point cursorPosition)
+    {
+        MapTileViewModel? selectedTile = pickTileWithCursor(cursorPosition);
+        if (selectedTile == null) {return null;}
+        return selectedTile.Id;
+    }
+    public int? PickTileIndex(Point cursorPosition)
+    {
+        MapTileViewModel? selectedTile = pickTileWithCursor(cursorPosition);
+        if (selectedTile == null) return null;
+        return TileData.IndexOf(selectedTile);
+    }
+    #endregion
     #region Boilerplate Properties
     [ObservableProperty]
     private string _id;

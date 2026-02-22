@@ -11,12 +11,9 @@ namespace MolluskEditor.ViewModels;
 
 public partial class MapsEditorViewModel : EditorViewModel
 {
-    [ObservableProperty]
-    public static int _canvasSize = 500;
-    [ObservableProperty]
-    public static int _tilesetCanvasSize = 300;
     // Todo: "Use png as map" option
     // Todo: "Export as png" option
+    #region Data Fields
     private DataModel<GameMap> _dataModel;
     private DataModel<Tileset> _tilesetDataModel;
     [ObservableProperty]
@@ -29,6 +26,8 @@ public partial class MapsEditorViewModel : EditorViewModel
     private TilesetDataViewModel? _selectedTileset;
     [ObservableProperty]
     private (int TilesetId, int TileId)? _selectedTile;
+    #endregion
+    #region Constructor
     public MapsEditorViewModel(CommandStack commandStack,
         DataModel<GameMap> dataModel, DataModel<Tileset> tilesetDataModel)
         : base(commandStack)
@@ -38,23 +37,54 @@ public partial class MapsEditorViewModel : EditorViewModel
         EditorName = EditorName.Maps;
         Data = new(typeof(MapDataViewModel), MapDataViewModel.ReadExisting,
             commandStack);
-        TilesetData = new (typeof(TilesetDataViewModel), TilesetDataViewModel.ReadExisting,
+        TilesetData = new(typeof(TilesetDataViewModel), TilesetDataViewModel.ReadExisting,
             commandStack, false);
         Subscribe();
     }
-
+    #endregion
     #region Tile Picker
+    [ObservableProperty]
+    public static int _tilesetCanvasSize = 300;
     public void PickTile(Point cursorPosition)
     {
         if (SelectedTileset == null) return;
-        Point? mapPosition = SelectedTileset?.CursorToTilemapPosition(cursorPosition, TilesetCanvasSize);
+        Point? mapPosition = SelectedTileset.CursorToTilemapPosition(cursorPosition, TilesetCanvasSize);
         if (mapPosition == null) return;
         int? tileId = SelectedTileset.PickTileIndex((Point)mapPosition);
         if (tileId == null) return;
         SelectedTile = (int.Parse(SelectedTileset.Id), (int)tileId);   
     }
     #endregion
-
+    #region Tilemap Painting
+    [ObservableProperty]
+    public static int _canvasSize = 500;
+    public void PaintTilemap(Point cursorPosition)
+    {
+        if (SelectedMap == null) return;
+        if (SelectedTile == null) return;
+        Point? mapPosition = SelectedMap?.CursorToTilemapPosition(cursorPosition, CanvasSize);
+        if (mapPosition == null) return;
+        SelectedMap?.PaintTilemap((Point)mapPosition, SelectedTile.Value);
+    }
+    public void BeginPainting()
+    {
+        SelectedMap?.BeginPainting();
+    }
+    public void FinishPainting()
+    {
+        SelectedMap?.FinishPainting();
+    }
+    public void SampleTilemap(Point cursorPosition)
+    {
+        if (SelectedMap == null) return;
+        Point? mapPosition = SelectedMap?.CursorToTilemapPosition(cursorPosition, CanvasSize);
+        if (mapPosition == null) return;
+        (int TilesetId, int TileId)? sampledTileId = 
+            SelectedMap?.SampleTilemap((Point)mapPosition);
+        if (sampledTileId == null) return;
+        SelectedTile = sampledTileId;
+    }
+    #endregion
     #region Events
     private void OnSelectionChanged(object? sender, EventArgs args)
     {
