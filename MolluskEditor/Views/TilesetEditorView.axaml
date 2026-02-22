@@ -32,7 +32,8 @@
                           BoundsMode="FillViewport">
             <Grid>
               <!-- Tilemap Image -->
-              <Image Source="{Binding SelectedTileset?.Image}" Name="DrawingCanvas"/>
+              <Image Source="{Binding SelectedTileset?.Image}" Name="DrawingCanvas"
+                RenderOptions.BitmapInterpolationMode="None"/>
               <!-- Terrain Tile Overlay -->
               <ItemsControl ItemsSource="{Binding SelectedTileset?.TerrainData}">
                 <!-- Grid Format -->
@@ -47,7 +48,8 @@
                 <ItemsControl.ItemTemplate>
                   <DataTemplate>
                     <Grid>
-                    <Rectangle Fill="{Binding Brush}" Opacity="0.5"/>
+                    <Rectangle Fill="{Binding Brush}" Opacity="0.5"
+                      RenderOptions.BitmapInterpolationMode="None"/>
                     <TextBlock Text="{Binding Id}" FontSize="7" 
                       IsVisible="{Binding #TilesetEditor.DataContext?.ShowTerrainIds, TargetNullValue='false'}"/>
                     </Grid>

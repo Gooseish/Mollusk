@@ -35,7 +35,9 @@
                 <DataTemplate>
                   <Grid>
                     <Rectangle Fill="{Binding Brush}"
-                      VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+                      VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                      RenderOptions.BitmapInterpolationMode="None"
+                      UseLayoutRounding="False"/>
                     <TextBlock Text="{Binding TileId}" FontSize="7"/>
                   </Grid>
                 </DataTemplate>

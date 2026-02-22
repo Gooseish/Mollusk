@@ -49,8 +49,8 @@ public partial class MapTileViewModel : ViewModelBase
     }
     public RelativeRect GetSourceRect(int tilesetWidth)
     {
-        int X = (int)_tileId % tilesetWidth;
-        int Y = (int)_tileId / tilesetWidth;
+        int X = (int)_tileId % tilesetWidth * Config.tileWidth;
+        int Y = (int)_tileId / tilesetWidth * Config.tileHeight;
         Rect result = new Rect(X, Y, Config.tileWidth, Config.tileHeight);
         return new RelativeRect(result, RelativeUnit.Absolute);
     }
