@@ -24,7 +24,7 @@ public partial class MapTileViewModel : ViewModelBase
     [ObservableProperty]
     private int? _tileId;
     [ObservableProperty]
-    private ImageBrush _brush;
+    private CroppedBitmap _brush;
     public int Index;
     public (int TilesetId, int TileId)? Id 
     {
@@ -47,22 +47,18 @@ public partial class MapTileViewModel : ViewModelBase
         TileId = id.TileId;
         RefreshBrush();
     }
-    public RelativeRect GetSourceRect(int tilesetWidth)
+    public PixelRect GetSourceRect(int tilesetWidth)
     {
         int X = (int)_tileId % tilesetWidth * Config.tileWidth;
         int Y = (int)_tileId / tilesetWidth * Config.tileHeight;
-        Rect result = new Rect(X, Y, Config.tileWidth, Config.tileHeight);
-        return new RelativeRect(result, RelativeUnit.Absolute);
+        return new PixelRect(X, Y, Config.tileWidth, Config.tileHeight);
     }
     public void RefreshBrush()
     {
         Bitmap image = _images[TilesetId.Value];
         int tilesetWidth = image.PixelSize.Width / Config.tileWidth;
-        Brush = new ImageBrush(image)
-        { 
-            SourceRect = GetSourceRect(tilesetWidth),
-            DestinationRect = new RelativeRect(
-                0, 0, Config.tileWidth, Config.tileHeight, RelativeUnit.Absolute),
-        };
+        PixelRect sourceRect = GetSourceRect(tilesetWidth);
+        CroppedBitmap croppedImage = new CroppedBitmap(image, sourceRect);
+        Brush = croppedImage;
     }
 }

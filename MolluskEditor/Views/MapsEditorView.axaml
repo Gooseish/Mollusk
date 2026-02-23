@@ -40,7 +40,7 @@
               <ItemsControl.ItemTemplate>
                 <DataTemplate>
                   <Grid>
-                    <Rectangle Fill="{Binding Brush}"
+                    <Image Source="{Binding Brush}"
                       Stretch="None"
                       RenderOptions.BitmapInterpolationMode="None"
                       UseLayoutRounding="False"/>
