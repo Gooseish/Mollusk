@@ -36,7 +36,7 @@ public partial class MapDataViewModel : ObservableValidator, IDataViewModel
         _height = _map.Height.ToString();
         _width = _map.Width.ToString();
         _tileData = _map.TileData.ToMapTileViewModel();
-
+        FixPixelDimensions();
         WatchTileData();
         PropertyChanged += CheckForAnyErrors;
         CheckForAnyErrors(null, EventArgs.Empty);
@@ -50,20 +50,29 @@ public partial class MapDataViewModel : ObservableValidator, IDataViewModel
         return data;
     }
     #region Tilemap Painting
-    private MapTileViewModel? pickTileWithCursor(Point cursorPosition)
+    [ObservableProperty]
+    private int _tilemapPixelWidth;
+    [ObservableProperty]
+    private int _tilemapPixelHeight;
+    private void FixPixelDimensions()
+    {
+        TilemapPixelHeight = _map.Height * Config.tileHeight;
+        TilemapPixelWidth  = _map.Width  * Config.tileWidth;
+    }
+    private MapTileViewModel? pickTileWithCursor(Point mapPosition)
     {
         // Get cursor positions in map coordinates
-        int cursorX = (int)(cursorPosition.X / Config.tileWidth);
-        int cursorY = (int)(cursorPosition.Y / Config.tileHeight);
+        int tileX = (int)(mapPosition.X / Config.tileWidth);
+        int tileY = (int)(mapPosition.Y / Config.tileHeight);
         // Return if cursor outside bounds
-        if (cursorX < 0 || cursorX >= _map.Width)  {return null;}
-        if (cursorY < 0 || cursorY >= _map.Height) {return null;}
+        if (tileX < 0 || tileX >= _map.Width)  {return null;}
+        if (tileY < 0 || tileY >= _map.Height) {return null;}
         // Index with map coordinates
-        return TileData.IndexAs2D(cursorX, cursorY, _map.Width);
+        return TileData.IndexAs2D(tileX, tileY, _map.Width);
     }
-    public void PaintTilemap(Point cursorPosition, (int TilesetId, int TileId) id)
+    public void PaintTilemap(Point mapPosition, (int TilesetId, int TileId) id)
     {
-        MapTileViewModel? selectedTile = pickTileWithCursor(cursorPosition);
+        MapTileViewModel? selectedTile = pickTileWithCursor(mapPosition);
         if (selectedTile == null) return;
         selectedTile.AssignTile(id);
     }
@@ -79,9 +88,10 @@ public partial class MapDataViewModel : ObservableValidator, IDataViewModel
     }
     public Point? CursorToTilemapPosition(Point cursorPosition, int canvasSize)
     {
+        return cursorPosition;
         Point mapPosition = new Point(
-            cursorPosition.X * _map.Width  * Config.tileWidth  / canvasSize, 
-            cursorPosition.Y * _map.Height * Config.tileHeight / canvasSize);
+            cursorPosition.X * _map.Width  * Config.tileWidth  / TilemapPixelWidth, 
+            cursorPosition.Y * _map.Height * Config.tileHeight / TilemapPixelHeight);
         return mapPosition;
     }
     public (int TilesetId, int TileId)? SampleTilemap(Point cursorPosition)

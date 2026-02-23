@@ -40,7 +40,7 @@
                 <ItemsControl.ItemsPanel>
                   <ItemsPanelTemplate>
                     <UniformGrid Rows="{Binding SelectedTileset?.TilemapHeight}" Columns="{Binding SelectedTileset?.TilemapWidth}"
-                      Width="{Binding CanvasSize}" Height= "{Binding CanvasSize}"
+                      Width="{Binding CanvasSize}" Height="{Binding CanvasSize}"
                       UseLayoutRounding="False"/>
                   </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>

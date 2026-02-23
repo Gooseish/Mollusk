@@ -10,7 +10,7 @@
              x:Name= "MapsEditor">
   <StackPanel Orientation="Horizontal">
     <!-- Map Selector -->
-    <ContentControl Content = "{Binding Data}"/>
+    <ContentControl Content="{Binding Data}"/>
     <!-- Tilemap -->
     <Border Width="{Binding CanvasSize}" Height="{Binding CanvasSize}">
       <ScrollViewer VerticalScrollBarVisibility="Auto"
@@ -20,13 +20,20 @@
                         AutoCalculateMinZoom="True" AutoCalculateMaxZoom="True"
                         BoundsMode="FillViewport">
           <Grid>
+            <!-- Drawing Canvas -->
+            <Rectangle Name="DrawingCanvas"
+              Width="{Binding SelectedMap?.TilemapPixelWidth}"
+              Height="{Binding SelectedMap?.TilemapPixelHeight}"
+              />
             <!-- Terrain Tile Overlay -->
-            <ItemsControl ItemsSource="{Binding SelectedMap?.TileData}" Name="DrawingCanvas">
+            <ItemsControl ItemsSource="{Binding SelectedMap?.TileData}" >
               <!-- Grid Format -->
               <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                   <UniformGrid Rows="{Binding SelectedMap?.Height}" Columns="{Binding SelectedMap?.Width}" 
-                    ColumnSpacing="0" RowSpacing = "0" />
+                    ColumnSpacing="0" RowSpacing="0"
+                    Width="{Binding SelectedMap?.TilemapPixelWidth}" Height="{Binding SelectedMap?.TilemapPixelHeight}"
+                    />
                 </ItemsPanelTemplate>
               </ItemsControl.ItemsPanel>
               <!-- Entry Format -->
