@@ -5,8 +5,6 @@ using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 
 public class ValueTupleConverter<T1, T2> : JsonConverter<(T1, T2)>
-    where T1 : new()
-    where T2 : new()
 {
     public override (T1, T2) Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {

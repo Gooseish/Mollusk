@@ -70,7 +70,7 @@ public partial class MapDataViewModel : ObservableValidator, IDataViewModel
         // Index with map coordinates
         return TileData.IndexAs2D(tileX, tileY, _map.Width);
     }
-    public void PaintTilemap(Point mapPosition, (int TilesetId, int TileId) id)
+    public void PaintTilemap(Point mapPosition, Tile id)
     {
         MapTileViewModel? selectedTile = pickTileWithCursor(mapPosition);
         if (selectedTile == null) return;
@@ -90,7 +90,7 @@ public partial class MapDataViewModel : ObservableValidator, IDataViewModel
     {
         return cursorPosition;
     }
-    public (int TilesetId, int TileId)? SampleTilemap(Point cursorPosition)
+    public Tile? SampleTilemap(Point cursorPosition)
     {
         MapTileViewModel? selectedTile = pickTileWithCursor(cursorPosition);
         if (selectedTile == null) {return null;}
@@ -139,12 +139,12 @@ public partial class MapDataViewModel : ObservableValidator, IDataViewModel
         int x = n % _map.Width;
         int y = n / _map.Width;
         if (TileData[n].Id == null) return;
-        if (TileData[n].Id == _map.TileData[x, y]) return;
-        SetIn2DCollectionCommand<(int TilesetId, int TileId)> command = new(
+        if (TileData[n].Id.Value.Equals(_map.TileData[x, y])) return;
+        SetIn2DCollectionCommand<Tile> command = new(
             SetMapTileData, x, y, _map.TileData[x, y], TileData[n].Id.Value);
         _paintCommands?.Add(command);
     }
-    private void SetMapTileData(int x, int y, (int TilesetId, int TileId) value) {
+    private void SetMapTileData(int x, int y, Tile value) {
         _map.TileData[x, y] = value;}
     private void FixTileData() {TileData = _map.TileData.ToMapTileViewModel();}
     private void WatchTileData()

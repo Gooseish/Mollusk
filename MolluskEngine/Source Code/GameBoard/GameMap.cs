@@ -18,13 +18,18 @@ public class GameMap : IDataType
     /// tileset id and the second element is the id of the specific tile in
     /// the tileset.
     /// </summary>
-    public (int TilesetId, int TileId)[,] TileData {get; set;}
+    public Tile[,] TileData {get; set;}
+    public GameMap ResizeMap(int x, int y)
+    {
+        GameMap result = new GameMap();
+        return result;
+    }
     public GameMap()
     {
         Id = -1;
         Name = "New Map";
         Height = 10;
         Width = 15;
-        TileData = new ValueTuple<int, int>[Width, Height];
+        TileData = new Tile[Width, Height];
     }
 }

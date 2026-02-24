@@ -28,7 +28,7 @@ public partial class MapsEditorViewModel : EditorViewModel
     [ObservableProperty]
     private TilesetDataViewModel? _selectedTileset;
     [ObservableProperty]
-    private (int TilesetId, int TileId)? _selectedTile;
+    private Tile? _selectedTile;
     #endregion
     #region Constructor
     public MapsEditorViewModel(CommandStack commandStack,
@@ -58,7 +58,7 @@ public partial class MapsEditorViewModel : EditorViewModel
         if (mapPosition == null) return;
         int? tileId = SelectedTileset.PickTileIndex((Point)mapPosition);
         if (tileId == null) return;
-        SelectedTile = (int.Parse(SelectedTileset.Id), (int)tileId);   
+        SelectedTile = new Tile(int.Parse(SelectedTileset.Id), (int)tileId);   
     }
     #endregion
     #region Tilemap Painting
@@ -89,7 +89,7 @@ public partial class MapsEditorViewModel : EditorViewModel
         if (SelectedMap == null) return;
         Point? mapPosition = SelectedMap?.CursorToTilemapPosition(cursorPosition);
         if (mapPosition == null) return;
-        (int TilesetId, int TileId)? sampledTileId = 
+        Tile? sampledTileId = 
             SelectedMap?.SampleTilemap((Point)mapPosition);
         if (sampledTileId == null) return;
         SelectedTile = sampledTileId;

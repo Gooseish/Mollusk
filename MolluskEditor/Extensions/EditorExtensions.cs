@@ -8,6 +8,7 @@ using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using MolluskEditor.ViewModels;
 using MolluskEditor.Wrappers;
+using MolluskEngine.GameBoard;
 
 namespace MolluskEditor.Extensions;
 
@@ -36,13 +37,13 @@ public static class EditorExtensions
         }
         return result;
     }
-    public static List<(int TilesetId, int TileId)>? ToIntList(this ObservableCollection<MapTileViewModel> source)
+    public static List<Tile>? ToIntList(this ObservableCollection<MapTileViewModel> source)
     {
-        List<(int TilesetId, int TileId)> result = [];
+        List<Tile> result = [];
         foreach (MapTileViewModel element in source)
         {
             if (element.Id == null) return null;
-            result.Add((ValueTuple<int, int>)element.Id);
+            result.Add(element.Id.Value);
         }
         return result;
     }
@@ -56,7 +57,7 @@ public static class EditorExtensions
         return result;
     }
     public static ObservableCollection<MapTileViewModel> ToMapTileViewModel(
-        this (int TilesetId, int TileId)[,] source)
+        this Tile[,] source)
     {
         ObservableCollection<MapTileViewModel> result = [];
         int n = 0;

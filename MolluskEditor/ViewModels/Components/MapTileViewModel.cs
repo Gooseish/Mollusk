@@ -26,13 +26,13 @@ public partial class MapTileViewModel : ViewModelBase
     [ObservableProperty]
     private CroppedBitmap _brush;
     public int Index;
-    public (int TilesetId, int TileId)? Id 
+    public Tile? Id 
     {
         get
         {
             if (TilesetId == null || TileId == null)
                 return null;
-            return ((int)TilesetId, (int)TileId);
+            return new Tile((int)TilesetId, (int)TileId);
         }
     }
     public MapTileViewModel(int tilesetId, int tileId, int index)
@@ -41,7 +41,7 @@ public partial class MapTileViewModel : ViewModelBase
         _tileId = tileId;
         Index = index;
     }
-    public void AssignTile((int TilesetId, int TileId) id)
+    public void AssignTile(Tile id)
     {
         TilesetId = id.TilesetId;   
         TileId = id.TileId;
