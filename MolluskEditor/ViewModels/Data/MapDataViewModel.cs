@@ -140,13 +140,11 @@ public partial class MapDataViewModel : ObservableValidator, IDataViewModel
         int y = n / _map.Width;
         if (TileData[n].Id == null) return;
         if (TileData[n].Id == _map.TileData[x, y]) return;
-        SetInCollectionCommand<(int TilesetId, int TileId)> command = new(
-            SetMapTileData, n, _map.TileData[x, y], TileData[n].Id.Value);
+        SetIn2DCollectionCommand<(int TilesetId, int TileId)> command = new(
+            SetMapTileData, x, y, _map.TileData[x, y], TileData[n].Id.Value);
         _paintCommands?.Add(command);
     }
-    private void SetMapTileData(int n, (int TilesetId, int TileId) value) {
-        int x = n % _map.Width;
-        int y = n / _map.Width;
+    private void SetMapTileData(int x, int y, (int TilesetId, int TileId) value) {
         _map.TileData[x, y] = value;}
     private void FixTileData() {TileData = _map.TileData.ToMapTileViewModel();}
     private void WatchTileData()

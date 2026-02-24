@@ -32,6 +32,10 @@ public class CommandSequence : Command
         if (_calcified) throw new Exception(
             "Tried to add commands to an already executed command sequence");
     }
+    public bool IsEmpty()
+    {
+        return _commands.Count < 1;
+    }
     public override void Do()
     {
         _calcified = true;

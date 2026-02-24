@@ -14,14 +14,17 @@ public class CommandStack // Should this be a static class or a singleton?
     private Stack<Command> _redoStack = [];
     public void IssueCommand(Command command)
     {
+        // Do nothing if the command is an empty sequence
+        if (command is CommandSequence commandSequence
+            && commandSequence.IsEmpty()) return;
+        
         command.Do();
         _undoStack.Push(command);
         _redoStack.Clear();
     }
     public void Undo()
     {
-        if (_undoStack.Count == 0)
-            return;
+        if (_undoStack.Count == 0) return;
         Command command = _undoStack.Pop();
         command.Undo();
         _redoStack.Push(command);
@@ -31,8 +34,7 @@ public class CommandStack // Should this be a static class or a singleton?
     }
     public void Redo()
     {
-        if (_redoStack.Count == 0)
-            return;
+        if (_redoStack.Count == 0) return;
         Command command = _redoStack.Pop();
         command.Do();
         _undoStack.Push(command);
