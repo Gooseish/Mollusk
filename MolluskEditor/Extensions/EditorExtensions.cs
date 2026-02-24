@@ -59,9 +59,13 @@ public static class EditorExtensions
         this (int TilesetId, int TileId)[,] source)
     {
         ObservableCollection<MapTileViewModel> result = [];
-        List<(int TilesetId, int TileId)> sourceList = [.. source];
-        for(int n = 0; n < sourceList.Count; n++)
-            result.Add(new MapTileViewModel(sourceList[n].TilesetId, sourceList[n].TileId, n));
+        int n = 0;
+        for (int y = 0; y < source.GetLength(1); y++)
+            for (int x = 0; x < source.GetLength(0); x++)
+            {
+                result.Add(new MapTileViewModel(source[x, y].TilesetId, source[x, y].TileId, n));
+                n++;
+            }
         return result;
     }
     public static ObservableCollection<ObsVal<string>> ToWrappedStringCollection(
