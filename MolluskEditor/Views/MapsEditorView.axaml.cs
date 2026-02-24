@@ -30,10 +30,10 @@ public partial class MapsEditorView : UserControl
         {
             // Tile painter
             mapsEditorView.BeginPainting();
-            mapsEditorView.PaintTilemap(e.GetPosition(DrawingCanvas));
+            mapsEditorView.PaintTilemap(e.GetPosition(DrawingCanvas), e.GetPosition(MapBorder));
 
             // Tile picker
-            mapsEditorView.PickTile(e.GetPosition(TilePicker));
+            mapsEditorView.PickTile(e.GetPosition(TilePicker), e.GetPosition(TilesetBorder));
         }
     }
     private void OnRightMouseButtonPressed(PointerPressedEventArgs e)
@@ -49,7 +49,7 @@ public partial class MapsEditorView : UserControl
             return;
         // Tile painter
         if (DataContext is MapsEditorViewModel mapsEditorView)
-            mapsEditorView.PaintTilemap(e.GetPosition(DrawingCanvas));
+            mapsEditorView.PaintTilemap(e.GetPosition(DrawingCanvas), e.GetPosition(MapBorder));
     }
     private void OnPointerReleased(object? sender, PointerReleasedEventArgs e)
     {

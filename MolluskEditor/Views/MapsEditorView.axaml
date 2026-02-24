@@ -12,7 +12,8 @@
     <!-- Map Selector -->
     <ContentControl Content="{Binding Data}"/>
     <!-- Tilemap -->
-    <Border Width="{Binding CanvasSize}" Height="{Binding CanvasSize}">
+    <Border Width="{Binding CanvasSize}" Height="{Binding CanvasSize}"
+            Name="MapBorder">
       <ScrollViewer VerticalScrollBarVisibility="Auto"
                     HorizontalScrollBarVisibility="Auto">
         <paz:ZoomBorder Name="MapZoomBorder" Stretch="None" ZoomSpeed="1.2"
@@ -32,8 +33,7 @@
                 <ItemsPanelTemplate>
                   <UniformGrid Rows="{Binding SelectedMap?.Height}" Columns="{Binding SelectedMap?.Width}" 
                     ColumnSpacing="0" RowSpacing="0"
-                    Width="{Binding SelectedMap?.TilemapPixelWidth}" Height="{Binding SelectedMap?.TilemapPixelHeight}"
-                    />
+                    Width="{Binding SelectedMap?.TilemapPixelWidth}" Height="{Binding SelectedMap?.TilemapPixelHeight}"/>
                 </ItemsPanelTemplate>
               </ItemsControl.ItemsPanel>
               <!-- Entry Format -->
@@ -44,7 +44,6 @@
                       Stretch="None"
                       RenderOptions.BitmapInterpolationMode="None"
                       UseLayoutRounding="False"/>
-                    <TextBlock Text="{Binding TileId}" FontSize="7"/>
                   </Grid>
                 </DataTemplate>
               </ItemsControl.ItemTemplate>
@@ -56,7 +55,8 @@
     <!-- Tileset Selector -->
     <ContentControl Content = "{Binding TilesetData}"/>
     <!-- Tile Selector -->
-    <Border Width="{Binding TilesetCanvasSize}" Height= "{Binding TilesetCanvasSize}">
+    <Border Width="{Binding TilesetCanvasSize}" Height= "{Binding TilesetCanvasSize}"
+      Name="TilesetBorder">
       <ScrollViewer VerticalScrollBarVisibility="Auto"
                     HorizontalScrollBarVisibility="Auto">
         <paz:ZoomBorder Name="TilesetZoomBorder" Stretch="None" ZoomSpeed="1.2"

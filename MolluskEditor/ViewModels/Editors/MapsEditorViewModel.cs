@@ -49,10 +49,12 @@ public partial class MapsEditorViewModel : EditorViewModel
     #region Tile Picker
     [ObservableProperty]
     public static int _tilesetCanvasSize = 300;
-    public void PickTile(Point cursorPosition)
+    public void PickTile(Point cursorPositionOnTilemap, Point cursorPositionInBorder)
     {
+        if (cursorPositionInBorder.X < 0 || cursorPositionInBorder.X >= TilesetCanvasSize) return;
+        if (cursorPositionInBorder.Y < 0 || cursorPositionInBorder.Y >= TilesetCanvasSize) return;
         if (SelectedTileset == null) return;
-        Point? mapPosition = SelectedTileset.CursorToTilemapPosition(cursorPosition, TilesetCanvasSize);
+        Point? mapPosition = SelectedTileset.CursorToTilemapPosition(cursorPositionOnTilemap, TilesetCanvasSize);
         if (mapPosition == null) return;
         int? tileId = SelectedTileset.PickTileIndex((Point)mapPosition);
         if (tileId == null) return;
@@ -62,11 +64,13 @@ public partial class MapsEditorViewModel : EditorViewModel
     #region Tilemap Painting
     [ObservableProperty]
     public static int _canvasSize = 500;
-    public void PaintTilemap(Point cursorPosition)
+    public void PaintTilemap(Point cursorPositionOnTilemap, Point cursorPositionInBorder)
     {
+        if (cursorPositionInBorder.X < 0 || cursorPositionInBorder.X >= CanvasSize) return;
+        if (cursorPositionInBorder.Y < 0 || cursorPositionInBorder.Y >= CanvasSize) return;
         if (SelectedMap == null) return;
         if (SelectedTile == null) return;
-        Point? mapPosition = SelectedMap?.CursorToTilemapPosition(cursorPosition, CanvasSize);
+        Point? mapPosition = SelectedMap?.CursorToTilemapPosition(cursorPositionOnTilemap, CanvasSize);
         if (mapPosition == null) return;
         SelectedMap?.PaintTilemap((Point)mapPosition, SelectedTile.Value);
     }
