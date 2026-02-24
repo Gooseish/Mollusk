@@ -28,7 +28,7 @@
           <paz:ZoomBorder Name="ZoomBorder" Stretch="None" ZoomSpeed="1.2"
                           Background="SlateBlue" ClipToBounds="True" Focusable="True"
                           VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
-                          AutoCalculateMinZoom="True" AutoCalculateMaxZoom="True"
+                          AutoCalculateMinZoom="True"
                           BoundsMode="FillViewport">
             <Grid>
               <!-- Tilemap Image -->

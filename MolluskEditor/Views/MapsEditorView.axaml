@@ -18,7 +18,7 @@
                     HorizontalScrollBarVisibility="Auto">
         <paz:ZoomBorder Name="MapZoomBorder" Stretch="None" ZoomSpeed="1.2"
                         Background="SlateBlue" ClipToBounds="True" Focusable="True"
-                        AutoCalculateMinZoom="True" AutoCalculateMaxZoom="True"
+                        AutoCalculateMinZoom="True"
                         BoundsMode="FillViewport">
           <Grid>
             <!-- Drawing Canvas -->
@@ -62,7 +62,7 @@
         <paz:ZoomBorder Name="TilesetZoomBorder" Stretch="None" ZoomSpeed="1.2"
                         Background="SlateBlue" ClipToBounds="True" Focusable="True"
                         VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
-                        AutoCalculateMinZoom="True" AutoCalculateMaxZoom="True"
+                        AutoCalculateMinZoom="True"
                         BoundsMode="FillViewport">
           <Grid>
             <!-- Tilemap Image -->
