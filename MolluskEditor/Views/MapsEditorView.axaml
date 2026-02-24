@@ -12,7 +12,7 @@
     <!-- Map Selector -->
     <ContentControl Content="{Binding Data}"/>
     <!-- Tilemap -->
-    <Border Width="{Binding CanvasSize}" Height="{Binding CanvasSize}"
+    <Border Width="{Binding CanvasWidth}" Height="{Binding CanvasHeight}"
             Name="MapBorder">
       <ScrollViewer VerticalScrollBarVisibility="Auto"
                     HorizontalScrollBarVisibility="Auto">

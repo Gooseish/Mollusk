@@ -86,13 +86,9 @@ public partial class MapDataViewModel : ObservableValidator, IDataViewModel
         if (_paintCommands == null) return;
         _commandStack.IssueCommand(_paintCommands);
     }
-    public Point? CursorToTilemapPosition(Point cursorPosition, int canvasSize)
+    public Point? CursorToTilemapPosition(Point cursorPosition)
     {
         return cursorPosition;
-        Point mapPosition = new Point(
-            cursorPosition.X * _map.Width  * Config.tileWidth  / TilemapPixelWidth, 
-            cursorPosition.Y * _map.Height * Config.tileHeight / TilemapPixelHeight);
-        return mapPosition;
     }
     public (int TilesetId, int TileId)? SampleTilemap(Point cursorPosition)
     {
