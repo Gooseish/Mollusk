@@ -1,12 +1,9 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Avalonia;
 using Avalonia.Media;
-using Avalonia.Media.Imaging;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 using MolluskEditor.Commands;
 using MolluskEditor.Extensions;
 using MolluskEditor.Models;
@@ -55,7 +52,7 @@ public partial class MapDataViewModel : ObservableValidator, IDataViewModel
     {
         // Needs to be command
         UnwatchTileData();
-        _map = _map.ResizeMap(20, 15);
+        _map.ResizeMap(20, 15);
         FixFields();
         WatchTileData();
     }
