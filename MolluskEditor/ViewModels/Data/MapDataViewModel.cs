@@ -157,6 +157,7 @@ public partial class MapDataViewModel : ObservableValidator, IDataViewModel
     private void FixTileData()
     {
         TileData = _map.TileData.ToMapTileViewModel();
+        RefreshTilemapBrushes();
     }
     private void WatchTileData()
     {
