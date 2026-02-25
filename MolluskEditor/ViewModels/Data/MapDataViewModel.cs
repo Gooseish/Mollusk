@@ -6,6 +6,7 @@ using Avalonia;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using MolluskEditor.Commands;
 using MolluskEditor.Extensions;
 using MolluskEditor.Models;
@@ -49,6 +50,16 @@ public partial class MapDataViewModel : ObservableValidator, IDataViewModel
             data.Add(new MapDataViewModel(map));
         return data;
     }
+    #region Tilemap Resizing
+    public void ResizeTilemap()
+    {
+        // Needs to be command
+        UnwatchTileData();
+        _map = _map.ResizeMap(20, 15);
+        FixFields();
+        WatchTileData();
+    }
+    #endregion
     #region Tilemap Painting
     [ObservableProperty]
     private int _tilemapPixelWidth;
@@ -146,13 +157,24 @@ public partial class MapDataViewModel : ObservableValidator, IDataViewModel
     }
     private void SetMapTileData(int x, int y, Tile value) {
         _map.TileData[x, y] = value;}
-    private void FixTileData() {TileData = _map.TileData.ToMapTileViewModel();}
+    private void FixTileData()
+    {
+        TileData = _map.TileData.ToMapTileViewModel();
+    }
     private void WatchTileData()
     {
         foreach (MapTileViewModel i in TileData)
         {
             i.PropertyChanged += UpdateTileData;
             i.PropertyChanged += CheckForAnyErrors;
+        }
+    }
+    private void UnwatchTileData()
+    {
+        foreach (MapTileViewModel i in TileData)
+        {
+            i.PropertyChanged -= UpdateTileData;
+            i.PropertyChanged -= CheckForAnyErrors;
         }
     }
     #endregion
@@ -170,7 +192,8 @@ public partial class MapDataViewModel : ObservableValidator, IDataViewModel
         FixName();
         FixHeight();
         FixWidth();
-        //FixTileData();
+        FixPixelDimensions();
+        FixTileData();
     }
     #region Events
     public void NotifyChange()

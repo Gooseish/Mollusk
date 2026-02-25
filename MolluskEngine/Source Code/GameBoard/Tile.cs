@@ -16,7 +16,6 @@ public struct Tile : IEquatable<Tile>
         TilesetId = tilesetId;
         TileId = tileId;
     }
-
     public bool Equals(Tile other)
     {
         return TilesetId == other.TilesetId && TileId == other.TileId;

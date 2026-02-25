@@ -19,10 +19,30 @@ public class GameMap : IDataType
     /// the tileset.
     /// </summary>
     public Tile[,] TileData {get; set;}
-    public GameMap ResizeMap(int x, int y)
+    public GameMap ResizeMap(int width, int height)
     {
-        GameMap result = new GameMap();
+        GameMap result = new GameMap()
+        {
+            Id = Id,
+            Name = Name,
+            Height = height,
+            Width = width,
+            TileData = new Tile[width, height],
+        };
+        for (int x = 0; x < Width; x++)
+            for (int y = 0; y < Height; y++)
+                if (result.Contains(x, y))
+                    result.TileData[x, y] = TileData[x, y];
         return result;
+    }
+    public bool Contains(int x, int y)
+    {
+        try
+        {
+            _ = TileData[x, y];
+            return true;
+        }
+        catch {return false;}
     }
     public GameMap()
     {

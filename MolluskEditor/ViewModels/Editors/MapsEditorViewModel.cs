@@ -5,6 +5,7 @@ using Avalonia;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using MolluskEditor.Commands;
 using MolluskEditor.Models;
 using MolluskEditor.Services;
@@ -110,6 +111,13 @@ public partial class MapsEditorViewModel : EditorViewModel
         }
         MapTileViewModel.InjectDependency(_tilesetImages);
         SelectedMap?.RefreshTilemapBrushes();
+    }
+    #endregion
+    #region Tilemap Resizing
+    [RelayCommand]
+    private void ResizeTilemap()
+    {
+        SelectedMap?.ResizeTilemap();
     }
     #endregion
     #region Events

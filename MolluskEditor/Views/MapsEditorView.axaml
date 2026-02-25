@@ -11,47 +11,52 @@
   <StackPanel Orientation="Horizontal">
     <!-- Map Selector -->
     <ContentControl Content="{Binding Data}"/>
-    <!-- Tilemap -->
-    <Border Width="{Binding CanvasWidth}" Height="{Binding CanvasHeight}"
-            Name="MapBorder">
-      <ScrollViewer VerticalScrollBarVisibility="Auto"
-                    HorizontalScrollBarVisibility="Auto">
-        <paz:ZoomBorder Name="MapZoomBorder" Stretch="None" ZoomSpeed="1.2"
-                        Background="SlateBlue" ClipToBounds="True" Focusable="True"
-                        AutoCalculateMinZoom="True"
-                        BoundsMode="FillViewport">
-          <Grid>
-            <!-- Drawing Canvas -->
-            <Rectangle Name="DrawingCanvas"
-              Width="{Binding SelectedMap?.TilemapPixelWidth}"
-              Height="{Binding SelectedMap?.TilemapPixelHeight}"
-              />
-            <!-- Terrain Tile Overlay -->
-            <ItemsControl ItemsSource="{Binding SelectedMap?.TileData}" >
-              <!-- Grid Format -->
-              <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                  <UniformGrid Rows="{Binding SelectedMap?.Height}" Columns="{Binding SelectedMap?.Width}" 
-                    ColumnSpacing="0" RowSpacing="0"
-                    Width="{Binding SelectedMap?.TilemapPixelWidth}" Height="{Binding SelectedMap?.TilemapPixelHeight}"/>
-                </ItemsPanelTemplate>
-              </ItemsControl.ItemsPanel>
-              <!-- Entry Format -->
-              <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                  <Grid>
-                    <Image Source="{Binding Brush}"
-                      Stretch="None"
-                      RenderOptions.BitmapInterpolationMode="None"
-                      UseLayoutRounding="False"/>
-                  </Grid>
-                </DataTemplate>
-              </ItemsControl.ItemTemplate>
-            </ItemsControl> 
-          </Grid>
-        </paz:ZoomBorder>  
-      </ScrollViewer>
-    </Border>
+    <StackPanel>
+      <StackPanel Orientation="Horizontal">
+        <Button Command="{Binding ResizeTilemapCommand}">Resize</Button>
+      </StackPanel>
+      <!-- Tilemap -->
+      <Border Width="{Binding CanvasWidth}" Height="{Binding CanvasHeight}"
+              Name="MapBorder">
+        <ScrollViewer VerticalScrollBarVisibility="Auto"
+                      HorizontalScrollBarVisibility="Auto">
+          <paz:ZoomBorder Name="MapZoomBorder" Stretch="None" ZoomSpeed="1.2"
+                          Background="SlateBlue" ClipToBounds="True" Focusable="True"
+                          AutoCalculateMinZoom="True"
+                          BoundsMode="FillViewport">
+            <Grid>
+              <!-- Drawing Canvas -->
+              <Rectangle Name="DrawingCanvas"
+                Width="{Binding SelectedMap?.TilemapPixelWidth}"
+                Height="{Binding SelectedMap?.TilemapPixelHeight}"
+                />
+              <!-- Terrain Tile Overlay -->
+              <ItemsControl ItemsSource="{Binding SelectedMap?.TileData}" >
+                <!-- Grid Format -->
+                <ItemsControl.ItemsPanel>
+                  <ItemsPanelTemplate>
+                    <UniformGrid Rows="{Binding SelectedMap?.Height}" Columns="{Binding SelectedMap?.Width}" 
+                      ColumnSpacing="0" RowSpacing="0"
+                      Width="{Binding SelectedMap?.TilemapPixelWidth}" Height="{Binding SelectedMap?.TilemapPixelHeight}"/>
+                  </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <!-- Entry Format -->
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate>
+                    <Grid>
+                      <Image Source="{Binding Brush}"
+                        Stretch="None"
+                        RenderOptions.BitmapInterpolationMode="None"
+                        UseLayoutRounding="False"/>
+                    </Grid>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl> 
+            </Grid>
+          </paz:ZoomBorder>  
+        </ScrollViewer>
+      </Border>
+    </StackPanel>
     <!-- Tileset Selector -->
     <ContentControl Content = "{Binding TilesetData}"/>
     <!-- Tile Selector -->
