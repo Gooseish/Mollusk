@@ -26,10 +26,9 @@ public class GameMap : IDataType
             for (int y = 0; y < Height; y++)
             {
                 try {_ = newTileData[x, y];}
-                catch {continue;}
+                catch(IndexOutOfRangeException) {continue;}
                 newTileData[x, y] = TileData[x, y];
             }
-        
         TileData = newTileData;
         Height = newHeight;
         Width = newWidth;
