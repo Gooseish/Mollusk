@@ -12,6 +12,7 @@
     <Folder Include="Factories\" />
     <AvaloniaResource Include="Assets\**" />
     <Folder Include="Services\" />
+    <Folder Include="ViewModels\Dialogs\" />
     <Folder Include="Wrappers\" />
   </ItemGroup>
 
