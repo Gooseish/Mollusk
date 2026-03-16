@@ -12,8 +12,13 @@
     <!-- Map Selector -->
     <ContentControl Content="{Binding Data}"/>
     <StackPanel>
+      <!-- Map Top Bar -->
       <StackPanel Orientation="Horizontal">
         <Button Command="{Binding ResizeTilemapCommand}">Resize</Button>
+        <Label>Id</Label>
+        <TextBox Text="{Binding SelectedMap?.Id}"></TextBox>
+        <Label>Name</Label>
+        <TextBox Text="{Binding SelectedMap?.Name}"></TextBox>
       </StackPanel>
       <!-- Tilemap -->
       <Border Width="{Binding CanvasWidth}" Height="{Binding CanvasHeight}"

@@ -7,6 +7,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using MolluskEditor.Commands;
 using MolluskEditor.Extensions;
 using MolluskEditor.Models;
+using MolluskEditor.Validators;
 using MolluskEngine;
 using MolluskEngine.Extensions;
 using MolluskEngine.GameBoard;
@@ -123,13 +124,44 @@ public partial class MapDataViewModel : ObservableValidator, IDataViewModel
     #endregion
     #region Boilerplate Properties
     [ObservableProperty]
+    [NotifyDataErrorInfo][ParseAsInt][DontOverrideId]
     private string _id;
+    partial void OnIdChanged(string? oldValue, string newValue)
+    {
+        if (GetErrors(nameof(Id)).Any()) return;
+        int id = int.Parse(Id);
+        if (id == _map.Id) return;
+        CommandSequence command = new();
+        command.Add(new MoveInDictCommand(ChangeDictKey, _map.Id, id));
+        command.Add(new SetCommand<int>(SetId, _map.Id, id));
+        command.AddCleanup(_mapData.OnIdsChanged);
+        command.AddCleanup(FixId);
+        _commandStack.IssueCommand(command);
+    }
+    private void SetId(int value) {_map.Id = value;}
+    private void FixId() {Id = _map.Id.ToString();}
+    private void ChangeDictKey(int newValue, int oldValue)
+    {
+        _mapData.Data.Remove(oldValue);
+        _mapData.Data[newValue] = _map;
+    }
     public bool CheckIdAvailable(string idString)
         { return _mapData.CheckIdAvailable(idString, _map.Id); }
-    private void FixId() {Id = _map.Id.ToString();}
     [ObservableProperty]
     private string _name;
     private void FixName() {Name = _map.Name;}
+    partial void OnNameChanged(string? oldValue, string newValue)
+    {
+        if (Name == _map.Name) return;
+        CommandSequence command = new();
+        command.Add(new SetCommand<string>(SetName, _map.Name, Name));
+        command.AddCleanup(FixName);
+        _commandStack.IssueCommand(command);
+    }
+    private void SetName(string value)
+    {
+        _map.Name = value;
+    }
     [ObservableProperty]
     private string _height;
     private void FixHeight() {Height = _map.Height.ToString();}
