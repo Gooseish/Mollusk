@@ -3,11 +3,10 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace MolluskEditor.ViewModels;
 
-public abstract partial class DialogViewModel : ViewModelBase
+public abstract partial class DialogViewModel : ObservableValidator
 {
     [ObservableProperty]
     private bool _isDialogOpen;
-
     public void Show()
     {
         IsDialogOpen = true;

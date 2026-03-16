@@ -114,6 +114,7 @@ public partial class MapsEditorViewModel : EditorViewModel
     }
     #endregion
     #region Tilemap Resizing
+    private MapResizerViewModel _mapResizer;
     [RelayCommand]
     private void LaunchResizeDialogue()
     {
