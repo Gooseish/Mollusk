@@ -115,9 +115,9 @@ public partial class MapsEditorViewModel : EditorViewModel
     #endregion
     #region Tilemap Resizing
     [RelayCommand]
-    private void ResizeTilemap()
+    private void LaunchResizeDialogue()
     {
-        SelectedMap?.ResizeTilemap();
+        //SelectedMap?.ResizeTilemap();
     }
     #endregion
     #region Events
