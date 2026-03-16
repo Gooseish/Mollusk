@@ -118,7 +118,9 @@ public partial class MapsEditorViewModel : EditorViewModel
     [RelayCommand]
     private void LaunchResizeDialogue()
     {
-        //SelectedMap?.ResizeTilemap();
+        if (SelectedMap == null) return;
+        //_mapResizer = new MapResizerViewModel(SelectedMap);
+        //_mapResizer.Show();
     }
     #endregion
     #region Events

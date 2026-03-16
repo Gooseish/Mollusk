@@ -49,11 +49,11 @@ public partial class MapDataViewModel : ObservableValidator, IDataViewModel
         return data;
     }
     #region Tilemap Resizing
-    public void ResizeTilemap()
+    public void ResizeTilemap(int newWidth, int newHeight, int x_offset, int y_offset)
     {
         // Needs to be command
         UnwatchTileData();
-        _map.ResizeMap(20, 15, 2, 2);
+        _map.ResizeMap(newWidth, newHeight, x_offset, y_offset);
         FixFields();
         WatchTileData();
     }
