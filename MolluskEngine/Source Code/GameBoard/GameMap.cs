@@ -19,15 +19,14 @@ public class GameMap : IDataType
     /// the tileset.
     /// </summary>
     public Tile[,] TileData {get; set;}
-    public void ResizeMap(int newWidth, int newHeight)
+    public void ResizeMap(int newWidth, int newHeight, int x_offset, int y_offset)
     {
         Tile[,] newTileData = new Tile[newWidth, newHeight];
         for (int x = 0; x < Width; x++)
             for (int y = 0; y < Height; y++)
             {
-                try {_ = newTileData[x, y];}
+                try {newTileData[x + x_offset, y + y_offset] = TileData[x, y];}
                 catch(IndexOutOfRangeException) {continue;}
-                newTileData[x, y] = TileData[x, y];
             }
         TileData = newTileData;
         Height = newHeight;

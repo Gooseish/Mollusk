@@ -53,7 +53,7 @@ public partial class MapDataViewModel : ObservableValidator, IDataViewModel
     {
         // Needs to be command
         UnwatchTileData();
-        _map.ResizeMap(20, 15);
+        _map.ResizeMap(20, 15, 2, 2);
         FixFields();
         WatchTileData();
     }
