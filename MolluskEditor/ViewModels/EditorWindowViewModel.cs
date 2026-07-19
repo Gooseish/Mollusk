@@ -4,7 +4,7 @@ using MolluskEditor.Factories;
 
 namespace MolluskEditor.ViewModels;
 
-public partial class ChildWindowViewModel: ViewModelBase
+public partial class EditorWindowViewModel: ViewModelBase
 {
     [ObservableProperty]
     private EditorViewModel? _currentEditor;
@@ -12,7 +12,7 @@ public partial class ChildWindowViewModel: ViewModelBase
     public EditorName? EditorName {get{return CurrentEditor?.EditorName;}} // Shouldn't be nullable?
     private EditorFactory _editorFactory;
 
-    public ChildWindowViewModel(EditorFactory editorFactory)
+    public EditorWindowViewModel(EditorFactory editorFactory)
     {
         _editorFactory = editorFactory;
     }

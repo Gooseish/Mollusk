@@ -37,8 +37,8 @@ public partial class App : Application
             collection.AddTransient<TilesetEditorViewModel>();
             collection.AddTransient<UnitsEditorViewModel>();
             collection.AddTransient<MapsEditorViewModel>();
-            collection.AddTransient<ChildWindowView>();
-            collection.AddTransient<ChildWindowViewModel>();
+            collection.AddTransient<EditorWindowView>();
+            collection.AddTransient<EditorWindowViewModel>();
 
             // Services
             collection.AddSingleton<SaveLoadService>();
@@ -60,16 +60,16 @@ public partial class App : Application
             collection.AddSingleton<EditorFactory>();
 
             // Window Factory
-            collection.AddSingleton<Func<EditorName, ChildWindowView>>(x => name =>
+            collection.AddSingleton<Func<EditorName, EditorWindowView>>(x => name =>
             {
-                ChildWindowView resultView = x.GetRequiredService<ChildWindowView>();
-                ChildWindowViewModel resultViewModel = x.GetRequiredService<ChildWindowViewModel>();
+                EditorWindowView resultView = x.GetRequiredService<EditorWindowView>();
+                EditorWindowViewModel resultViewModel = x.GetRequiredService<EditorWindowViewModel>();
                 resultViewModel.GoToEditor(name); // Is there a way to handle this in the constructor?
                 resultView.DataContext = resultViewModel;
                 resultView.Subscribe();
                 return resultView;
             });
-            collection.AddSingleton<WindowFactory>();
+            collection.AddSingleton<EditorWindowFactory>();
 
             var services = collection.BuildServiceProvider();
 

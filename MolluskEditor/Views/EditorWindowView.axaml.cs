@@ -5,15 +5,15 @@ using MolluskEditor.ViewModels;
 
 namespace MolluskEditor.Views;
 
-public partial class ChildWindowView : Window
+public partial class EditorWindowView : Window
 {
-    public ChildWindowView()
+    public EditorWindowView()
     {
         InitializeComponent();
     }
     public void Subscribe()
     {
         if (DataContext != null)
-            Closed += ((ChildWindowViewModel)DataContext).OnClose;
+            Closed += ((EditorWindowViewModel)DataContext).OnClose;
     }
 }

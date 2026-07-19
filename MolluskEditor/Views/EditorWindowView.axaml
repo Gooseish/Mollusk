@@ -5,8 +5,8 @@
         xmlns:vm="using:MolluskEditor.ViewModels"
         xmlns:view="using:MolluskEditor.Views"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        x:Class="MolluskEditor.Views.ChildWindowView"
-        x:DataType="vm:ChildWindowViewModel"
+        x:Class="MolluskEditor.Views.EditorWindowView"
+        x:DataType="vm:EditorWindowViewModel"
         Title="ChildWindow">
   <StackPanel>
     <!-- Debug

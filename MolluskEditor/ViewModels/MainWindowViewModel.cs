@@ -15,16 +15,16 @@ public partial class MainWindowViewModel : ViewModelBase
     [ObservableProperty]
     private EditorViewModel _currentEditor;
     private EditorFactory _editorFactory;
-    private WindowFactory _windowFactory;
+    private EditorWindowFactory _windowFactory;
     private SaveLoadService _saveLoadService;
     private CommandStack _commandStack;
-    private List<ChildWindowViewModel> _childWindows = [];
+    private List<EditorWindowViewModel> _childWindows = [];
     public IEnumerable<EditorName?> ChildWindows { get {
         return _childWindows.Select(n => n.EditorName);}}
     public IEnumerable<EditorName> VisibleEditorTabs { get{
         return EditorName.Values().Where(n => !ChildWindows.Contains(n)); }}
     
-    public MainWindowViewModel(EditorFactory editorFactory, WindowFactory windowFactory, 
+    public MainWindowViewModel(EditorFactory editorFactory, EditorWindowFactory windowFactory, 
         SaveLoadService saveLoadService, CommandStack commandStack)
     {
         _editorFactory = editorFactory;
@@ -70,7 +70,7 @@ public partial class MainWindowViewModel : ViewModelBase
     }
     private void ChildWindowClosed(object? sender, EventArgs args)
     {
-        var senderChildWindow = (ChildWindowViewModel?)sender;
+        var senderChildWindow = (EditorWindowViewModel?)sender;
         if (senderChildWindow == null)
             return; // But this should never happen
         _childWindows.Remove(senderChildWindow);
